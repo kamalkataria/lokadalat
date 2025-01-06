@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+     {% load bootstrap4 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+    {%load crispy_forms_tags %}
+  <style>
+  @page {size: letter landscape;margin: 2cm;}
+
+  </style>
+</head>
+<body>
+{% load django_tables2 %}
+{%if emptyset%}
+<div class="container" style="margin-top:20%;margin-left:auto;margin-right:auto;">
+<h1><a style="padding:20px" class="text text-info" href="{% url 'settlement_list' %}">Create</a>settlements first</h1>
+</div>
+
+
+{%else%}
+<div class="row" style="margin-bottom:2em;">
+  <center>
+    <Div class="container" style="margin:10px;">
+<span style="margin:1.2em!important;font-size:3em;margin-left:auto;margin-right:auto;!important;font-weight:bold;">{{bankid}}</span></Div>
+  </center>
+  <center>
+    <Div class="container" style="margin:10px;">
+<span style="margin:1.5em auto!important;font-size:2em;"class="text text-center">List of compromise settlements in Lok Adalat Held At {{venue}}</span>
+    </Div> </center>
+<center>
+  <div class="container-fluid" style="display: flex;justify-content: space-between;margin:2em auto!important;">
+
+
+  <p style="display:inline;text-left;margin:0 auto!important;font-size:1.6em;">Branch - {{branch}} </p>
+  <p style="display:inline;text-center;margin:0 auto!important;font-size:1.6em;"> Regional Office - {{regiono}} </p>
+  <p style="display:inline;text-right;margin:0 auto!important;font-size:1.6em;">Date:{{ladate}}</p>
+  </div>
+  </center>
+
+</div>
+
+
+ <table class="table table-bordered table-sm" style="border: 1px solid black; margin-top:3.5em!important;">
+            <tr >
+              <th style="padding:10px;">S.N.</th>
+                <th style="padding:5px;">Account No</th>
+                <th style="padding:5px;">Name</th>
+                <th style="padding:5px;">Loan Type</th>
+                <th style="padding:5px;">IRAC</th>
+                <th style="padding:5px;">Outstanding</th>
+                <th style="padding:5px;">Unapplied Interest</th>
+                <th style="padding:5px;">Total Closure</th>
+                <th style="padding:5px;">Compromise Amount</th>
+                <th style="padding:5px;">Waived From Principal</th>
+                <th style="padding:5px;">Waived From Interest</th>
+                <th style="padding:5px;">Token Money</th>
+                <th style="padding:5px;">Amount Payble</th>
+
+            </tr>
+    {% for settlement in object_list %}
+        <tr style="padding:5px 5px;">
+            <td>{{forloop.counter}}</td>
+            <td>{{settlement.account_no}}</td>
+            <td>{{settlement.cust_name}}</td>
+            <td>{{settlement.loan_obj}}</td>
+            <td>{{settlement.irac}}</td>
+            <td>{{settlement.outstanding}}</td>
+            <td>{{settlement.unapplied_int}}</td>
+            <td>{{settlement.totalclosure}}</td>
+            <td>{{settlement.compromise_amt}}</td>
+            <td>{{settlement.pr_waived}}</td>
+            <td>{{settlement.int_waived}}</td>
+            <td>{{settlement.token_money}}</td>
+            <td>{{settlement.rest_amount}}</td>
+
+
+
+        </tr>
+    {% endfor %}
+         <tr style="padding-top:5px;">
+             <td></td>
+             <td  style="padding:5px;">TOTAL</td>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td  style="padding:5px;">{{contoutstanding.outstanding__sum}}</td>
+             <td style="padding:5px;">{{contunapplied_int.unapplied_int__sum}}</td>
+             <td style="padding:5px;">{{conttotalclosure.totalclosure__sum}}</td>
+             <td style="padding:5px;">{{contcompromise_amt.compromise_amt__sum}}</td>
+             <td style="padding:5px;">{{contpr_waived.pr_waived__sum}}</td>
+             <td style="padding:5px;">{{contint_waived.int_waived__sum}}</td>
+             <td style="padding:5px;">{{conttoken_money.token_money__sum}}</td>
+             <td style="padding:5px;">{{contrest_amount.rest_amount__sum}}</td>
+
+         </tr>
+        </table>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+
+    <h1>Branch Manager/Officer</h1>
+
+
+{%endif%}
+
+</body>
+</html>

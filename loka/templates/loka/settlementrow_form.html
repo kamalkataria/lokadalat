@@ -1,0 +1,20 @@
+<html>
+<head>
+     {% load bootstrap4 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+    {%load crispy_forms_tags %}
+
+</head>
+<body>
+<div style="margin-top:1%;" class="container form-container">
+    <h1 class="text text-danger">Updating the record</h1>
+<form class="form-inline" method="post">
+    {% csrf_token %}
+    {{ form}}
+    <input type="submit" value="Update">
+
+</form>
+    </div>
+</body>
+</html>

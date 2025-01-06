@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Compromises</title>
+      {% load bootstrap4 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+    {%load crispy_forms_tags %}
+
+</head>
+<body>
+    <div class="container">
+    <h1 class="text text-danger text-center">Add compromises</h1>
+
+    <form class="form form-inline"  style="display:inline;box-sizing:border-box;" id="form-container" method="POST">
+        <div class="form-group">
+        {% csrf_token %}
+
+
+        {{settlement_formset.management_form}}
+        {% for form in settlement_formset %}
+
+
+        <div id="settleform" class="settlement-form" style="margin:10px;">
+            {{form.as_table}}
+
+<hr/>
+        </div>
+
+        {% endfor %}
+</div>
+<button id="add-form" type="button">Add Another Settlement</button>
+
+
+        <button  style="margin:5px" class="btn btn-danger" type="submit">Settle</button>
+    </form>
+        </div>
+
+<script>
+  let settlementForm = document.querySelectorAll(".settlement-form")
+let container = document.querySelector("#form-container")
+let addButton = document.querySelector("#add-form")
+let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
+  let formNum = settlementForm.length-1
+        addButton.addEventListener('click', addForm)
+
+        function addForm(e){
+            e.preventDefault()
+
+            let newForm = settlementForm[0].cloneNode(true)
+            let formRegex = RegExp(`form-(\\d){1}-`,'g')
+
+            formNum++
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`)
+            container.insertBefore(newForm, addButton)
+
+            totalForms.setAttribute('value', `${formNum+1}`)
+        }
+
+</script>
+    </body>
+</html>

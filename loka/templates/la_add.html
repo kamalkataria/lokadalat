@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Settlement</title>
+      {% load bootstrap4 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+    {%load crispy_forms_tags %}
+
+</head>
+<body>
+    <h1>Add Lok Adalat</h1>
+    <div class="container">
+    <form class="form form-inline"  style="display:inline;box-sizing:border-box;" id="form-container" method="POST">
+        <div class="form-group">
+        {% csrf_token %}
+
+        {{settlement_formset.management_form}}
+        {% for form in settlement_formset %}
+
+
+        <div class="container settlement-form" style="margin:10px;">
+
+
+        {{ form}}
+<hr/>
+        </div>
+
+        {% endfor %}
+</div>
+<button id="add-form" type="button">Add Another Settlement</button>
+
+
+        <button  style="margin:5px" class="btn btn-danger" type="submit">Settle</button>
+    </form>
+        </div>
+
+    </body>
+</html>

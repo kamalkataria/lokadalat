@@ -1,0 +1,23 @@
+
+{% load crispy_forms_tags %}
+
+{% load bulma_tags %}
+{% load bootstrap4 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+
+<!--Login-->
+<div class="container card" style="margin-top:5%;width:30%;padding:5%;">
+  <h1 class="text text-center">Login</h1>
+
+   <div class="row justify-content-center">
+  <form method="POST">
+    {% csrf_token %}
+    {{ login_form|crispy}}
+    <input class="btn btn-primary" type="submit" value="login"/>
+  </form>
+
+   </div>
+  <p class="text-center" style="padding:10px;">Don't have an account? <a href="/register">Create an account</a>.</p>
+</div>
+
