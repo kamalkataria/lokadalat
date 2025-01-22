@@ -1,0 +1,73 @@
+<html>
+<head>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	 <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+{% load crispy_forms_tags %}
+{% load bulma_tags %}
+ {% load bootstrap4 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+ {%load static%}
+   <link rel="stylesheet" href="{% static 'style.css' %}">
+
+<body>
+<div class="container-fluid justify-content-center" style="margin-top:5%;width:70%;">
+
+
+
+      <div class="container centered1">
+
+		  <form style="padding:20px;" id="regform" class="form" method="POST" data-regions-url="{% url 'ajax_load_regions' %}">
+ <p class="text-center">Register</p>
+		{% csrf_token %}
+
+		{% csrf_token %}
+		{{ register_form|crispy}}
+
+		<button  onclick="myFunction()" id="saveform" class="btn btn-info" type="submit">Register</button>
+			<p class="tezt-white">If you already have an account, <a class="btn btn-danger" href="/login">login</a></p>
+
+
+	</form>
+
+		</div>
+	  </div>
+	</div>
+	{% for key, val in form.errors.items %}
+    <p>{{val}}</p>
+{% endfor %}
+<script>
+    $("#id_bank").change(function () {
+
+      var url = $("#regform").attr("data-regions-url");  // get the url of the `load_cities` view
+      var bankId = $('#id_bank').val();
+
+      //console.log(url)
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'bank': bankId       // add the country id to the GET parameters
+        },
+        success: function (data) {
+
+
+          $("#id_ro").html(data);
+        }
+      });
+
+    });
+function myFunction() {
+
+<!--   console.log($("#id_ro").html())-->
+}
+
+
+  </script>
+</div>
+</body>
+</html>
+

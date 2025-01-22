@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <html lang="en">
+    <head>
+        <title>Lok Adalat</title>
+         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
+
+       </script>
+       <script src="https://www.unpkg.com/spltjs@1.1.0"></script>
+        <script type="module" src="https://www.unpkg.com/spltjs@1.1.0">
+        import splt from "https://cdn.skypack.dev/spltjs@1.0.8";
+        import anime from "https://cdn.skypack.dev/animejs@3.2.1";
+        splt({});
+
+        anime({
+        targets: '.splt',
+        translateY: [0, 40],
+        direction: 'alternate',
+        loop: true,
+        delay: anime.stagger(50),
+        });
+
+    </script>
+     {% load bootstrap4 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        {%load crispy_forms_tags %}
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-sm bg-info navbar-dark  sticky-top">
+             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+   <div class="collapse navbar-collapse" id="collapsibleNavbar">
+
+  <!-- Links -->
+  <ul class="navbar-nav">
+       <a class="navbar-brand colorwhite" href="#">Lok Adalat</a>
+       <li class="nav-item colorwhite">
+      <a class="nav-link "  href="{% url 'index' %}">Home</a>
+    </li>
+
+    <li class="nav-item colorwhite">
+      <a class="nav-link "href="{% url 'getladata' %}">Generate PDF</a>
+    </li>
+    <li class="nav-item colorwhite">
+      <a class="nav-link " href="{% url 'add_settlement' %}">Add Settlement</a>
+    </li>
+     <li class="nav-item colorwhite ">
+      <a class="nav-link "  href="{% url 'logout' %}">Logout</a>
+    </li>
+  </ul>
+  </div>
+
+</nav>
+    {% block content %}
+    {% endblock content %}
+    </body>
+</html>

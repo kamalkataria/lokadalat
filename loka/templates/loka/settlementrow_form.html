@@ -1,0 +1,18 @@
+
+    <!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container" style="background:#F5F5DC;">
+    <!--<a class="btn btn-info" href="{%url 'index'%}">Home</a>-->
+    <p class="text text-danger">Updating the record</p>
+<form class="form" method="post">
+    {% csrf_token %}
+    {{ form}}
+    <input type="submit" value="Update">
+
+</form>
+    </div>
+    {% endblock content %}
+

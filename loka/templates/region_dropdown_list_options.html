@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block content %}
+
+<option value="">---------</option>
+{% for region in regions %}
+<option value="{{ region.pk }}">{{ region.ro_name }}</option>
+{% endfor %}
+{% endblock content %}

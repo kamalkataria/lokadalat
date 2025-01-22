@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block content %}
+
+
+   <div class="container">
+    <h1 class="text text-danger text-center">Add compromises</h1>
+    <!--<a class="text text-white btn btn-danger" style="font-color:white;" href="{%url 'index'%}">Home</a>-->
+
+    <form id="form-container" method="POST">
+        <div class="form-group">
+        {% csrf_token %}
+
+
+        {{settlement_formset.management_form}}
+        {% for form in settlement_formset %}
+
+
+        <div id="settleform" class="fs-4 settlement-form" style="margin:10px;">
+            <!--{{form.as_table}}-->
+            <div class="input-group">
+             {{form.loka}}
+             <span class="input-group-btn" style="width:0px;"></span>
+             </div>
+             <div class="input-group">
+                {{form.ro}}
+                <span class="input-group-btn" style="width:0px;"></span>
+             </div>
+             <div class="input-group">
+                {{form.branch}}
+             <span class="input-group-btn" style="width:0px;"></span>
+            </div>
+            <div class="input-group">
+                {{form.account_no}}
+  <span class="input-group-btn" style="width:0px;"></span>
+                {{form.cust_name}}
+  <span class="input-group-btn" style="width:0px;"></span>
+</div>
+ <div class="input-group">
+                {{form.totalclosure}}
+  <span class="input-group-btn" style="width:0px;"></span>
+                {{form.outstanding}}
+  <span class="input-group-btn" style="width:0px;"></span>
+  {{form.compromise_amt}}
+  <span class="input-group-btn" style="width:0px;"></span>
+  {{form.token_money}}
+  <span class="input-group-btn" style="width:0px;"></span>
+</div>
+ <div class="input-group">
+                {{form.loan_obj}}
+  <span class="input-group-btn" style="width:0px;"></span>
+                {{form.irac}}
+  <span class="input-group-btn" style="width:0px;"></span>
+
+</div>
+{{ form.pr_waived.as_hidden }}{{ form.int_waived.as_hidden }}{{ form.rest_amount.as_hidden }}{{ form.unapplied_int.as_hidden }}
+
+
+<hr/>
+        </div>
+
+        {% endfor %}
+</div>
+<button id="add-form" type="button">Add Another Settlement</button>
+
+
+        <button  style="margin:5px" class="btn btn-danger" type="submit">Settle</button>
+    </form>
+        </div>
+
+<script>
+  let settlementForm = document.querySelectorAll(".settlement-form")
+let container = document.querySelector("#form-container")
+let addButton = document.querySelector("#add-form")
+let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
+  let formNum = settlementForm.length-1
+        addButton.addEventListener('click', addForm)
+
+        function addForm(e){
+            e.preventDefault()
+
+            let newForm = settlementForm[0].cloneNode(true)
+            let formRegex = RegExp(`form-(\\d){1}-`,'g')
+
+            formNum++
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`)
+            container.insertBefore(newForm, addButton)
+
+            totalForms.setAttribute('value', `${formNum+1}`)
+        }
+
+</script>
+
+
+
+
+{% endblock content %}

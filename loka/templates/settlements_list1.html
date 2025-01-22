@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lok Adalat</title>
+     {% load bootstrap4 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+    {%load crispy_forms_tags %}
+</head>
+<body>
+{% load django_tables2 %}
+{%if emptyset%}
+<div class="container row" style="margin-top:20%;margin-left:auto;margin-right:auto;">
+<h1><a style="padding:20px" class="text text-info" href="{% url 'settlement_list' %}">Create</a>settlements first</h1>
+</div>
+
+
+{%else%}
+<div class="container" style="margin-top:5%;">
+<h1 class="text text-center text-danger">Baroda UP Bank</h1>
+<h6 class="text text-center">List of compromise settlements in Lok Adalat Held At {{venue}}</h6>
+
+
+    <div class="row">
+
+    <div class="col-sm-4">
+    <h5 class="text text-left">Branch - {{branch}}</h5>
+
+    </div>
+
+    <div class="col-sm-4">
+
+        <h5>Regional Office - {{regiono}}</h5>
+
+    </div>
+    <div class="col-sm-4">
+    <h5 class="text text-right">Date:{{ladate}}</h5>
+
+    </div>
+
+</div>
+
+
+ <table class="table table-bordered table-condensed table-sm" style="border: 1px solid black; ">
+            <tr>
+                <th>S.N.</th>
+                <th>Account No</th>
+                <th>Name</th>
+                <th>Loan Type</th>
+                <th>IRAC</th>
+                <th>Outstanding</th>
+                <th>Unapplied Interest</th>
+                <th>Total Closure</th>
+                <th>Compromise Amount</th>
+                <th>Waived From Principal</th>
+                <th>Waived From Interest</th>
+                <th>Token Money</th>
+                <th>Amount Payble</th>
+
+            </tr>
+    {% for settlement in object_list %}
+        <tr style="padding:5px 5px;">
+            <td>{{forloop.counter}}</td>
+            <td>{{settlement.account_no}}</td>
+            <td>{{settlement.cust_name}}</td>
+            <td>{{settlement.loan_obj}}</td>
+            <td>{{settlement.irac}}</td>
+            <td>{{settlement.outstanding}}</td>
+            <td>{{settlement.unapplied_int}}</td>
+            <td>{{settlement.totalclosure}}</td>
+            <td>{{settlement.compromise_amt}}</td>
+            <td>{{settlement.pr_waived}}</td>
+            <td>{{settlement.int_waived}}</td>
+            <td>{{settlement.token_money}}</td>
+            <td>{{settlement.rest_amount}}</td>
+
+
+
+        </tr>
+    {% endfor %}
+         <tr style="padding-top:5px;">
+             <td></td>
+             <td  style="padding:5px;">TOTAL</td>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td  style="padding:5px;">{{contoutstanding.outstanding__sum}}</td>
+             <td style="padding:5px;">{{contunapplied_int.unapplied_int__sum}}</td>
+             <td style="padding:5px;">{{conttotalclosure.totalclosure__sum}}</td>
+             <td style="padding:5px;">{{contcompromise_amt.compromise_amt__sum}}</td>
+             <td style="padding:5px;">{{contpr_waived.pr_waived__sum}}</td>
+             <td style="padding:5px;">{{contint_waived.int_waived__sum}}</td>
+             <td style="padding:5px;">{{conttoken_money.token_money__sum}}</td>
+             <td style="padding:5px;">{{contrest_amount.rest_amount__sum}}</td>
+
+         </tr>
+        </table>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+    <h6>Branch Manager/Officer</h6>
+    </div>
+
+{%endif%}
+
+<!--<input style="display:None;" type="button" value="Print this page" onClick="window.print()">-->
+</body>
+</html>
