@@ -113,9 +113,18 @@ class SettlementListView(LoginRequiredMixin,ListView):
     login_url = '/login/'
     model = SettlementRow
     template_name = "settlement_list.html"
+    def shouldBeRedirectedToAdmin(self):
+        isSU=self.request.user.is_superuser
+        thisUser=User.objects.get(username=self.request.user)
+        isASuperBanker=thisUser.groups.filter(name="SuperBanker").exists()
+        shdBRedctd=isSU or isASuperBanker
+        return shdBRedctd
+
 
     def get(self, *args, **kwargs):
-        if(self.request.user.is_superuser):
+        shdBRedctd=self.shouldBeRedirectedToAdmin()
+        # print(self.request.user.is_superuser)
+        if(shdBRedctd):
             return redirect('admin:index')
         return super(SettlementListView, self).get(*args, **kwargs)
 

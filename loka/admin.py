@@ -94,9 +94,10 @@ class SettlementRowAdmin(TotalsumAdmin,ExportCsvMixin):
         qs=super(SettlementRowAdmin,self).get_queryset(request)
         if request.user.is_superuser:
             return qs
+        thisUser = Profile.objects.filter(bank=Bank.objects.get(bank_id=request.user))
 
         # return qs.filter(branch=request.user,**request.GET.dict())
-        return qs.filter(branch=request.user)
+        return qs.filter(branch__in=thisUser)
 
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user','ro','branch_alpha','branch_name','branch_addr','branch_district')
@@ -104,15 +105,61 @@ class ProfileAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super(ProfileAdmin, self).get_queryset(request)
+        # thisUser = Profile.objects.filter(bank=Bank.objects.get(bank_id=request.user))
+        thisUser = User.objects.get(username=request.user)
+
+        print(thisUser)
+        isASuperBanker = thisUser.groups.filter(name="SuperBanker").exists()
+        # print("why not, i am a SuperBanker", isASuperBanker)
         if request.user.is_superuser:
             return qs
-        return qs.filter(user=request.user)
+        elif isASuperBanker:
+            print('superbankers')
+            # thisUser = qs.filter(bank=Bank.objects.get(bank_id=request.user))
+
+            # bx=User.bank_set.all().filter(bank_id=self.request.user.id)
+            # print(bx)
+            return qs.filter(bank=Bank.objects.get(bank_id=request.user))
+        else:
+            return qs.filter(user=request.user)
 
     search_fields = ('branch_addr', 'branch_name',)
 
 class CustomUserAdmin(UserAdmin):
     inlines = (ProfileInline, )
     list_select_related = ('profile',)
+
+    # def get_queryset(self, request):
+    #     qs = super(CustomUserAdmin, self).get_queryset(request)
+    #     thisUser1 = User.objects.filter(bank=Bank.objects.get(bank_id=request.user))
+    #     thisUser = User.objects.get(username=request.user)
+    #
+    #     print(thisUser1, 'is thisuser1')
+    #     isASuperBanker = thisUser.groups.filter(name="SuperBanker").exists()
+    #     # print("why not, i am a SuperBanker", isASuperBanker)
+    #     if request.user.is_superuser:
+    #         return qs
+    #     elif isASuperBanker:
+    #         print('superbankers')
+    #         return qs.filter(is_superuser=False)
+    #     else:
+    #         return qs.filter(username=request.user)
+
+    # def get_queryset(self, request):
+    #     qs = super(CustomUserAdmin, self).get_queryset(request)
+    #     thisUser = User.objects.get(username=request.user)
+    #     isASuperBanker = thisUser.groups.filter(name="SuperBanker").exists()
+    #     print("why not, i am a SuperBanker", isASuperBanker)
+    #     if request.user.is_superuser:
+    #         return qs
+    #     elif isASuperBanker:
+    #         print('superbankers')
+    #         qsx = qs.filter(id=request.user.id)
+    #         print(qsx)
+    #
+    #         return qs.filter(username=request.user.username)
+    #     else:
+    #         return qs.filter(username=request.user.username)
 
     def get_inline_instances(self, request, obj=None):
         if not obj:
