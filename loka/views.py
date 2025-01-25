@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, logout  # add this
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 from django.db.models import Q
 from django.db.models import Sum
 from django.http import HttpResponse
@@ -14,7 +15,7 @@ from .forms import NewUserForm,LAForm
 from .forms import SettlementForm, SettlementFormset1
 from .models import SettlementRow, Profile, RegionalOffice, Bank, LokAdalat
 from .utils import render_to_pdf
-
+from django.http import Http404
 
 def handler404(request, exception):
    return render(request, '404handler.html')
@@ -113,22 +114,31 @@ class SettlementListView(LoginRequiredMixin,ListView):
     model = SettlementRow
     template_name = "settlement_list.html"
 
-    def get_queryset(self, **kwargs):
-        if self.request.user.is_authenticated:
-            qs = super().get_queryset(**kwargs)
+    def get(self, *args, **kwargs):
+        if(self.request.user.is_superuser):
+            return redirect('admin:index')
+        return super(SettlementListView, self).get(*args, **kwargs)
 
+    def get_queryset(self, **kwargs):
+        qs = super().get_queryset(**kwargs)
+        if self.request.user.is_authenticated:
             return qs.filter(branch=Profile.objects.get(user__id=self.request.user.id))
 
         else:
             print('User is not authenticated')
-
-            return {'aunthenticated': False}
+            return qs.filter(branch=None)
 
     def get_context_data(self, **kwargs):
         if self.request.user.is_authenticated:
 
 
             context = super(SettlementListView, self).get_context_data(**kwargs)
+            if(self.request.user.is_superuser):
+                context['userissu']=True
+            else:
+                context['userissu'] = False
+
+
             context['contoutstanding'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
                 Sum('outstanding'))
             context['contunapplied_int'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
@@ -183,29 +193,23 @@ class SettlementAddView(LoginRequiredMixin,TemplateView):
         return kwargs
 
     def get(self, *args, **kwargs):
-
         profile_user = Profile.objects.filter(Q(user__username__icontains=self.request.user.username))
-        print("my branch is",profile_user[0].bank.bank_id)
+        # print(profile_user[0], "profinonesx")
 
-        bankid = Bank.objects.filter(Q(bank_id__username__icontains=profile_user[0].bank.bank_id))
+        if profile_user[0].bank is None:
+            return render(self.request, "loka/unauthorised.html", {})
 
-        lokax = LokAdalat.objects.all().filter(Q(username__username__icontains=bankid[0].bank_id)).order_by(
+            # return HttpResponse("You are not authorised",status=401)
+        else:
+            bankid = Bank.objects.filter(Q(bank_id__username__icontains=profile_user[0].bank.bank_id))
+            lokax = LokAdalat.objects.all().filter(Q(username__username__icontains=bankid[0].bank_id)).order_by(\
             'lokadalatdate')
-        qs = SettlementRow.objects.filter(loka__username=profile_user[0].bank.bank_id)
-        # ros = RegionalOffice.objects.all().filter(bank_id=bankid[0])
-        ros=profile_user[0].ro
-        # print(profile_user[0].ro)
-        # print('ros are', type(ros))
-
-
-
-
-
-
-        formset = SettlementFormset1(ros=ros,loka=lokax, branch=self.request.user.id, queryset=SettlementRow.objects.none(),
+            qs = SettlementRow.objects.filter(loka__username=profile_user[0].bank.bank_id)
+            ros = profile_user[0].ro
+            formset = SettlementFormset1(ros=ros,loka=lokax, branch=self.request.user.id, queryset=SettlementRow.objects.none(),
                                      initial=[{'branch': self.request.user.id, 'loka': lokax[0].id,'ro':RegionalOffice.objects.filter(id=ros.id)[0].id}])
 
-        return self.render_to_response({'settlement_formset': formset})
+            return self.render_to_response({'settlement_formset': formset})
 
     def post(self, *args, **kwargs):
         profile_user = Profile.objects.filter(Q(user__username__icontains=self.request.user.username))
@@ -241,10 +245,16 @@ class SimpleTable(tables.Table):
 
 
 def deleteset(request, id):
-    settlerow = SettlementRow.objects.get(id=id)
-    settlerow.delete()
-
-    return redirect("settlement_list")
+    branchx = Profile.objects.filter(id=request.user.id)
+    # print(request.POST,'getttttttt')
+    setpk = SettlementRow.objects.filter(id=id)
+    if request.user.is_authenticated and branchx[0].user == setpk[0].branch.user:
+        # print('Trueeeeeeee')
+        settlerow = SettlementRow.objects.get(id=id)
+        settlerow.delete()
+        return redirect("settlement_list")
+    else:
+        raise Http404()
 
 
 class SettlementUpdateView(LoginRequiredMixin,UpdateView):
@@ -254,6 +264,26 @@ class SettlementUpdateView(LoginRequiredMixin,UpdateView):
     exclude=('loka','ro','branch','pr_waived','int_waived','unapplied_int','rest_amount')
     success_url = reverse_lazy("settlement_list")
 
+    def get_context_data(self, **kwargs):
+        context = super(SettlementUpdateView, self).get_context_data(**kwargs)
+        branchx = Profile.objects.filter(id=self.request.user.id)
+        setpk = SettlementRow.objects.filter(id=self.kwargs['pk'])
+        if self.request.user.is_authenticated and branchx[0].user == setpk[0].branch.user:
+            context['passed'] = True
+            print('yep passed')
+        else:
+            context['passed'] = False
+        return context
+
+    def get_queryset(self):
+        base_qs = super(SettlementUpdateView, self).get_queryset()
+        branchx = Profile.objects.filter(id=self.request.user.id)
+        setpk = SettlementRow.objects.filter(id=self.kwargs['pk'])
+        if (branchx[0].user==setpk[0].branch.user):
+            return base_qs.filter(branch=Profile.objects.filter(id=self.request.user.id)[0])
+        else:
+            # return None
+            return base_qs.filter(branch=None)
 
 def updaterec(request, id):
     mymember = SettlementRow.objects.get(id=id)
@@ -266,8 +296,11 @@ def updaterec(request, id):
 
 def getladata(request):
     context = {}
-    context['form'] = LAForm()
-    return render(request, "ladata.html", context)
+    if (request.user.is_superuser):
+        raise Http404()
+    else:
+        context['form'] = LAForm()
+        return render(request, "ladata.html", context)
 
 
 

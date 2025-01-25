@@ -6,6 +6,7 @@
 
 <div class="container" style="background:#F5F5DC;">
     <!--<a class="btn btn-info" href="{%url 'index'%}">Home</a>-->
+    {%if passed%}
     <p class="text text-danger">Updating the record</p>
 <form class="form" method="post">
     {% csrf_token %}
@@ -14,5 +15,10 @@
 
 </form>
     </div>
+    {%else%}
+
+    <h1>You are not authorised to edit this settlement</h1>
+
+    {%endif%}
     {% endblock content %}
 
