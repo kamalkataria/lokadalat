@@ -31,11 +31,13 @@
         {%load crispy_forms_tags %}
         {% load static %}
         <link rel="stylesheet" href="{% static 'style.css' %}">
+         <link rel="stylesheet" href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
     </head>
 
     <body>
-        <nav class="navbar navbar-expand-sm bg-info navbar-dark  sticky-top">
+        <nav style="background:#7FFFD4;" class="navbar navbar-expand-sm navbar-light  sticky-top">
              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -63,5 +65,21 @@
 </nav>
     {% block content %}
     {% endblock content %}
+
     </body>
+
+  <footer style="background-color: #ffede7;width:100%;">
+
+    <div class="text-center p-3" style="background-color:#7FFFD4;">
+        <ul>
+            <li>  <a class="text-dark" href="#">Designed & Developed by Kamal Katariya</a></li>
+            <li>   <a href="https://www.instagram.com/imkamalkataria/" class="fa fa-instagram"></a></li>
+            <li>     <a href="https://www.facebook.com/utopiankamal" class="fa fa-facebook"></a></li>
+            <li>  <a href="https://x.com/neandien" class="fa fa-twitter"></a></li>
+</ul>
+
+    </div>
+    <!-- Copyright -->
+  </footer>
+
 </html>
