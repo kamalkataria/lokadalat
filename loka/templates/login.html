@@ -1,47 +1,34 @@
-<html>
-    <head>
-         <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'base1.html' %}
+{%block content%}
 {% load crispy_forms_tags %}
+<div class="container" style="">
 
-{% load bulma_tags %}
-{% load bootstrap4 %}
-  {% bootstrap_css %}
-  {% bootstrap_javascript %}
-  {%load static%}
-   <link rel="stylesheet" href="{% static 'style.css' %}">
-   <script>
-
-   </script>
-
-  </head>
-  <body>
-
-<!--Login-->
-<div class="container">
-<div class="centered">
 
     <div class="col-sm-2"></div>
-    <div class="col-sm-8">
-         <p class="text text-center text-success">Login</p>
-         <form class="form formx" method="POST">
+    <div class="col-sm-8 centered"  style="padding:1%;border-radius:5px;border:0.00001em dotted aqua!important;">
+
+         <p class="text text-center text-info">Lok Adalat Login</p>
+
+
+
+
+         <form class="form formx" method="POST" style="margin:1%;max-width:500px!important;">
 
     {% csrf_token %}
-    {{ login_form|crispy}}
-    <input class="btn btn-success" type="submit" value="login"/>
+    {{ login_form}}
+    <input class="input btn btn-info" style="margin:0.5em;" type="submit" value="Login"/>
 
-<a href="{% url 'admin:index' %}">Admin</a>
+
  </form>
+          <p class="text-info fs-6">Are you an Administrator? <a class="text-info" href="{% url 'admin:index' %}">Login Here</a></p>
     </div>
-    <div class="col-sm-2"></div>
+
+    <div class="col-sm-2">
+
     </div>
+    </div>
+    {%endblock content%}
 
 
 
-
-
-
-
-</body>
-</html>
 
