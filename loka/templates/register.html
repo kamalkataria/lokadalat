@@ -7,13 +7,13 @@
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   {%load static%}
-<div class="container-fluid justify-content-center" style="margin-top:5%;width:70%;">
+<div class="container justify-content-center" style="">
 
 
 
-      <div class="container centered1">
+      <div class="container centered1 ">
 
-		  <form style="padding:10px;" id="regform" class="form" method="POST" data-regions-url="{% url 'ajax_load_regions' %}">
+		  <form style="padding:20%" id="regform" class="form" method="POST" data-regions-url="{% url 'ajax_load_regions' %}">
  <p class="text-center text-info">Register</p>
 			  <p class="text-info">If you already have an account, <a class="" href="/login">Login Here</a></p>
 		{% csrf_token %}
