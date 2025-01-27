@@ -166,7 +166,7 @@ p {
 
 
 footer {
-  position: fixed;
+  position: absolute;
   margin-top: 1%;
   height: 15 width: 50%;
   text-align: center;
