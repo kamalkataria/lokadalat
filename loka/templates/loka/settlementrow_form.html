@@ -10,7 +10,7 @@
     <p class="text text-danger">Updating the record</p>
 <form class="form" method="post">
     {% csrf_token %}
-    {{ form}}
+    {{ form|crispy}}
     <input class="btn btn-info"type="submit" value="Update">
 
 </form>
