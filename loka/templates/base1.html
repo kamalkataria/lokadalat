@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <html lang="en">
+    <head>
+
+
+        <title>Lok Adalat</title>
+         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% load crispy_forms_tags %}
+
+{% load bulma_tags %}
+{% load bootstrap4 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  {%load static%}
+         <link rel="stylesheet" href="{% static 'style.css' %}">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
+
+       </script>
+       <script src="https://www.unpkg.com/spltjs@1.1.0"></script>
+        <script type="module" src="https://www.unpkg.com/spltjs@1.1.0">
+        import splt from "https://cdn.skypack.dev/spltjs@1.0.8";
+        import anime from "https://cdn.skypack.dev/animejs@3.2.1";
+        splt({});
+
+        anime({
+        targets: '.splt',
+        translateY: [0, 40],
+        direction: 'alternate',
+        loop: true,
+        delay: anime.stagger(50),
+        });
+
+    </script>
+         <link rel="stylesheet" href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+
+    </head>
+
+    <body>
+
+
+    {% block content %}
+
+    {% endblock content %}
+
+
+
+     </body>
+
+
+  <footer style="background-color: #ffede7;width:100%;">
+
+    <div class="text-center p-3" style="background-color:#7FFFD4;">
+        <ul>
+            <li>  <a class="text-dark" href="#">Designed & Developed by Kamal Katariya</a></li>
+            <li>   <a href="https://www.instagram.com/imkamalkataria/" class="fa fa-instagram"></a></li>
+            <li>     <a href="https://www.facebook.com/utopiankamal" class="fa fa-facebook"></a></li>
+            <li>  <a href="https://x.com/neandien" class="fa fa-twitter"></a></li>
+</ul>
+
+    </div>
+    <!-- Copyright -->
+  </footer>
+
+</html>
