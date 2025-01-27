@@ -1,34 +1,28 @@
-<html>
-<head>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	 <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-</head>
+{% extends 'base1.html' %}
+{%block content%}
 {% load crispy_forms_tags %}
+
 {% load bulma_tags %}
- {% load bootstrap4 %}
+{% load bootstrap4 %}
   {% bootstrap_css %}
   {% bootstrap_javascript %}
- {%load static%}
-   <link rel="stylesheet" href="{% static 'style.css' %}">
-
-<body>
+  {%load static%}
 <div class="container-fluid justify-content-center" style="margin-top:5%;width:70%;">
 
 
 
       <div class="container centered1">
 
-		  <form style="padding:20px;" id="regform" class="form" method="POST" data-regions-url="{% url 'ajax_load_regions' %}">
- <p class="text-center">Register</p>
+		  <form style="padding:10px;" id="regform" class="form" method="POST" data-regions-url="{% url 'ajax_load_regions' %}">
+ <p class="text-center text-info">Register</p>
+			  <p class="text-info">If you already have an account, <a class="" href="/login">Login Here</a></p>
 		{% csrf_token %}
 
 		{% csrf_token %}
 		{{ register_form|crispy}}
 
 		<button  onclick="myFunction()" id="saveform" class="btn btn-info" type="submit">Register</button>
-			<p class="tezt-white">If you already have an account, <a class="btn btn-danger" href="/login">login</a></p>
+
 
 
 	</form>
@@ -67,7 +61,4 @@ function myFunction() {
 
 
   </script>
-</div>
-</body>
-</html>
-
+    {%endblock content%}
