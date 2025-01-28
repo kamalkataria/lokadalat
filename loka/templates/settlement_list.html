@@ -4,23 +4,12 @@
 
     <div class="container">
 
-    <div class="col"></div>
     <div class="col-sm-12" style="margin:auto;">
-         {% if authed %}
-        {%if userissu%}
-        <div class="container-fluid">
-        <a class=" text text-center" href="{% url 'admin:index' %}">Link to admin panel</a></div>
-        {%else%}
+         
 
           <h5 style="margin-top:10px;font-color:#343434;" class=" text text-center">Lok Adalat</h5>
              <h6 style="margin-top:10px;fomt-color:#343434;" class="text text-center">Settlements for Branch - {{branch_name}}</h6>
 
-       <!-- <div class="container">-->
-
-       <!-- <a class="btn btn-danger text text-white" href="{% url 'logout' %}">Logout</a>-->
-       <!-- <a class="btn btn-danger text text-white" href="{% url 'getladata' %}">Generate PDF</a>-->
-       <!--<a class="btn btn-danger text text-white" href="{% url 'add_settlement' %}">Add Settlements</a>-->
-       <!-- </div>-->
 
 
 
@@ -95,20 +84,7 @@
         </table>
             </div>
 
-<!--        <h1>Or register here using <a href="{%url 'register'%}">Signup</a></h1>-->
-
-
-{%endif%}
-         {%else%}
-        <div class="centered" style="border-radius:5px;width:auto!important;box-shadow: rgba(0, 1, 0, 0.15) 1.95px 1.95px 2.6px;!important;width:50%;padding:2em;">
-            <h1 style="margin-top:10px;" class="text text-center">Lok Adalat</h1>
-        <p class="text-info text text-center"><span>Already have an account?</span> <a class="text-info" href="{%url 'login'%}">Login</a></p>
-      <p class="text-danger text text-center"><span>Sign Up using</span><a class="text-info" href="{%url 'register'%}">Sign Up</a></p></div>
-
-        {%endif%}
-
-    </div>
-    <div class="col-sm-2"></div>
+ </div>
     </div>
 
 
