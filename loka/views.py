@@ -41,7 +41,7 @@ def login_request(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.info(request, f"You are now logged in as {username}.")
+                messages.success(request, f"You are now logged in as {username}.")
                 return redirect("index")
             else:
                 print('invalidform')
