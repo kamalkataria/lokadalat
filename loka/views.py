@@ -308,8 +308,16 @@ def getladata(request):
     if (request.user.is_superuser):
         raise Http404()
     else:
-        context['form'] = LAForm()
-        return render(request, "ladata.html", context)
+        profile_user = Profile.objects.filter(Q(user__username__icontains=User.objects.get(id=request.user.id)))
+        bankid = Bank.objects.filter(Q(bank_id__username__icontains=profile_user[0].bank.bank_id))
+        lokax = LokAdalat.objects.all().filter(Q(username__username__icontains=bankid[0].bank_id)).order_by(
+            'lokadalatdate')
+        if profile_user:
+            context['form'] = LAForm(lokax=lokax)
+            return render(request, "ladata.html", context)
+        else:
+            raise Http404()
+
 
 
 
