@@ -7,6 +7,12 @@
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   {%load static%}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+{%endif%}
 <div class="container justify-content-center" style="">
 
 
