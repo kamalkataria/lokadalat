@@ -18,8 +18,16 @@ class ProfileForm(forms.ModelForm):
 
 
 class LAForm(forms.Form):
-    qs=LokAdalat.objects.all()
-    lokadalat = forms.ModelChoiceField(qs, widget=forms.Select(attrs={'class':'form-control input-sm maxwidth300'}))
+    lokadalat = forms.ModelChoiceField(queryset=LokAdalat.objects.filter(),widget=forms.Select(attrs={'class':'form-control input-sm maxwidth300'}))
+
+    class Meta:
+        model = LokAdalat
+        fields = ['lokadalat']
+
+    def __init__(self, *args, lokax=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.lokax = lokax
+        self.fields['lokadalat'].queryset=self.lokax
 
 
 
