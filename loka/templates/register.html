@@ -7,17 +7,18 @@
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   {%load static%}
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-{%endif%}
+
 <div class="container justify-content-center" style="">
 
 
 
       <div class="container centered1 ">
+	          {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="bg-{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+{%endif%}
 
 		  <form style="padding:20%" id="regform" class="form" method="POST" data-regions-url="{% url 'ajax_load_regions' %}">
  <p class="text-center text-info">Register</p>
