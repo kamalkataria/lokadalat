@@ -322,7 +322,7 @@ class SettlementUpdateView(LoginRequiredMixin, UpdateView):
         self.object = self.get_object()
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        formset = journal_entry_formset(self.request.POST, instance=self.object)
+        formset = SettlementFormset1(self.request.POST, instance=self.object)
         print("form:", form.is_valid())  # True
         print("formset:", formset.is_valid())  # False
         print(formset.non_form_errors())  # No Entry
