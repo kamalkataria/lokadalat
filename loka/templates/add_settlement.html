@@ -25,42 +25,51 @@
 
 
         <div id="settleform" class="fs-4 settlement-form" style="margin:10px;">
-            <!--{{form.as_table}}-->
-            <div class="input-group">
-             {{form.loka}}
+            <div class="form-row">
+                <div class="col-sm-4">
+             {{form.loka}}</div>
+                 <div class="col-sm-4">
+             {{form.ro}}</div>
+                <div class="col-sm-4">
+             {{form.branch}}</div>
              <span class="input-group-btn" style="width:0px;"></span>
              </div>
-             <div class="input-group">
-                {{form.ro}}
-                <span class="input-group-btn" style="width:0px;"></span>
-             </div>
-             <div class="input-group">
-                {{form.branch}}
-             <span class="input-group-btn" style="width:0px;"></span>
-            </div>
-            <div class="input-group">
-                {{form.account_no}}
-  <span class="input-group-btn" style="width:0px;"></span>
-                {{form.cust_name}}
-  <span class="input-group-btn" style="width:0px;"></span>
-</div>
- <div class="input-group">
-                {{form.totalclosure}}
-  <span class="input-group-btn" style="width:0px;"></span>
-                {{form.outstanding}}
-  <span class="input-group-btn" style="width:0px;"></span>
-  {{form.compromise_amt}}
-  <span class="input-group-btn" style="width:0px;"></span>
-  {{form.token_money}}
-  <span class="input-group-btn" style="width:0px;"></span>
-</div>
- <div class="input-group">
-                {{form.loan_obj}}
-  <span class="input-group-btn" style="width:0px;"></span>
-                {{form.irac}}
-  <span class="input-group-btn" style="width:0px;"></span>
 
-</div>
+            <div class="form-row">
+                <div class="col-sm-4">
+                {{form.account_no}}
+                </div>
+                <div class="col-sm-4">
+                {{form.cust_name}}
+                </div>
+                 <div class="col-sm-4">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-sm-4">
+                {{form.totalclosure}}
+                </div>
+                <div class="col-sm-4">
+                {{form.outstanding}}
+                </div>
+                 <div class="col-sm-4">
+                     {{form.compromise_amt}}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-sm-4">
+                {{form.token_money}}
+                </div>
+                <div class="col-sm-4">
+                {{form.loan_obj}}
+                </div>
+                 <div class="col-sm-4">
+                     {{form.irac}}
+                </div>
+            </div>
+           
+
+      </div>
 {{ form.pr_waived.as_hidden }}{{ form.int_waived.as_hidden }}{{ form.rest_amount.as_hidden }}{{ form.unapplied_int.as_hidden }}
 
 
