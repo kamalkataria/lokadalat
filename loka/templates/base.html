@@ -43,13 +43,8 @@
 
         setTimeout(function(){ 
             for (var i=0;i<message_ele.length;i+=1){
-                      var opacity = message_ele[i].style.opacity;
-              if (opacity > 0) {
-                 opacity -= 0.1;
-                 message_ele[i].style.opacity = opacity;
+                 message_ele[i].style.display = "none";
               }
-  
-            }
       
         }, 3000);
         </script>
