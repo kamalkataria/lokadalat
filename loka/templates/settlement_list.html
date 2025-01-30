@@ -11,8 +11,9 @@
     {% for message in messages %}
      {% if message.tags %} 
         <div class="rounded alert alert-{{ message.tags }}  alert-dismissible">{{ message }}
-        <button type="button" class="close" data-dismiss="alert">&times;</button></div>
-                {%endif%}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+                {% endif %}
                 
     {% endfor %}
 
