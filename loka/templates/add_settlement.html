@@ -6,16 +6,15 @@
 
    <div class="container">
     <h1 class="text text-danger text-center">Add compromises</h1>
-       
-{% if messages %}
+       {% if messages %}
 <ul class="messages list-unstyled">
     {% for message in messages %}
-    <li {% if message.tags %} class="rounded bg-{{ message.tags }}"{% endif %}>{{ message }}</li>
+    <li {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}</ul>
 {%endif%}
     <!--<a class="text text-white btn btn-danger" style="font-color:white;" href="{%url 'index'%}">Home</a>-->
 
-    <form style="padding:2em;" id="form-container" method="POST">
+    <form id="form-container" method="POST">
         <div class="form-group">
         {% csrf_token %}
 
@@ -25,6 +24,8 @@
 
 
         <div id="settleform" class="fs-4 settlement-form" style="margin:10px;">
+            <!--{{form.as_table}}-->
+
             <div class="form-row">
                 <div class="col-sm-4">
              {{form.loka}}</div>
@@ -67,14 +68,14 @@
                      {{form.irac}}
                 </div>
             </div>
-           
 
-      </div>
+
 {{ form.pr_waived.as_hidden }}{{ form.int_waived.as_hidden }}{{ form.rest_amount.as_hidden }}{{ form.unapplied_int.as_hidden }}
 
 
 <hr/>
         </div>
+
 
         {% endfor %}
 </div>
