@@ -19,7 +19,7 @@
     {{ login_form}}
     <input class="input btn btn-info" style="margin:0.5em;" type="submit" value="Login"/>
              {% if messages %}
-<ul class="messages">
+<ul class="messages list-unstyled">
     {% for message in messages %}
     <li {% if message.tags %} class="rounded bg-{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
