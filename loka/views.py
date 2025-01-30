@@ -306,7 +306,7 @@ class SettlementUpdateView(LoginRequiredMixin,UpdateView):
             
         else:
             return super().form_invalid(form)
-            messages.danger(request, formset.errors)
+            messages.error(request, formset.errors)
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
