@@ -7,15 +7,18 @@
 
     <div class="col-sm-2"></div>
     <div class="col-sm-8 centered"  style="">
-               {% if messages %}
-<ul class="messages list-unstyled">
+              {% if messages %}
+
     {% for message in messages %}
-    <li {% if message.tags %} class="rounded alert alert-{{ message.tags }} alert-dismissible" {% endif %}>{{ message }}
-     <button type="button" class="close" data-dismiss="alert">&times;</button></li>
-   
+     {% if message.tags %} 
+        <div class="rounded alert alert-{{ message.tags }}  alert-dismissible">{{ message }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+                {% endif %}
+                
     {% endfor %}
-</ul>
-{%endif%}
+                {%endif%}
+
 
 
          <p class="text text-center text-info">Lok Adalat Login</p>
