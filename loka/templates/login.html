@@ -2,9 +2,8 @@
 {%block content%}
 {% load crispy_forms_tags %}
 
-<div class="container" style="">
+<div class="container">
   {% if messages %}
-
     {% for message in messages %}
      {% if message.tags %} 
         <div class="rounded alert alert-{{ message.tags }}  alert-dismissible">{{ message }}
