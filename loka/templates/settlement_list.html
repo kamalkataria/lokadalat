@@ -3,14 +3,21 @@
 
 
     <div class="container-fluid">
-
-    
-             {% if messages %}
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+                 {% if messages %}
 <ul class="messages list-unstyled">
     {% for message in messages %}
     <li {% if message.tags %} class="rounded bg-{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
 {%endif%}
+            </div>
+            <div class="col-sm-4"></div>
+        </div>
+
+    
+            
 
           <h5 class=" text text-center">Lok Adalat</h5>
              <h6 class="text text-center">Settlements for Branch - {{branch_name}}</h6>
