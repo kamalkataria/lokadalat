@@ -11,6 +11,7 @@
     {% for message in messages %}
     <li {% if message.tags %} class="rounded bg-{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
+</ul>
 {%endif%}
             </div>
             <div class="col-sm-4"></div>
