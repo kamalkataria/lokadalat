@@ -3,16 +3,7 @@
 {% load crispy_forms_tags %}
 
 <div class="container">
-  {% if messages %}
-    {% for message in messages %}
-     {% if message.tags %} 
-        <div class="rounded alert alert-{{ message.tags }}  alert-dismissible">{{ message }}
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        </div>
-                {% endif %}
-                
-    {% endfor %}
-                {%endif%}
+ 
 
     <div class="col-sm-2"></div>
     <div class="col-sm-8 centered"  style="">
