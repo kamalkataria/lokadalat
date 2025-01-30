@@ -8,7 +8,7 @@
     <h1 class="text text-danger text-center">Add compromises</h1>
        
 {% if messages %}
-<ul class="messages">
+<ul class="messages list-unstyled">
     {% for message in messages %}
     <li {% if message.tags %} class="bg-{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
