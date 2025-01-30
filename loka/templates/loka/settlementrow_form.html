@@ -15,7 +15,7 @@
     <!--<a class="btn btn-info" href="{%url 'index'%}">Home</a>-->
     {%if passed%}
     <p class="text text-danger">Updating the record</p>
-<form class="form" method="post">
+<form class="form" method="post" style="padding:1em;">
     {% csrf_token %}
     {{ form|crispy}}
     <input class="btn btn-info"type="submit" value="Update">
