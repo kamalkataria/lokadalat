@@ -38,7 +38,10 @@
     </head>
 
     <body>
-         {% if messages %}
+        <div class="container">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+                 {% if messages %}
     {% for message in messages %}
      {% if message.tags %} 
         <div class="rounded alert alert-{{ message.tags }}  alert-dismissible">{{ message }}
@@ -48,6 +51,11 @@
                 
     {% endfor %}
                 {%endif%}
+            </div>
+            <div class="col-sm-4"></div>
+            
+        </div>
+        
 
         
     {% block content %}
