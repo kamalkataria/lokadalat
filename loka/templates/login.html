@@ -32,6 +32,7 @@
     {% for message in messages %}
     <li {% if message.tags %} class="rounded bg-{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
+</ul>
 {%endif%}
 
 
