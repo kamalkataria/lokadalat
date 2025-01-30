@@ -16,7 +16,8 @@
 	          {% if messages %}
 <ul class="messages list-unstyled">
     {% for message in messages %}
-    <li {% if message.tags %} class="rounded alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+    <li {% if message.tags %} class="rounded alert alert-{{ message.tags }}"{% endif %}>{{ message }}
+     <button type="button" class="close" data-dismiss="alert">&times;</button></li>
     {% endfor %}
 </ul>
 {%endif%}
