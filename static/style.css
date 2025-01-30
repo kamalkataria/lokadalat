@@ -168,16 +168,22 @@ html {
         .fa-facebook {
             background-color:transparent;
             color: white;
+          padding:0;
+          margin:0;
         }
 
         .fa-instagram {
             background-color:transparent;
             color: white;
+           padding:0;
+          margin:0;
         }
 
         .fa-twitter {
             background-color:transparent;
             color: white;
+           padding:0;
+          margin:0;
         }
 
         .fa {
@@ -185,6 +191,6 @@ html {
             font-size: 20px;
             width: 20px;
             text-decoration: none;
-            margin: 0px 0px;
+            margin: 0;
         }
 
