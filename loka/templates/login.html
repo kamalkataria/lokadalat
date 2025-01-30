@@ -7,6 +7,14 @@
 
     <div class="col-sm-2"></div>
     <div class="col-sm-8 centered"  style="">
+               {% if messages %}
+<ul class="messages list-unstyled">
+    {% for message in messages %}
+    <li {% if message.tags %} class="rounded alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{%endif%}
+
 
          <p class="text text-center text-info">Lok Adalat Login</p>
 
@@ -18,14 +26,7 @@
     {% csrf_token %}
     {{ login_form}}
     <input class="input btn btn-info" style="margin:0.5em;" type="submit" value="Login"/>
-             {% if messages %}
-<ul class="messages list-unstyled">
-    {% for message in messages %}
-    <li {% if message.tags %} class="rounded alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{%endif%}
-
+   
 
  </form>
           <p class="text-info fs-6">Are you an Administrator? <a class="text-info" href="{% url 'admin:index' %}">Login Here</a></p>
