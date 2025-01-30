@@ -2,21 +2,12 @@
 <html>
     <html lang="en">
     <head>
-
-
         <title>Lok Adalat</title>
          <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          {%load static%}
-{% load crispy_forms_tags %}
-{% load bulma_tags %}
-{% load bootstrap4 %}
-  {% bootstrap_css %}
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
-  {% bootstrap_javascript %}
 
-         <link rel="stylesheet" href="{% static 'style.css' %}">
-        
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
 
        </script>
        <script src="https://www.unpkg.com/spltjs@1.1.0"></script>
@@ -32,26 +23,26 @@
         loop: true,
         delay: anime.stagger(50),
         });
+   
 
     </script>
+     {% load bootstrap4 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        {%load crispy_forms_tags %}
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
          <link rel="stylesheet" href=
 "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-
 
     </head>
 
     <body>
 
-
+        
     {% block content %}
-
     {% endblock content %}
 
-
-
-     </body>
-
-
-
+    </body>
 
 </html>
