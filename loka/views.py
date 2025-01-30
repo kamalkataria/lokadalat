@@ -270,7 +270,7 @@ def deleteset(request, id):
         settlerow = SettlementRow.objects.get(id=id)
         if(settlerow):
             settlerow.delete()
-            messages.info(request, "Deleted record for "+str(settlerow.account_no)+"Successfully.")
+            messages.info(request, "Deleted record for "+str(settlerow.account_no)+" Successfully.")
             return redirect("settlement_list")
     else:
         messages.error(request, "Some problem occurred")
