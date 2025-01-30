@@ -14,7 +14,7 @@
 
       <div class="container centered1 ">
 	          {% if messages %}
-<ul class="messages">
+<ul class="messages list-unstyled">
     {% for message in messages %}
     <li {% if message.tags %} class="rounded bg-{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
