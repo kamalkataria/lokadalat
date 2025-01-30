@@ -400,6 +400,7 @@ def settopdf(request):
     else:
 
         context['emptyset'] = True
+    return render(request,"settlements_list2.html",context)
 
-    pdf = render_to_pdf('settlements_list2.html', context)
-    return HttpResponse(pdf, content_type='application/pdf')
+    # pdf = render_to_pdf('settlements_list2.html', context)
+    # return HttpResponse(pdf, content_type='application/pdf')
