@@ -9,7 +9,9 @@
        {% if messages %}
 <ul class="messages list-unstyled">
     {% for message in messages %}
-    <li {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible"{% endif %}>{{ message }}</li>
+    <li {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible"{% endif %}>{{ message }}
+     <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </li>
     {% endfor %}</ul>
 {%endif%}
     <!--<a class="text text-white btn btn-danger" style="font-color:white;" href="{%url 'index'%}">Home</a>-->
