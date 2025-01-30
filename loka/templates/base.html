@@ -47,7 +47,7 @@
 
   <!-- Links -->
   <ul class="navbar-nav">
-       <a class="navbar-brand colorwhite" href="#">Lok Adalat</a>
+       <a class="navbar-brand colorwhite" href="#">{{branch|upper}}</a>
        <li class="nav-item colorwhite">
       <a class="nav-link "  href="{% url 'index' %}">Home</a>
     </li>
@@ -59,7 +59,7 @@
       <a class="nav-link " href="{% url 'add_settlement' %}">Add Settlement</a>
     </li>
      <li class="nav-item colorwhite ">
-      <a class="nav-link "  href="{% url 'logout' %}">Logout {{branch_name|title}}</a>
+      <a class="nav-link "  href="{% url 'logout' %}"> <i class="fa fa-sign-out" aria-hidden="true"></i></a>
     </li>
     
             <li class="nav-item colorwhite ">   <a href="https://www.instagram.com/imkamalkataria/" class="nav-link fa fa-instagram"></a></li>
