@@ -1,14 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
      {% load bootstrap4 %}
   {% bootstrap_css %}
   {% bootstrap_javascript %}
     {%load crispy_forms_tags %}
+    {% load math_filters %}
   <style>
-  @page {size: letter landscape;margin: 2cm;}
+      .dottedborderbottom{ border-bottom: 2px dotted black; }.
+
+      @page my_page {
+    size: landscape;
+}
+@page myvertical{
+size: A4;
+margin:20mm;
+}
+.vertical{
+page:myvertical
+}
+
+.horizontal {
+    page: my_page;
+}
+
+ @media print {
+    .pagebreak { page-break-before: always; } /* page-break-after works, as well */
+}
 
   </style>
 </head>
@@ -21,36 +42,36 @@
 
 
 {%else%}
-<div class="row" style="margin-bottom:2em;">
-  <center>
-    <Div class="container" style="margin:10px;">
-<span style="margin:1.2em!important;font-size:3em;margin-left:auto;margin-right:auto;!important;font-weight:bold;">{{bankid}}</span></Div>
-  </center>
-  <center>
-    <Div class="container" style="margin:10px;">
+<div class="container">
+<div class="container" style="margin-bottom:2em;background:white;">
+
+
+<p class="text text-center" style="font-size:3em;margin-left:auto;margin-right:auto;!important;font-weight:bold;">{{bankid}}</p>
+
+
+    <div class="container" style="margin:10px;">
 <span style="margin:1.5em auto!important;font-size:2em;"class="text text-center">List of compromise settlements in Lok Adalat Held At {{venue}}</span>
-    </Div> </center>
-<center>
-  <div class="container-fluid" style="display: flex;justify-content: space-between;margin:2em auto!important;">
+    </div>
+
+  <div class="row" style="padding:0!important;margin:auto auto!important;">
 
 
-  <p style="display:inline;text-left;margin:0 auto!important;font-size:1.6em;">Branch - {{branch}} </p>
-  <p style="display:inline;text-center;margin:0 auto!important;font-size:1.6em;"> Regional Office - {{regiono}} </p>
-  <p style="display:inline;text-right;margin:0 auto!important;font-size:1.6em;">Date:{{ladate}}</p>
+  <p style="text-left;margin:0 auto!important;font-size:1.3em;">Branch - {{branch}} </p>
+  <p style="text-center;margin:0 auto!important;font-size:1.3em;"> Regional Office - {{regiono}} </p>
+  <p style="text-right;margin:0 auto!important;font-size:1.6em;">Date:{{ladate}}</p>
   </div>
-  </center>
 
 </div>
 
 
- <table class="table table-bordered table-sm" style="border: 1px solid black; margin-top:3.5em!important;">
-            <tr >
+ <table class="table table-bordered table-condensed table-sm" style="width:70%;margin:auto;">
+            <tr>
               <th style="padding:10px;">S.N.</th>
                 <th style="padding:5px;">Account No</th>
                 <th style="padding:5px;">Name</th>
                 <th style="padding:5px;">Loan Type</th>
                 <th style="padding:5px;">IRAC</th>
-                <th style="padding:5px;">Outstanding</th>
+                <th style="padding:5px!important;">Outstanding</th>
                 <th style="padding:5px;">Unapplied Interest</th>
                 <th style="padding:5px;">Total Closure</th>
                 <th style="padding:5px;">Compromise Amount</th>
@@ -106,10 +127,80 @@
     <br/>
 
 
-    <h1>Branch Manager/Officer</h1>
+    <h5>Branch Manager/Officer</h5>
+</div>
+
+
+{%for settlement in object_list%}
+<div class="container vertical">
+<div class="container">
+    <p class="text text-center" style="margin:1em!important;font-size:1.6em;margin-left:auto;margin-right:auto;!important;font-weight:bold;">Lok Adalat Held at {{venue}}</p>
+    <p>Organised by DLS/Authority/.................................Committe under section 19 of</p>
+    <p>Legal Services Authorities act 1987(Contract Act)</p>
+    <p>Petitioner/Plentiff/Complainant(Bank Name) {{bankid}}, Branch - {{branch}} </p>
+    <p>Defendant/Respondent(Borrower Name) {{settlement.cust_name}}</p>
+    <p>No. of the Proceeding of the.......................................Court/Authority/Committee</p>
+    <p>Present:-</p>
+    <p>Name of the Judicial Officer........................................................Upper Civil Judge(Senior Division)</p>
+    <p>Retired Judicial Officer</p>
+    <p>Name of Members</p>
+    <ol class="list-inline">
+        <li class="d-inline" style="padding:1em;">1.).............................................................</li>
+        <li class="d-inline" style="padding:1em;">2.).............................................................</li>
+
+    </ol>
+    <h3 class="text text-left" style="margin-top:2em;margin-bottom:2em;">AWARD</h3>
+    <p>The disputes Between the parties having been referred for determination to the Lok Adalat and the parties having
+    been referred for determination to the Lok Adalat and the Parties having compromised/Setteled the case/matter the following award passed in terms
+    of settlement:-</p>
+    <p>Account no.:<span class="dottedborderbottom"> {{settlement.account_no}}</span></p>
+    <p>Total Outstanding with Interest.:<span class="dottedborderbottom"> {{settlement.totalclosure}}</span></p>
+    <p>Amount Waived:-<span class="dottedborderbottom"> {{settlement.totalclosure|substract:settlement.compromise_amt}}</span></p>
+
+    <p>Compromise Amount:<span class="dottedborderbottom"> {{settlement.compromise_amt}}</span></p>
+    <p>Token Money:<span class="dottedborderbottom"> {{settlement.token_money}}</span></p>
+    <p>Balance:<span class="dottedborderbottom"> {{settlement.rest_amount}}</span></p>
+    <p>Amount Payble on or before:............................................................................</p>
+    <p>The parties are informed that the court fee,if any,paid by any one of them shall be refund.</p>
+    <br/>
+    <br/>
+    <br/>
+    <p>Petitioner/Plentiff/Complainant/Defendent/Respondent</p>
+    <br/>
+    <br/>
+    <div class="row">
+        <div class="col-sm-6">
+            <p>Judicial Officer</p>
+            <p>Member</p>
+            <p>Date...................</p>
+
+        </div>
+        <div class="col-sm-6">
+             <p>Borrower</p>
+            <p>Member</p>
+
+        </div>
+
+    </div>
+    <div style="padding-top:2em;" class="row text-center">
+        <p>Seal of the authority/commitee</p>
+    </div>
+    <p></p>
+
+
+
+
+
+
+</div>
+<div class="pagebreak"> </div>
+
+{%endfor%}
 
 
 {%endif%}
+</div>
+
 
 </body>
 </html>
