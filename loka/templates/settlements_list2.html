@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>LOK ADALAT</title>
 
      {% load bootstrap4 %}
   {% bootstrap_css %}
@@ -10,6 +10,12 @@
     {%load crispy_forms_tags %}
     {% load math_filters %}
   <style>
+      * {
+
+    font-family: "Times New Roman", Times, serif;
+
+  }
+
       .dottedborderbottom{ border-bottom: 2px dotted black; }.
 
       @page my_page {
@@ -33,7 +39,7 @@ page:myvertical
 
   </style>
 </head>
-<body onload="window.print()">
+<body>
 {% load django_tables2 %}
 {%if emptyset%}
 <div class="container" style="margin-top:20%;margin-left:auto;margin-right:auto;">
@@ -42,47 +48,45 @@ page:myvertical
 
 
 {%else%}
-<div class="container">
+<div class="container-fluid">
 <div class="container" style="margin-bottom:2em;background:white;">
 
 
 <p class="text text-center" style="font-size:3em;margin-left:auto;margin-right:auto;!important;font-weight:bold;">{{bankid}}</p>
 
 
-    <div class="container" style="margin:10px;">
-<span style="margin:1.5em auto!important;font-size:2em;"class="text text-center">List of compromise settlements in Lok Adalat Held At {{venue}}</span>
+<p style="font-size:2em;"class="text text-center">List of compromise settlements in Lok Adalat Held At {{venue|upper}}</p>
     </div>
 
-  <div class="row" style="padding:0!important;margin:auto auto!important;">
+  <ul class="list-unstyled text-center" style="margin:1em auto!important;">
 
 
-  <p style="text-left;margin:0 auto!important;font-size:1.3em;">Branch - {{branch}} </p>
-  <p style="text-center;margin:0 auto!important;font-size:1.3em;"> Regional Office - {{regiono}} </p>
-  <p style="text-right;margin:0 auto!important;font-size:1.6em;">Date:{{ladate}}</p>
-  </div>
-
-</div>
+  <li class="d-inline" style="padding:1em;text-left;margin:0 auto!important;font-size:1.5em;">Branch - {{branch}} </li>
+      <li class="d-inline" style="padding:1em;text-center;margin:0 auto!important;font-size:1.5em;"> Regional Office - {{regiono}} </li>
+      <li class="d-inline" style="padding:1em;text-right;margin:0 auto!important;font-size:1.5em;">Date:{{ladate}}</li>
+  </ul>
 
 
- <table class="table table-bordered table-condensed table-sm" style="width:70%;margin:auto;">
-            <tr>
-              <th style="padding:10px;">S.N.</th>
-                <th style="padding:5px;">Account No</th>
-                <th style="padding:5px;">Name</th>
-                <th style="padding:5px;">Loan Type</th>
-                <th style="padding:5px;">IRAC</th>
-                <th style="padding:5px!important;">Outstanding</th>
-                <th style="padding:5px;">Unapplied Interest</th>
-                <th style="padding:5px;">Total Closure</th>
-                <th style="padding:5px;">Compromise Amount</th>
-                <th style="padding:5px;">Waived From Principal</th>
-                <th style="padding:5px;">Waived From Interest</th>
-                <th style="padding:5px;">Token Money</th>
-                <th style="padding:5px;">Amount Payble</th>
+
+ <table class=" table table-bordered  table-condensed" style="margin:auto;width:80%;margin:auto;">
+            <tr style="font-size:1.5em;">
+              <th >S.N.</th>
+                <th >Account No</th>
+                <th >Name</th>
+                <th>Loan Type</th>
+                <th >IRAC</th>
+                <th>Outstanding</th>
+                <th >Unapplied Interest</th>
+                <th >Total Closure</th>
+                <th >Compromise Amount</th>
+                <th >Waived From Principal</th>
+                <th >Waived From Interest</th>
+                <th >Token Money</th>
+                <th >Amount Payble</th>
 
             </tr>
     {% for settlement in object_list %}
-        <tr style="padding:5px 5px;">
+        <tr style="font-size:1.5em;">
             <td>{{forloop.counter}}</td>
             <td>{{settlement.account_no}}</td>
             <td>{{settlement.cust_name}}</td>
@@ -101,7 +105,7 @@ page:myvertical
 
         </tr>
     {% endfor %}
-         <tr style="padding-top:5px;">
+         <tr style="font-size:1.5em;font-weight:bold;">
              <td></td>
              <td  style="padding:5px;">TOTAL</td>
              <td></td>
@@ -127,14 +131,20 @@ page:myvertical
     <br/>
 
 
-    <h5>Branch Manager/Officer</h5>
+    <h5 style="margin-left:15rem;" class="text-left">Branch Manager/Officer</h5>
 </div>
-
+<br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
 
 {%for settlement in object_list%}
 <div class="container vertical">
 <div class="container">
-    <p class="text text-center" style="margin:1em!important;font-size:1.6em;margin-left:auto;margin-right:auto;!important;font-weight:bold;">BEFORE THE LOK ADALAT HELD AT {{venue|upper}}</p>
+    <p class="text text-center" style="margin:1em!important;font-size:1.6em;margin-left:auto;margin-right:auto;!important;font-weight:bold;">Lok Adalat Held at {{venue|upper}}</p>
     <p>Organised by DLS/Authority/.................................Committe under section 19 of</p>
     <p>Legal Services Authorities act 1987(Contract Act)</p>
     <p>Petitioner/Plentiff/Complainant(Bank Name) {{bankid}}, Branch - {{branch}} </p>
