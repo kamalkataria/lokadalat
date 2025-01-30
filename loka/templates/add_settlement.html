@@ -7,13 +7,17 @@
    <div class="container">
     <h1 class="text text-danger text-center">Add compromises</h1>
        {% if messages %}
-<ul class="messages list-unstyled">
+
     {% for message in messages %}
-    <li {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible"{% endif %}>{{ message }}
-     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    </li>
-    {% endfor %}</ul>
-{%endif%}
+     {% if message.tags %} 
+        <div class="rounded alert alert-{{ message.tags }}  alert-dismissible">{{ message }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+                {% endif %}
+                
+    {% endfor %}
+                {%endif%}
+
     <!--<a class="text text-white btn btn-danger" style="font-color:white;" href="{%url 'index'%}">Home</a>-->
 
     <form id="form-container" method="POST">
