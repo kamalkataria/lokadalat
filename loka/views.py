@@ -11,14 +11,15 @@ from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, UpdateView
-from .forms import NewUserForm,LAForm
+from .forms import NewUserForm, LAForm
 from .forms import SettlementForm, SettlementFormset1
 from .models import SettlementRow, Profile, RegionalOffice, Bank, LokAdalat
 from .utils import render_to_pdf
 from django.http import Http404
 
+
 def handler404(request, exception):
-   return render(request, '404handler.html')
+    return render(request, '404handler.html')
 
 
 # def handler500(request, exception):
@@ -100,31 +101,30 @@ def index(request):
     return redirect("settlement_list")
 
 
-
 def gotohome(request):
     print('go man!!!!!!!')
     return redirect('settlement_list')
 
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class SettlementListView(LoginRequiredMixin,ListView):
-
+class SettlementListView(LoginRequiredMixin, ListView):
     login_url = '/login/'
     model = SettlementRow
     template_name = "settlement_list.html"
+
     def shouldBeRedirectedToAdmin(self):
-        isSU=self.request.user.is_superuser
-        thisUser=User.objects.get(username=self.request.user)
-        isASuperBanker=thisUser.groups.filter(name="SuperBanker").exists()
-        shdBRedctd=isSU or isASuperBanker
+        isSU = self.request.user.is_superuser
+        thisUser = User.objects.get(username=self.request.user)
+        isASuperBanker = thisUser.groups.filter(name="SuperBanker").exists()
+        shdBRedctd = isSU or isASuperBanker
         return shdBRedctd
 
-
     def get(self, *args, **kwargs):
-        shdBRedctd=self.shouldBeRedirectedToAdmin()
+        shdBRedctd = self.shouldBeRedirectedToAdmin()
         # print(self.request.user.is_superuser)
-        if(shdBRedctd):
+        if (shdBRedctd):
             return redirect('admin:index')
         return super(SettlementListView, self).get(*args, **kwargs)
 
@@ -140,37 +140,43 @@ class SettlementListView(LoginRequiredMixin,ListView):
     def get_context_data(self, **kwargs):
         if self.request.user.is_authenticated:
 
-
             context = super(SettlementListView, self).get_context_data(**kwargs)
-            if(self.request.user.is_superuser):
-                context['userissu']=True
+            if (self.request.user.is_superuser):
+                context['userissu'] = True
             else:
                 context['userissu'] = False
 
-
-            context['contoutstanding'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
+            context['contoutstanding'] = SettlementRow.objects.filter(
+                branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
                 Sum('outstanding'))
-            context['contunapplied_int'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
+            context['contunapplied_int'] = SettlementRow.objects.filter(
+                branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
                 Sum('unapplied_int'))
-            context['conttotalclosure'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
+            context['conttotalclosure'] = SettlementRow.objects.filter(
+                branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
                 Sum('totalclosure'))
-            context['contcompromise_amt'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
+            context['contcompromise_amt'] = SettlementRow.objects.filter(
+                branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
                 Sum('compromise_amt'))
-            context['conttoken_money'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
+            context['conttoken_money'] = SettlementRow.objects.filter(
+                branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
                 Sum('token_money'))
-            context['contpr_waived'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
+            context['contpr_waived'] = SettlementRow.objects.filter(
+                branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
                 Sum('pr_waived'))
-            context['contint_waived'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
+            context['contint_waived'] = SettlementRow.objects.filter(
+                branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
                 Sum('int_waived'))
-            context['contrest_amount'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
+            context['contrest_amount'] = SettlementRow.objects.filter(
+                branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
                 Sum('rest_amount'))
             context['authed'] = True
             print(Profile.objects.filter(user__id=self.request.user.id))
-            if(len(Profile.objects.filter(user__id=self.request.user.id))==0):
-                context['branch_name']=self.request.user.username
+            if (len(Profile.objects.filter(user__id=self.request.user.id)) == 0):
+                context['branch_name'] = self.request.user.username
 
             else:
-                context['branch_name']=Profile.objects.filter(user__id=self.request.user.id)[0].branch_name
+                context['branch_name'] = Profile.objects.filter(user__id=self.request.user.id)[0].branch_name
 
             return context
         else:
@@ -180,12 +186,9 @@ class SettlementListView(LoginRequiredMixin,ListView):
             return context
 
 
-
-
-class SettlementAddView(LoginRequiredMixin,TemplateView):
+class SettlementAddView(LoginRequiredMixin, TemplateView):
     login_url = '/login/'
     template_name = "add_settlement.html"
-
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -211,12 +214,14 @@ class SettlementAddView(LoginRequiredMixin,TemplateView):
             # return HttpResponse("You are not authorised",status=401)
         else:
             bankid = Bank.objects.filter(Q(bank_id__username__icontains=profile_user[0].bank.bank_id))
-            lokax = LokAdalat.objects.all().filter(Q(username__username__icontains=bankid[0].bank_id)).order_by(\
-            'lokadalatdate')
+            lokax = LokAdalat.objects.all().filter(Q(username__username__icontains=bankid[0].bank_id)).order_by( \
+                'lokadalatdate')
             qs = SettlementRow.objects.filter(loka__username=profile_user[0].bank.bank_id)
             ros = profile_user[0].ro
-            formset = SettlementFormset1(ros=ros,loka=lokax, branch=self.request.user.id, queryset=SettlementRow.objects.none(),
-                                     initial=[{'branch': self.request.user.id, 'loka': lokax[0].id,'ro':RegionalOffice.objects.filter(id=ros.id)[0].id}])
+            formset = SettlementFormset1(ros=ros, loka=lokax, branch=self.request.user.id,
+                                         queryset=SettlementRow.objects.none(),
+                                         initial=[{'branch': self.request.user.id, 'loka': lokax[0].id,
+                                                   'ro': RegionalOffice.objects.filter(id=ros.id)[0].id}])
 
             return self.render_to_response({'settlement_formset': formset})
 
@@ -229,9 +234,10 @@ class SettlementAddView(LoginRequiredMixin,TemplateView):
         lokax = LokAdalat.objects.all().filter(Q(username__username__icontains=bankid[0].bank_id)).order_by(
             'lokadalatdate')
         # ros = RegionalOffice.objects.all().filter(bank_id=bankid[0])
-        ros=profile_user[0].ro
+        ros = profile_user[0].ro
 
-        formset = SettlementFormset1(ros=ros,loka=lokax, branch=Profile.objects.get(id=profile_user[0].id).id, data=self.request.POST)
+        formset = SettlementFormset1(ros=ros, loka=lokax, branch=Profile.objects.get(id=profile_user[0].id).id,
+                                     data=self.request.POST)
         if (formset.is_valid()):
             formset.save()
             messages.success(request, "Record added successfully")
@@ -266,12 +272,36 @@ def deleteset(request, id):
         raise Http404()
 
 
-class SettlementUpdateView(LoginRequiredMixin,UpdateView):
+class SettlementUpdateView(LoginRequiredMixin, UpdateView):
     login_url = '/login/'
     model = SettlementRow
-    fields=('cust_name','account_no','outstanding','totalclosure','compromise_amt','token_money','loan_obj','irac')
-    exclude=('loka','ro','branch','pr_waived','int_waived','unapplied_int','rest_amount')
+    fields = (
+    'cust_name', 'account_no', 'outstanding', 'totalclosure', 'compromise_amt', 'token_money', 'loan_obj', 'irac')
+    exclude = ('loka', 'ro', 'branch', 'pr_waived', 'int_waived', 'unapplied_int', 'rest_amount')
     success_url = reverse_lazy("settlement_list")
+
+    
+
+    def get_context_data(self, **kwargs):
+        context = super(SettlementUpdateView, self).get_context_data(**kwargs)
+        branchx = Profile.objects.filter(id=self.request.user.id)
+        setpk = SettlementRow.objects.filter(id=self.kwargs['pk'])
+        if self.request.user.is_authenticated and branchx[0].user == setpk[0].branch.user:
+            context['passed'] = True
+            print('yep passed')
+        else:
+            context['passed'] = False
+        return context
+
+    def get_queryset(self):
+        base_qs = super(SettlementUpdateView, self).get_queryset()
+        branchx = Profile.objects.filter(id=self.request.user.id)
+        setpk = SettlementRow.objects.filter(id=self.kwargs['pk'])
+        if (branchx[0].user == setpk[0].branch.user):
+            return base_qs.filter(branch=Profile.objects.filter(id=self.request.user.id)[0])
+        else:
+            # return None
+            return base_qs.filter(branch=None)
     def form_valid(self, form):
         context = self.get_context_data(form=form)
         formset = context['formset']
@@ -285,7 +315,8 @@ class SettlementUpdateView(LoginRequiredMixin,UpdateView):
         else:
             return super().form_invalid(form)
             messages.error(request, formset.errors)
-     def post(self, request, *args, **kwargs):
+
+    def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form_class = self.get_form_class()
         form = self.get_form(form_class)
@@ -301,30 +332,6 @@ class SettlementUpdateView(LoginRequiredMixin,UpdateView):
         else:
             return self.form_invalid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super(SettlementUpdateView, self).get_context_data(**kwargs)
-        branchx = Profile.objects.filter(id=self.request.user.id)
-        setpk = SettlementRow.objects.filter(id=self.kwargs['pk'])
-        if self.request.user.is_authenticated and branchx[0].user == setpk[0].branch.user:
-            context['passed'] = True
-            print('yep passed')
-        else:
-            context['passed'] = False
-        return context
-   
-
-    def get_queryset(self):
-        base_qs = super(SettlementUpdateView, self).get_queryset()
-        branchx = Profile.objects.filter(id=self.request.user.id)
-        setpk = SettlementRow.objects.filter(id=self.kwargs['pk'])
-        if (branchx[0].user==setpk[0].branch.user):
-            return base_qs.filter(branch=Profile.objects.filter(id=self.request.user.id)[0])
-        else:
-            # return None
-            return base_qs.filter(branch=None)
-  
-
-           
 
 def updaterec(request, id):
     mymember = SettlementRow.objects.get(id=id)
@@ -351,8 +358,6 @@ def getladata(request):
             raise Http404()
 
 
-
-
 def settopdf(request):
     context = {}
     QueryDict = request.GET
@@ -373,16 +378,24 @@ def settopdf(request):
         # print('Bank id is',bankid)
         lokax = LokAdalat.objects.all().filter(id=predicted)[0]
         # print(str(lokax))
-        context['contoutstanding'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('outstanding'))
-        context['contunapplied_int'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(
+        context['contoutstanding'] = SettlementRow.objects.filter(
+            branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('outstanding'))
+        context['contunapplied_int'] = SettlementRow.objects.filter(
+            branch=Profile.objects.get(user__id=request.user.id)).aggregate(
             Sum('unapplied_int'))
-        context['conttotalclosure'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('totalclosure'))
-        context['contcompromise_amt'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(
+        context['conttotalclosure'] = SettlementRow.objects.filter(
+            branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('totalclosure'))
+        context['contcompromise_amt'] = SettlementRow.objects.filter(
+            branch=Profile.objects.get(user__id=request.user.id)).aggregate(
             Sum('compromise_amt'))
-        context['conttoken_money'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('token_money'))
-        context['contpr_waived'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('pr_waived'))
-        context['contint_waived'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('int_waived'))
-        context['contrest_amount'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('rest_amount'))
+        context['conttoken_money'] = SettlementRow.objects.filter(
+            branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('token_money'))
+        context['contpr_waived'] = SettlementRow.objects.filter(
+            branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('pr_waived'))
+        context['contint_waived'] = SettlementRow.objects.filter(
+            branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('int_waived'))
+        context['contrest_amount'] = SettlementRow.objects.filter(
+            branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('rest_amount'))
         context['branch'] = branchx[0].branch_name
         context['object_list'] = qs1
         context['venue'] = lokax.lokadalatvenue
@@ -396,4 +409,3 @@ def settopdf(request):
 
     pdf = render_to_pdf('settlements_list2.html', context)
     return HttpResponse(pdf, content_type='application/pdf')
-
