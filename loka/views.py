@@ -293,6 +293,36 @@ class SettlementUpdateView(LoginRequiredMixin,UpdateView):
         else:
             # return None
             return base_qs.filter(branch=None)
+            
+   def form_valid(self, form):
+        context = self.get_context_data(form=form)
+        formset = context['formset']
+        if formset.is_valid():
+            response = super().form_valid(form)
+            formset.instance = self.object
+            formset.save()
+            messages.success(request, "Record Updated Suceesfully successfully")
+            return response
+            
+        else:
+            return super().form_invalid(form)
+            messages.danger(request, formset.errors)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        formset = journal_entry_formset(self.request.POST, instance=self.object)
+        print ("form:", form.is_valid() ) # True
+        print ("formset:", formset.is_valid() ) # False
+        print(formset.non_form_errors()) # No Entry
+        print(formset.errors) # {'id': ['This field is required.']}
+        
+        if (form.is_valid() and formset.is_valid()):
+            return self.form_valid(form)
+             
+        else:
+            return self.form_invalid(form)
 
 def updaterec(request, id):
     mymember = SettlementRow.objects.get(id=id)
