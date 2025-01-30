@@ -268,9 +268,12 @@ def deleteset(request, id):
     if request.user.is_authenticated and branchx[0].user == setpk[0].branch.user:
         # print('Trueeeeeeee')
         settlerow = SettlementRow.objects.get(id=id)
-        settlerow.delete()
-        return redirect("settlement_list")
+        if(settlerow):
+            settlerow.delete()
+            messages.info(request, "Deleted"+str(settlerow)+"Successfully.")
+            return redirect("settlement_list")
     else:
+        messages.error(request, "Some problem occurred")
         raise Http404()
 
 
