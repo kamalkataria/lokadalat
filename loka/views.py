@@ -305,10 +305,18 @@ class SettlementUpdateView(LoginRequiredMixin, UpdateView):
             # return None
             return base_qs.filter(branch=None)
     def form_valid(self, form):
-        form.save()
-        print('for es validate')
-        messages.success(self.request, "Updated")
-        return redirect(reverse_lazy("settlement_list"))
+        if not (form.data['cust_name'] and form.data['account_no'] and form.data['outstanding'] \
+                and form.data['totalclosure'] and\
+                form.data['compromise_amt'] and\
+                form.data['token_money'] and\
+             form.data['loan_obj']  and form.data[ 'irac']):
+                 messages.warning(self.request, "Empty fields not allowed")
+                 return redirect(reverse_lazy("settlement_list"))
+        else:
+            form.save()
+            messages.success(self.request, "Updated")
+            return redirect(reverse_lazy("settlement_list"))
+        
 
 
     def form_invalid(self, form):
