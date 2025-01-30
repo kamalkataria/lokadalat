@@ -3,7 +3,16 @@
 {% load crispy_forms_tags %}
 
 <div class="container" style="">
+  <script>
+              var message_ele = document.getElementsByClassName("messages");
 
+        setTimeout(function(){ 
+            for (var i=0;i<message_ele.length;i+=1){
+                 message_ele[i].style.display = "none";
+              }
+      
+        }, 3000);
+        </script>
 
     <div class="col-sm-2"></div>
     <div class="col-sm-8 centered"  style="">
