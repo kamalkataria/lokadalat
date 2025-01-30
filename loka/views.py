@@ -234,12 +234,12 @@ class SettlementAddView(LoginRequiredMixin,TemplateView):
         formset = SettlementFormset1(ros=ros,loka=lokax, branch=Profile.objects.get(id=profile_user[0].id).id, data=self.request.POST)
         if (formset.is_valid()):
             formset.save()
-            print('forset is vallid')
+            messages.success(request, "Record added successfully")
 
 
         else:
 
-            print('form set is invalid ', formset.errors)
+            messages.error(request, "Error:formset.errors)
 
         return redirect(reverse_lazy("settlement_list"))
 
