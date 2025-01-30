@@ -241,13 +241,15 @@ class SettlementAddView(LoginRequiredMixin, TemplateView):
         if (formset.is_valid()):
             formset.save()
             messages.success(self.request, "Record added successfully")
+            return redirect(reverse_lazy("settlement_list"))
 
 
         else:
 
             messages.error(self.request, formset.errors)
+            return redirect(reverse_lazy("add"))
 
-        return redirect(reverse_lazy("settlement_list"))
+        
 
 
 import django_tables2 as tables
