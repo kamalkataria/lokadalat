@@ -1,12 +1,42 @@
 {% extends "base.html" %}
 {% block content %}
 
+<script>
+    var phraseArray = ["amazing", "great", "wild","weird","insane","a potato","a donkey","a monkey","a pig","a crow","in pothohole","Bear","Lion"];
 
-<div class="text-center" style="width:100%;height:100%;margin:10% auto;">
-<h2 class="text-warning">Wrong place.</h2>
-<!-- <h3 class="text-warning">Do settlements,not debuggging.</h3> -->
-<br/>
+function randomIndex(arr){
+  return Math.floor((Math.random() * arr.length));
+}
+
+
+function completeSentence(arr, loc){
+  index = randomIndex(arr);
+  document.getElementById(loc).innerHTML = "You are "+arr[index];
+}
+    $(document).ready(function() {
+    setInterval(function(){
+     completeSentence(phraseArray,'randomAdjective')
+    },200);
+    });
+</script>
+<div class="container" style="width:100%;height:100%;margin:10% auto;">
+    <div class="row">
+        <div class="col-sm-4">
 <p class="text-warning text-center" style="font-size:10em;">404</p>
+<!--            <p class="bg-danger">This page is gonna eat the whole memmory of your device</p>-->
+
+        </div>
+
+    <div class="col-sm-4">
+
+         <h2  id="whoAreYou"><div  onclick="completeSentence(phraseArray, 'randomAdjective')" id="randomAdjective" class=""></div></h2>
+
+    </div>
+    <div class="col-sm-4">
+    </div>
+
+    </div>
+
 </div>
 
 
