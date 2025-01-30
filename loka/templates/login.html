@@ -1,12 +1,7 @@
 {% extends 'base1.html' %}
 {%block content%}
 {% load crispy_forms_tags %}
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-{%endif%}
+
 <div class="container" style="">
 
 
@@ -23,6 +18,12 @@
     {% csrf_token %}
     {{ login_form}}
     <input class="input btn btn-info" style="margin:0.5em;" type="submit" value="Login"/>
+             {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+{%endif%}
 
 
  </form>
