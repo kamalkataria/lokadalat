@@ -8,7 +8,7 @@
              {% if messages %}
 <ul class="messages">
     {% for message in messages %}
-    <li {% if message.tags %} class="bg-{{ message.tags }}-sublte"{% endif %}>{{ message }}</li>
+    <li {% if message.tags %} class="rounded bg-{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
 {%endif%}
 
