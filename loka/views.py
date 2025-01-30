@@ -240,12 +240,12 @@ class SettlementAddView(LoginRequiredMixin, TemplateView):
                                      data=self.request.POST)
         if (formset.is_valid()):
             formset.save()
-            messages.success(request, "Record added successfully")
+            messages.success(self.request, "Record added successfully")
 
 
         else:
 
-            messages.error(request, formset.errors)
+            messages.error(self.request, formset.errors)
 
         return redirect(reverse_lazy("settlement_list"))
 
@@ -309,12 +309,12 @@ class SettlementUpdateView(LoginRequiredMixin, UpdateView):
             response = super().form_valid(form)
             formset.instance = self.object
             formset.save()
-            messages.success(request, "Record Updated Suceesfully successfully")
+            messages.success(self.request, "Record Updated Suceesfully successfully")
             return response
 
         else:
             return super().form_invalid(form)
-            messages.error(request, formset.errors)
+            messages.error(self.request, formset.errors)
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
