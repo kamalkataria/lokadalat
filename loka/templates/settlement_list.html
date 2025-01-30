@@ -1,18 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-{%endif%}
-
 
     <div class="container-fluid">
 
     
-         
+             {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="bg-{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+{%endif%}
 
           <h5 class=" text text-center">Lok Adalat</h5>
              <h6 class="text text-center">Settlements for Branch - {{branch_name}}</h6>
