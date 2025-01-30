@@ -10,7 +10,7 @@
 {% if messages %}
 <ul class="messages list-unstyled">
     {% for message in messages %}
-    <li {% if message.tags %} class="bg-{{ message.tags }}-subtle"{% endif %}>{{ message }}</li>
+    <li {% if message.tags %} class="rounded bg-{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
 {%endif%}
     <!--<a class="text text-white btn btn-danger" style="font-color:white;" href="{%url 'index'%}">Home</a>-->
