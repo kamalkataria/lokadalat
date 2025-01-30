@@ -247,7 +247,7 @@ class SettlementAddView(LoginRequiredMixin, TemplateView):
         else:
 
             messages.error(self.request, formset.errors)
-            return redirect(reverse_lazy("add"))
+            return redirect(reverse_lazy("add_settlement"))
 
         
 
