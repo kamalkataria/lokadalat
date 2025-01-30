@@ -3,11 +3,7 @@
 {% load crispy_forms_tags %}
 
 <div class="container" style="">
- 
-
-    <div class="col-sm-2"></div>
-    <div class="col-sm-8 centered"  style="">
-              {% if messages %}
+  {% if messages %}
 
     {% for message in messages %}
      {% if message.tags %} 
@@ -18,6 +14,10 @@
                 
     {% endfor %}
                 {%endif%}
+
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8 centered"  style="">
+
 
 
 
