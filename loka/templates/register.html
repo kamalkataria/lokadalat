@@ -18,6 +18,7 @@
     {% for message in messages %}
     <li {% if message.tags %} class="rounded bg-{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
+</ul>
 {%endif%}
 
 		  <form style="padding:20%" id="regform" class="form" method="POST" data-regions-url="{% url 'ajax_load_regions' %}">
