@@ -239,7 +239,7 @@ class SettlementAddView(LoginRequiredMixin,TemplateView):
 
         else:
 
-            messages.error(request, "Error:formset.errors)
+            messages.error(request, formset.errors)
 
         return redirect(reverse_lazy("settlement_list"))
 
