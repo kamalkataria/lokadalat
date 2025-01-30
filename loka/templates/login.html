@@ -3,16 +3,7 @@
 {% load crispy_forms_tags %}
 
 <div class="container" style="">
-  <script>
-              var message_ele = document.getElementsByClassName("messages");
-
-        setTimeout(function(){ 
-            for (var i=0;i<message_ele.length;i+=1){
-                 message_ele[i].style.display = "none";
-              }
-      
-        }, 3000);
-        </script>
+ 
 
     <div class="col-sm-2"></div>
     <div class="col-sm-8 centered"  style="">
@@ -30,7 +21,7 @@
              {% if messages %}
 <ul class="messages list-unstyled">
     {% for message in messages %}
-    <li {% if message.tags %} class="rounded bg-{{ message.tags }}"{% endif %}>{{ message }}</li>
+    <li {% if message.tags %} class="rounded alert{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
 </ul>
 {%endif%}
