@@ -16,6 +16,11 @@ from .forms import SettlementForm, SettlementFormset1
 from .models import SettlementRow, Profile, RegionalOffice, Bank, LokAdalat
 from .utils import render_to_pdf
 from django.http import Http404
+from .utils import render_to_pdf
+from django.http import Http404
+from io import BytesIO
+from django.http import HttpResponse
+from django.template.loader import get_template
 
 
 def handler404(request, exception):
@@ -402,5 +407,72 @@ def settopdf(request):
         context['emptyset'] = True
     return render(request,"settlements_list2.html",context)
 
-    # pdf = render_to_pdf('settlements_list2.html', context)
-    # return HttpResponse(pdf, content_type='application/pdf')
+def render_to_pdf(template_src, context_dict):
+    template = get_template(template_src)
+    html  = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
+    
+def getladata1(request):
+    context = {}
+    if (request.user.is_superuser):
+        raise Http404()
+    else:
+        profile_user = Profile.objects.filter(Q(user__username__icontains=User.objects.get(id=request.user.id)))
+        bankid = Bank.objects.filter(Q(bank_id__username__icontains=profile_user[0].bank.bank_id))
+        lokax = LokAdalat.objects.all().filter(Q(username__username__icontains=bankid[0].bank_id)).order_by(
+            'lokadalatdate')
+        if profile_user:
+            context['form'] = LAForm(lokax=lokax)
+            return render(request, "ladata1.html", context)
+        else:
+            raise Http404()
+
+def getsettlements1(request):
+    context = {}
+    QueryDict = request.GET
+    predicted = QueryDict.get("lokadalat")
+    # print('request post is')
+    print(predicted)
+    # print('ello world')
+    # qs1 = SettlementRow.objects.filter(branch=Profile.objects.get(id=Profile.objects.get(id=request.user.id)))
+    qs1 = SettlementRow.objects.filter(branch=Profile.objects.get(id=request.user.id))
+
+    ros = RegionalOffice.objects.filter(branches__branch_alpha=request.user.username)
+    bank_id = ros[0].bank_id
+    print(bank_id)
+    if (request.user.is_authenticated and qs1):
+
+        qs1 = SettlementRow.objects.filter(branch=Profile.objects.get(id=request.user.id))
+        branchx = Profile.objects.filter(id=request.user.id)
+        # print('Bank id is',bankid)
+        lokax = LokAdalat.objects.all().filter(id=predicted)[0]
+        # print(str(lokax))
+        context['contoutstanding'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('outstanding'))
+        context['contunapplied_int'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(
+            Sum('unapplied_int'))
+        context['conttotalclosure'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('totalclosure'))
+        context['contcompromise_amt'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(
+            Sum('compromise_amt'))
+        context['conttoken_money'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('token_money'))
+        context['contpr_waived'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('pr_waived'))
+        context['contint_waived'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('int_waived'))
+        context['contrest_amount'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('rest_amount'))
+        context['branch'] = branchx[0].branch_name
+        context['object_list'] = qs1
+        context['venue'] = lokax.lokadalatvenue
+        context['ladate'] = lokax.lokadalatdate
+        context['emptyset'] = False
+        context['regiono'] = ros[0].ro_name
+        context['bankid'] = bank_id
+    else:
+
+        context['emptyset'] = True
+
+
+
+
+    return  render_to_pdf("loka/settled.html",context)
