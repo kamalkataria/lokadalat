@@ -1,0 +1,195 @@
+
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>LOK ADALAT</title>
+
+
+    {% load math_filters %}
+    <style>
+
+table{
+margin-left:10px;
+margin-right:10px;
+margin:20px;
+width:90%;
+}
+
+table tr td,th {
+    border: 1px solid black;
+  font-size:1.4em;
+  word-wrap: break-word;
+  border-collapse: collapse;
+  padding-left:0!important;
+  padding-right:0!important;
+  margin:0;
+
+  padding-top:5px;
+padding-bottom:5px;
+
+}
+tr{
+padding-top:5px;
+padding-bottom:5px;
+text-align:center;
+padding-left:0;
+padding-right:0;
+margin:1em 1em;
+}
+tr td{
+
+  word-wrap: break-word;
+  word-wrap:break-all;
+
+}
+
+ *{
+
+    font-family: "Times New Roman", Times, serif;
+
+  }
+
+
+  .p1{
+  font-size:1.6em;padding:0;margin:1em;line-height:1em;
+  }
+  .p2{
+  font-size:1.8em;padding:0;margin:1em;line-height:1em;
+  }
+
+  .p3title{
+  font-size:4em;margin:0;padding-top:1em;line-height:1em;
+
+  }
+
+
+
+ .dottedborderbottom{ border-bottom: 0.2rem dotted black; }.
+
+
+@page orientation-landscape {
+    size:landscape;
+    margin:0;
+}
+.landscape{
+page:orientation-landscape;
+}
+
+
+ @media print {
+  .pagebreak { page-break-before: always; } /* page-break-after works, as well */
+  @page {size: landscape;margin:2em;padding:2em;}
+   body {margin: 0;box-shadow: 0;}
+
+}
+
+
+  </style>
+    <script src=
+"https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js">
+    </script>
+
+     {% load bootstrap4 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+    {%load crispy_forms_tags %}
+    {% load math_filters %}
+</head>
+<body>
+
+
+
+
+<div class="container" style="margin:2em 2em;padding:1em 2em!important;background:white;">
+
+<center>
+<p class="p3title" style="margin-left:auto;margin-right:auto;!important;font-weight:bold;">{{bankid}}</p>
+
+
+
+
+<p class="p2">{{"List of compromise settlements in Lok Adalat Held At"|upper}} {{venue|upper}}</p>
+
+<p class="p1" style="text-left;margin:0 auto!important;">
+  <span >{{"Branch-"|upper}} {{branch|upper}} </span>
+      <span > {{"Regional Office - "|upper}}{{regiono|upper}} </span>
+      <span >{{"Date-"|upper}}{{ladate}}</span>
+    </p>
+
+</center>
+
+
+
+ <table class="">
+            <tr>
+              <th>S.N.</th>
+                <th >Account No</th>
+                <th >Name</th>
+                <th>Loan Type</th>
+                <th >IRAC</th>
+                <th>Outstanding</th>
+                <th >Unapplied Interest</th>
+                <th >Total Closure</th>
+                <th >Compromise Amount</th>
+                <th >Waived From Principal</th>
+                <th >Waived From Interest</th>
+                <th >Token Money</th>
+                <th >Amount Payble</th>
+
+            </tr>
+    {% for settlement in object_list %}
+        <tr>
+            <td style="width:30px;">{{forloop.counter}}</td>
+            <td style="width:110px;">{{settlement.account_no}}</td>
+            <td style="width:150px;padding:0;margin:0;">{{settlement.cust_name}}</td>
+            <td style="width:50px;">{{settlement.loan_obj}}</td>
+            <td style="width:50px;">{{settlement.irac}}</td>
+            <td style="width:100px;">{{settlement.outstanding}}</td>
+            <td style="width:100px;">{{settlement.unapplied_int}}</td>
+            <td style="width:100px;">{{settlement.totalclosure}}</td>
+            <td style="width:100px;">{{settlement.compromise_amt}}</td>
+            <td style="width:100px;">{{settlement.pr_waived}}</td>
+            <td style="width:100px;">{{settlement.int_waived}}</td>
+            <td style="width:100px;">{{settlement.token_money}}</td>
+            <td style="width:100px;">{{settlement.rest_amount}}</td>
+
+
+
+        </tr>
+    {% endfor %}
+         <tr style="padding:0;">
+             <td style="width:30px;"></td>
+             <td style="width:110px;padding:1px!important;" >TOTAL</td>
+             <td style="width:150px;"></td>
+             <td style="width:50px;"></td>
+             <td  style="width:50px;"></td>
+             <td  style="width:100px;" >{{contoutstanding.outstanding__sum}}</td>
+             <td style="width:100px;">{{contunapplied_int.unapplied_int__sum}}</td>
+             <td style="width:100px;">{{conttotalclosure.totalclosure__sum}}</td>
+             <td style="width:100px;">{{contcompromise_amt.compromise_amt__sum}}</td>
+             <td style="width:100px;">{{contpr_waived.pr_waived__sum}}</td>
+             <td style="width:100px;">{{contint_waived.int_waived__sum}}</td>
+             <td style="width:100px;">{{conttoken_money.token_money__sum}}</td>
+             <td style="width:100px;">{{contrest_amount.rest_amount__sum}}</td>
+
+         </tr>
+        </table>
+
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+
+    <h1 style="margin-left:15rem;" class="text-left">Branch Manager/Officer</h1>
+</div>
+
+
+
+
+
+</body>
+</html>
