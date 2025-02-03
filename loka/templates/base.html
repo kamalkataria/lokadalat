@@ -52,9 +52,16 @@
       <a class="nav-link "  href="{% url 'index' %}">Home</a>
     </li>
 
-    <li class="nav-item colorwhite">
-      <a class="nav-link "href="{% url 'getladata' %}">Generate PDF</a>
-    </li>
+   <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Generate PDFs
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'getladata' %}">Summary</a>
+          <a class="dropdown-item" href="{% url 'getladata1' %}">Settlements</a>
+
+        </div>
+      </li>
     <li class="nav-item colorwhite">
       <a class="nav-link " href="{% url 'add_settlement' %}">Add Settlement</a>
     </li>
