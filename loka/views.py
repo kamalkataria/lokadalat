@@ -416,7 +416,7 @@ def settopdf(request):
 
         context['emptyset'] = True
     # return render(request,"settlements_list2.html",context)
-    return  render_to_pdf("loka/settled.html",context)
+    return  render_to_pdf("loka/summary.html",context)
 
 
     
