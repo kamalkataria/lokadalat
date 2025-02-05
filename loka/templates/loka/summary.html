@@ -2,191 +2,185 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>LOK ADALAT</title>
-
-
     {% load math_filters %}
+
     <style>
+        .autocenter{margin-left:auto;margin-right:auto;text-align:center;}
+        .p0{font-size:1em;}
+        .p1{font-size:1.5em;}
+        .p2{font-size:2em;}
+        .p3{font-size:2.5em;}
+        .p4{font-size:3em;}
+        .p5{font-size:3.5em;}
+        .p6{font-size:4em;}
+        .p0padding{padding:1em;}
+        .p1padding{padding:1.5em;}
+        .p2padding{padding:2em;}
+        .p3padding{padding:2.5em;}
+        .p4padding{padding:3em;}
+        .lineheight0{line-height:0;}
+        .lineheight1{line-height:1em;}
+        .lineheight2{line-height:1.5em;}
+        .lineheight3{line-height:2em;}
+        .lineheight4{line-height:2.5em;}
+        .lineheight5{line-height:3em;}
+        .zeromargin{margin:0;}
+        .zeropadding{margin:0;}
 
-table{
-margin-left:10px;
-margin-right:10px;
-margin:20px;
-width:90%;
-}
+        .p0margin{margin:1em;}
+        .p1margin{margin:1.5em;}
+        .p2margin{margin:2em;}
+        .p3margin{margin:2.5em;}
+        .p4margin{margin:3em;}
+        .pbold{font-weight:bold;}
+        .pcenter{text-align:center;margin-left:auto;margin-right:auto;}
+        .dottedborderbottom{ border-bottom: 0.2rem dotted black; }
+         @media print {
+         .pagebreak { page-break-before: always; }
+         @page {size: landscape;margin:2em;padding:2em;}
 
-table tr td,th {
-    border: 1px solid black;
-  font-size:1.4em;
-  word-wrap: break-word;
-  border-collapse: collapse;
-  padding-left:0!important;
-  padding-right:0!important;
-  margin:0;
+         }
+        .mycontainer{
+        padding:1em;
+        overflow:auto;
+        width: 100%;
 
-  padding-top:5px;
-padding-bottom:5px;
-
-}
-tr{
-padding-top:5px;
-padding-bottom:5px;
-text-align:center;
-padding-left:0;
-padding-right:0;
-margin:1em 1em;
-}
-tr td{
-
-  word-wrap: break-word;
-  word-wrap:break-all;
-
-}
-
- *{
-
-    font-family: "Times New Roman", Times, serif;
-
-  }
-
-
-  .p1{
-  font-size:1.6em;padding:0;margin:1em;line-height:1em;
-  }
-  .p2{
-  font-size:1.8em;padding:0;margin:1em;line-height:1em;
-  }
-
-  .p3title{
-  font-size:4em;margin:0;padding-top:1em;line-height:1em;
-
-  }
-
-
-
- .dottedborderbottom{ border-bottom: 0.2rem dotted black; }.
-
-
-@page orientation-landscape {
-    size:landscape;
-    margin:0;
-}
-.landscape{
-page:orientation-landscape;
-}
-
-
- @media print {
-  .pagebreak { page-break-before: always; } /* page-break-after works, as well */
-  @page {size: landscape;margin:2em;padding:2em;}
-   body {margin: 0;box-shadow: 0;}
+        }
+        html, body {
+            }
+            th,td {
+    word-wrap: break-word;
 
 }
+td{
+font-size:3em;
+}
+        table {
+        border-collapse:collapse;
+
+  align:center;
+  margin:0 auto;
+  padding:5px;
+  display: block;
+  display: -webkit-flex;
+  justify-content: center;
+  align-items: center;
+    width: 100%;
+}
+td, th {
+  border: 1px solid black;
+  text-align:center;
+  font-size:1.3em;
+
+}
+        .wrapper{
+        width: 900px;
+    background: #FFFFFF;
+margin:0 auto;
+    padding-top: 0px;
+    padding-right: 30px;
+    padding-bottom: 0px;
+    padding-left: 30px;
+overflow:hidden;
+        }
 
 
-  </style>
-    <script src=
-"https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js">
-    </script>
 
-     {% load bootstrap4 %}
-  {% bootstrap_css %}
-  {% bootstrap_javascript %}
-    {%load crispy_forms_tags %}
-    {% load math_filters %}
+    </style>
 </head>
 <body>
+<div class="wrapper" style="padding:2px 2px;">
 
 
 
-
-<div class="container" style="margin:2em 2em;padding:1em 2em!important;background:white;">
-
-<center>
-<p class="p3title" style="margin-left:auto;margin-right:auto;!important;font-weight:bold;">{{bankid}}</p>
-
+       <table style="padding-left:2em;padding-top:1em;padding-bottom:1em;">
+           <caption style="text-align:center;padding:1em 1em;margin:1em 1em;">
+    <p class="p6 autocenter lineheight0 zeropadding" style="padding-top:1em;" >{{bankid}}</p>
+    <p class="p2  lineheight2 zeromargin zeropadding">{{"List of compromise settlements in Lok Adalat Held At"|upper}} {{venue|upper}}</p>
 
 
-
-<p class="p2">{{"List of compromise settlements in Lok Adalat Held At"|upper}} {{venue|upper}}</p>
-
-<p class="p1" style="text-left;margin:0 auto!important;">
-  <span >{{"Branch-"|upper}} {{branch|upper}} </span>
-      <span > {{"Regional Office - "|upper}}{{regiono|upper}} </span>
-      <span >{{"Date-"|upper}}{{ladate}}</span>
+               <p class="p1  lineheight2 zeromargin">
+ {{"Branch-"|upper}} {{branch|upper}}
+      {{"Regional Office - "|upper}}{{regiono|upper}}
+      {{"Date-"|upper}}{{ladate}}
     </p>
-
-</center>
-
-
-
- <table class="">
-            <tr>
-              <th>S.N.</th>
-                <th >Account No</th>
-                <th >Name</th>
+           </caption>
+           <tr >
+                <th>S.N.</th>
+                <th>Account No</th>
+                <th>Name</th>
                 <th>Loan Type</th>
-                <th >IRAC</th>
+                <th>IRAC</th>
                 <th>Outstanding</th>
-                <th >Unapplied Interest</th>
-                <th >Total Closure</th>
-                <th >Compromise Amount</th>
-                <th >Waived From Principal</th>
-                <th >Waived From Interest</th>
-                <th >Token Money</th>
-                <th >Amount Payble</th>
+                <th>Unapplied Interest</th>
+                <th>Total Closure</th>
+                <th>Compromise Amount</th>
+                <th colspan="2">Waived amount</th>
 
-            </tr>
-    {% for settlement in object_list %}
+
+                <th>Token Money</th>
+                <th>Amount Payble</th>
+           </tr>
+           <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+
+               <td>Waived From Principal</td>
+               <td>Waived From Interest</td>
+               <td></td>
+               <td></td>
+
+
+           </tr>
+
+            {% for settlement in object_list %}
+
         <tr>
-            <td style="width:30px;">{{forloop.counter}}</td>
-            <td style="width:110px;">{{settlement.account_no}}</td>
-            <td style="width:150px;padding:0;margin:0;">{{settlement.cust_name}}</td>
-            <td style="width:50px;">{{settlement.loan_obj}}</td>
-            <td style="width:50px;">{{settlement.irac}}</td>
-            <td style="width:100px;">{{settlement.outstanding}}</td>
-            <td style="width:100px;">{{settlement.unapplied_int}}</td>
-            <td style="width:100px;">{{settlement.totalclosure}}</td>
-            <td style="width:100px;">{{settlement.compromise_amt}}</td>
-            <td style="width:100px;">{{settlement.pr_waived}}</td>
-            <td style="width:100px;">{{settlement.int_waived}}</td>
-            <td style="width:100px;">{{settlement.token_money}}</td>
-            <td style="width:100px;">{{settlement.rest_amount}}</td>
+            <td >{{forloop.counter}}</td>
+            <td >{{settlement.account_no}}</td>
+            <td >{{settlement.cust_name}}</td>
+            <td >{{settlement.loan_obj}}</td>
+            <td >{{settlement.irac}}</td>
+            <td >{{settlement.outstanding}}</td>
+            <td >{{settlement.unapplied_int}}</td>
+            <td >{{settlement.totalclosure}}</td>
+            <td >{{settlement.compromise_amt}}</td>
+            <td >{{settlement.pr_waived}}</td>
+            <td >{{settlement.int_waived}}</td>
+            <td >{{settlement.token_money}}</td>
+            <td >{{settlement.rest_amount}}</td>
 
 
 
         </tr>
     {% endfor %}
-         <tr style="padding:0;">
-             <td style="width:30px;"></td>
-             <td style="width:110px;padding:1px!important;" >TOTAL</td>
+            <tr >
+             <td style="width:40px;"></td>
+             <td style="width:120px;">TOTAL</td>
              <td style="width:150px;"></td>
-             <td style="width:50px;"></td>
              <td  style="width:50px;"></td>
-             <td  style="width:100px;" >{{contoutstanding.outstanding__sum}}</td>
-             <td style="width:100px;">{{contunapplied_int.unapplied_int__sum}}</td>
-             <td style="width:100px;">{{conttotalclosure.totalclosure__sum}}</td>
-             <td style="width:100px;">{{contcompromise_amt.compromise_amt__sum}}</td>
-             <td style="width:100px;">{{contpr_waived.pr_waived__sum}}</td>
-             <td style="width:100px;">{{contint_waived.int_waived__sum}}</td>
-             <td style="width:100px;">{{conttoken_money.token_money__sum}}</td>
-             <td style="width:100px;">{{contrest_amount.rest_amount__sum}}</td>
+             <td  style="width:50px;"></td>
+             <td style="width:80px;">{{contoutstanding.outstanding__sum}}</td>
+             <td style="width:80px;">{{contunapplied_int.unapplied_int__sum}}</td>
+             <td style="width:80px;">{{conttotalclosure.totalclosure__sum}}</td>
+             <td style="width:90px;">{{contcompromise_amt.compromise_amt__sum}}</td>
+             <td style="width:80px;">{{contpr_waived.pr_waived__sum}}</td>
+             <td style="width:80px;">{{contint_waived.int_waived__sum}}</td>
+             <td style="width:80px;">{{conttoken_money.token_money__sum}}</td>
+             <td style="width:80px;">{{contrest_amount.rest_amount__sum}}</td>
 
          </tr>
-        </table>
+       </table>
+    <h1 style="margin-top:5em;margin-left:5em;" class="">Branch Manager/Officer</h1>
 
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-
-
-    <h1 style="margin-left:15rem;" class="text-left">Branch Manager/Officer</h1>
-</div>
-
+    </div>
 
 
 
