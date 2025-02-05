@@ -23,7 +23,7 @@
         loop: true,
         delay: anime.stagger(50),
         });
-   
+
 
     </script>
      {% load bootstrap4 %}
@@ -47,7 +47,7 @@
 
   <!-- Links -->
   <ul class="navbar-nav">
-       <a class="navbar-brand colorwhite" href="#">{{branch_name|title}}</a>
+       <a class="navbar-brand colorwhite" href="#">{{branch_name|upper}}</a>
        <li class="nav-item colorwhite">
       <a class="nav-link "  href="{% url 'index' %}">Home</a>
     </li>
@@ -68,18 +68,22 @@
      <li class="nav-item colorwhite ">
       <a class="nav-link "  href="{% url 'logout' %}"> <i class="fa fa-sign-out" aria-hidden="true"></i></a>
     </li>
-        <li class="nav-item  ">   <a href="https://www.instagram.com/imkamalkataria/" class="nav-link fa fa-instagram"></a></li>
+
+
+
+
+</ul>
+       <ul class=" navbar-nav">
+           Any queries?
+           <li class="nav-item  ">   <a href="https://www.instagram.com/imkamalkataria/" class="nav-link fa fa-instagram"></a></li>
             <li class="nav-item  ">     <a href="https://www.facebook.com/utopiankamal" class="nav-link fa fa-facebook"></a></li>
             <li class=" nav-item  ">  <a href="https://x.com/neandien" class="nav-link fa fa-twitter"></a></li>
-     
-       
-  
-    
-           
-</ul>
-      
 
-    
+
+       </ul>
+
+
+
   </div>
 
 </nav>
