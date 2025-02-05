@@ -152,6 +152,9 @@ class SettlementListView(LoginRequiredMixin, ListView):
                 context['userissu'] = True
             else:
                 context['userissu'] = False
+            ros = RegionalOffice.objects.filter(branches__branch_alpha=self.request.user.username)
+            bank_id = ros[0].bank_id
+
 
             context['contoutstanding'] = SettlementRow.objects.filter(
                 branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
@@ -178,6 +181,7 @@ class SettlementListView(LoginRequiredMixin, ListView):
                 branch=Profile.objects.get(user__id=self.request.user.id)).aggregate(
                 Sum('rest_amount'))
             context['authed'] = True
+            context['bankid'] = bank_id
             print(Profile.objects.filter(user__id=self.request.user.id))
             if (len(Profile.objects.filter(user__id=self.request.user.id)) == 0):
                 context['branch_name'] = self.request.user.username
