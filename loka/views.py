@@ -233,8 +233,14 @@ class SettlementAddView(LoginRequiredMixin, TemplateView):
                                          queryset=SettlementRow.objects.none(),
                                          initial=[{'branch': self.request.user.id, 'loka': lokax[0].id,
                                                    'ro': RegionalOffice.objects.filter(id=ros.id)[0].id}])
+            profile_user = Profile.objects.filter(Q(user__username__icontains=self.request.user.username))
+            bankid = Bank.objects.filter(Q(bank_id__username__icontains=profile_user[0].bank.bank_id))
+            context={}
+            context['settlement_formset']=formset
+            context['bankid']=bankid[0]
+            context['branch_name']=profile_user[0].branch_name
 
-            return self.render_to_response({'settlement_formset': formset})
+            return self.render_to_response(context)
 
     def post(self, *args, **kwargs):
         profile_user = Profile.objects.filter(Q(user__username__icontains=self.request.user.username))
