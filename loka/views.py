@@ -302,9 +302,13 @@ class SettlementUpdateView(LoginRequiredMixin, UpdateView):
         context = super(SettlementUpdateView, self).get_context_data(**kwargs)
         branchx = Profile.objects.filter(id=self.request.user.id)
         setpk = SettlementRow.objects.filter(id=self.kwargs['pk'])
+        profile_user = Profile.objects.filter(Q(user__username__icontains=self.request.user.username))
+        bankid = Bank.objects.filter(Q(bank_id__username__icontains=profile_user[0].bank.bank_id))
         if self.request.user.is_authenticated and branchx[0].user == setpk[0].branch.user:
             context['passed'] = True
-            print('yep passed')
+            context['branch_name']=branchx[0].branch_name
+            context['bankid']=bankid[0].bank_name
+            
         else:
             context['passed'] = False
         return context
