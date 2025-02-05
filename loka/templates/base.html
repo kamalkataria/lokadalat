@@ -47,7 +47,7 @@
 
   <!-- Links -->
   <ul class="navbar-nav">
-       <a class="navbar-brand colorwhite" href="#">{{branch_name|upper}}</a>
+
        <li class="nav-item colorwhite">
       <a class="nav-link "  href="{% url 'index' %}">Home</a>
     </li>
@@ -65,19 +65,22 @@
     <li class="nav-item colorwhite">
       <a class="nav-link " href="{% url 'add_settlement' %}">Add Settlement</a>
     </li>
-     <li class="nav-item colorwhite ">
-      <a class="nav-link "  href="{% url 'logout' %}"> <i class="fa fa-sign-out" aria-hidden="true"></i></a>
-    </li>
 
 
 
 
 </ul>
-       <ul class=" navbar-nav">
+
+       <a class="navbar-text ml-auto" style="font-color:white;" href="#"><span>{{branch_name|upper}}{{ " Branch"|upper}},{{bankid|upper}}</span></a>
+       <ul class=" navbar-nav ml-auto" style="align:right;">
            Any queries?
-           <li class="nav-item  ">   <a href="https://www.instagram.com/imkamalkataria/" class="nav-link fa fa-instagram"></a></li>
-            <li class="nav-item  ">     <a href="https://www.facebook.com/utopiankamal" class="nav-link fa fa-facebook"></a></li>
-            <li class=" nav-item  ">  <a href="https://x.com/neandien" class="nav-link fa fa-twitter"></a></li>
+           <li class="nav-item  "> <a href="https://www.instagram.com/imkamalkataria/"  title="Instagram" class="nav-link fa fa-instagram"></a></li>
+            <li class="nav-item  "> <a href="https://www.facebook.com/utopiankamal"  title="Facebook" class="nav-link fa fa-facebook"></a></li>
+            <li class=" nav-item  ">  <a href="https://x.com/neandien"  title="Twitter" class="nav-link fa fa-twitter"></a></li>
+            <li class="nav-item">
+      <a class="nav-link fa fa-sign-out "  title="Logout" href="{% url 'logout' %}"></a>
+    </li>
+
 
 
        </ul>
