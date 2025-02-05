@@ -368,6 +368,8 @@ def getladata(request):
             'lokadalatdate')
         if profile_user:
             context['form'] = LAForm(lokax=lokax)
+            context['branch_name']=profile_user[0].branch_name
+            context['bankid']=bankid[0]
             return render(request, "ladata.html", context)
         else:
             raise Http404()
@@ -445,6 +447,8 @@ def getladata1(request):
             'lokadalatdate')
         if profile_user:
             context['form'] = LAForm(lokax=lokax)
+            context['branch_name']=profile_user[0].branch_name
+            context['bankid']=bankid[0]
             return render(request, "ladata1.html", context)
         else:
             raise Http404()
