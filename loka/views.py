@@ -98,6 +98,10 @@ class UserEditView(UpdateView):
     template_name = 'editprofile.html'
     success_url = reverse_lazy('index')
 
+    
+    def get_object(self, queryset=None):
+        return Profile.objects.get(user=self.request.user)
+
 
 
 def load_regions(request):
