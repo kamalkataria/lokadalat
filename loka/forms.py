@@ -10,6 +10,11 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Bank,RegionalOffice,Profile
 
 
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(widget=forms.PasswordInput())
+    new_password = forms.CharField(widget=forms.PasswordInput())
+    confirm_password = forms.CharField(widget=forms.PasswordInput())
+
 
 class ProfileForm(forms.ModelForm):
     class Meta:
