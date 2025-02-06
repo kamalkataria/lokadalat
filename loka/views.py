@@ -26,6 +26,25 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
+
+class ChangePasswordView(PasswordChangeView):
+    form_class = PasswordChangeForm
+    success_url = reverse_lazy('index')
+    template_name = 'change_password.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ChangePasswordView, self).get_context_data(**kwargs)
+        ros = RegionalOffice.objects.filter(branches__user__username=self.request.user.username)
+        bank_id = ros[0].bank_id
+        context['bankid'] = bank_id
+
+        if (len(Profile.objects.filter(user__id=self.request.user.id)) == 0):
+            context['branch_name'] = self.request.user.username
+
+        else:
+            context['branch_name'] = Profile.objects.filter(user__id=self.request.user.id)[0].branch_name
+        return context
+        
 def handler404(request, exception):
     return render(request, '404handler.html')
 
