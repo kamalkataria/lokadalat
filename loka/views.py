@@ -22,6 +22,7 @@ from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
@@ -93,15 +94,68 @@ def register_request(request):
     return render(request=request, template_name="register.html", context={"register_form": form})
 
 
-class UserEditView(UpdateView):
+class UserEditView(LoginRequiredMixin,UpdateView):
+    login_url = '/login/'
+
     form_class = ProfileForm
     template_name = 'editprofile.html'
     success_url = reverse_lazy('index')
 
-    
     def get_object(self, queryset=None):
-        return Profile.objects.get(user=self.request.user)
+        if self.request.user.is_authenticated:
+            return Profile.objects.get(user=self.request.user)
+        else:
+            return Profile.objects.get(user=None)
 
+    def shouldBeRedirectedToAdmin(self):
+        isSU=self.request.user.is_superuser
+        thisUser=User.objects.get(username=self.request.user)
+        isASuperBanker=thisUser.groups.filter(name="SuperBanker").exists()
+        shdBRedctd=isSU or isASuperBanker
+        return shdBRedctd
+
+
+    def get(self, *args, **kwargs):
+        shdBRedctd=self.shouldBeRedirectedToAdmin()
+        # print(self.request.user.is_superuser)
+        if(shdBRedctd):
+            return redirect('admin:index')
+        return super(UserEditView, self).get(*args, **kwargs)
+
+    def get_queryset(self, **kwargs):
+        qs = super().get_queryset(**kwargs)
+        if self.request.user.is_authenticated:
+            return qs.filter(id=Profile.objects.get(user__id=self.request.user.id))
+
+        else:
+            print('User is not authenticated')
+            return qs.filter(branch=None)
+
+    def get_context_data(self, **kwargs):
+        if self.request.user.is_authenticated:
+
+
+            context = super(UserEditView, self).get_context_data(**kwargs)
+            if(self.request.user.is_superuser):
+                context['userissu']=True
+            else:
+                context['userissu'] = False
+            ros = RegionalOffice.objects.filter(branches__user__username=self.request.user.username)
+            bank_id = ros[0].bank_id
+            context['authed'] = True
+            context['bankid'] = bank_id
+            if(len(Profile.objects.filter(user__id=self.request.user.id))==0):
+                context['branch_name']=self.request.user.username
+
+            else:
+                context['branch_name']=Profile.objects.filter(user__id=self.request.user.id)[0].branch_name
+
+            return context
+        else:
+            context = super(UserEditView, self).get_context_data(**kwargs)
+            print('hey this is coming unauthenticated')
+            context['authed'] = False
+            return context
 
 
 def load_regions(request):
@@ -124,7 +178,7 @@ def gotohome(request):
     return redirect('settlement_list')
 
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 
 class SettlementListView(LoginRequiredMixin, ListView):
