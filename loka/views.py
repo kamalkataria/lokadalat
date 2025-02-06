@@ -27,7 +27,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
-class ChangePasswordView(PasswordChangeView):
+class ChangePasswordView(LoginRequiredMixin,PasswordChangeView):
+    login_url='/login/'
     form_class = PasswordChangeForm
     success_url = reverse_lazy('index')
     template_name = 'change_password.html'
