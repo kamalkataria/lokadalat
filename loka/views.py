@@ -93,6 +93,13 @@ def register_request(request):
     return render(request=request, template_name="register.html", context={"register_form": form})
 
 
+class UserEditView(UpdateView):
+    form_class = ProfileForm
+    template_name = 'editprofile.html'
+    success_url = reverse_lazy('index')
+
+
+
 def load_regions(request):
     region_id = request.GET.get('bank')
     print('loading regions')
@@ -152,7 +159,7 @@ class SettlementListView(LoginRequiredMixin, ListView):
                 context['userissu'] = True
             else:
                 context['userissu'] = False
-            ros = RegionalOffice.objects.filter(branches__branch_alpha=self.request.user.username)
+            ros = RegionalOffice.objects.filter(branches__user__username=self.request.user.username)
             bank_id = ros[0].bank_id
 
 
@@ -393,7 +400,7 @@ def settopdf(request):
     # qs1 = SettlementRow.objects.filter(branch=Profile.objects.get(id=Profile.objects.get(id=request.user.id)))
     qs1 = SettlementRow.objects.filter(branch=Profile.objects.get(id=request.user.id))
 
-    ros = RegionalOffice.objects.filter(branches__branch_alpha=request.user.username)
+    ros = RegionalOffice.objects.filter(branches__user__username=request.user.username)
     bank_id = ros[0].bank_id
     print(bank_id)
     if (request.user.is_authenticated and qs1):
@@ -463,7 +470,7 @@ def getsettlements1(request):
     # qs1 = SettlementRow.objects.filter(branch=Profile.objects.get(id=Profile.objects.get(id=request.user.id)))
     qs1 = SettlementRow.objects.filter(branch=Profile.objects.get(id=request.user.id))
 
-    ros = RegionalOffice.objects.filter(branches__branch_alpha=request.user.username)
+    ros = RegionalOffice.objects.filter(branches__user__username=request.user.username)
     bank_id = ros[0].bank_id
     print(bank_id)
     if (request.user.is_authenticated and qs1):
