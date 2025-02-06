@@ -5,7 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.db.models import Sum
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.template import loader
@@ -34,6 +34,14 @@ class ChangePasswordView(LoginRequiredMixin,PasswordChangeView):
     form_class = PasswordChangeForm
     success_url = reverse_lazy('index')
     template_name = 'change_password.html'
+
+    def form_valid(self, form):
+        messages.success(self.request, "Password Changed successfully")
+        super().form_valid(form)
+        return HttpResponseRedirect(self.get_success_url())
+
+
+    
     def shouldBeRedirectedToAdmin(self):
         isSU=self.request.user.is_superuser
         thisUser=User.objects.get(username=self.request.user)
