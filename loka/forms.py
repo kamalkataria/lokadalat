@@ -15,6 +15,16 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model=Profile
         fields='__all__'
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.fields['user'].widget.attrs['readonly'] = True
+            self.fields['bank'].widget.attrs['readonly'] = True
+            self.fields['ro'].widget.attrs['readonly'] = True
+            self.fields['user'].disabled =True
+            self.fields['bank'].disabled =True
+            self.fields['ro'].disabled =True
 
 
 class LAForm(forms.Form):
