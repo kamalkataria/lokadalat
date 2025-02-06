@@ -81,7 +81,7 @@ class SettlementRow(models.Model):
     loka=models.ForeignKey(LokAdalat,on_delete=models.CASCADE,related_name="setrow")
     branch = models.ForeignKey(Profile, on_delete=models.CASCADE, blank=True, null=True,related_name='branches')
     ro=models.ForeignKey(RegionalOffice,on_delete=models.CASCADE,blank=True,null=True)
-    account_no=models.IntegerField(blank=True)
+    account_no=models.CharField(blank=True,max_length=20)
     cust_name=models.CharField(max_length=50)
     outstanding=models.IntegerField(blank=True)
     totalclosure=models.IntegerField(blank=True)
