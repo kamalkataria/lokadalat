@@ -139,10 +139,10 @@ class SettlementForm(forms.ModelForm):
         widgets = {
             'account_no': forms.TextInput(attrs={'placeholder': 'Account No'}),
             'cust_name': forms.TextInput(attrs={'placeholder': 'Name'}),
-            'totalclosure': forms.TextInput(attrs={'placeholder': 'Total closure'}),
-            'outstanding': forms.TextInput(attrs={'placeholder': 'Outstanding'}),
-            'compromise_amt': forms.TextInput(attrs={'placeholder': 'Compromise Amount'}),
-            'token_money': forms.TextInput(attrs={'placeholder': 'Token Money'}),
+            'totalclosure': forms.NumberInput(attrs={'placeholder': 'Total closure'}),
+            'outstanding': forms.NumberInput(attrs={'placeholder': 'Outstanding'}),
+            'compromise_amt': forms.NumberInput(attrs={'placeholder': 'Compromise Amount'}),
+            'token_money': forms.NumberInput(attrs={'placeholder': 'Token Money'}),
             'loan_obj': forms.TextInput(attrs={'placeholder': 'Loan Obj'}),
             'irac': forms.TextInput(attrs={'placeholder': 'IRAC'}),
 
