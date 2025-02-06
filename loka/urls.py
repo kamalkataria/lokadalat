@@ -10,6 +10,7 @@ urlpatterns = [
     path('loka/deleteset/<int:id>', views.deleteset, name="deletesettlement"),
     # path('gotohome/', views.SettlementListView.as_view(), name="gotohome"),
     path("siriusisadogstar/", views.register_request, name="register"),
+    path("editprofile/", views.UserEditView.as_view(), name="editprofile"),
     path("login/", views.login_request, name="login"),
     path("logout/", views.logout_request, name="logout"),
     path("regbranch/", views.regbranch, name="regbranch"),
