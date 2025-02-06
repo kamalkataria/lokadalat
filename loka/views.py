@@ -32,6 +32,20 @@ class ChangePasswordView(LoginRequiredMixin,PasswordChangeView):
     form_class = PasswordChangeForm
     success_url = reverse_lazy('index')
     template_name = 'change_password.html'
+    def shouldBeRedirectedToAdmin(self):
+        isSU=self.request.user.is_superuser
+        thisUser=User.objects.get(username=self.request.user)
+        isASuperBanker=thisUser.groups.filter(name="SuperBanker").exists()
+        shdBRedctd=isSU or isASuperBanker
+        return shdBRedctd
+
+
+    def get(self, *args, **kwargs):
+        shdBRedctd=self.shouldBeRedirectedToAdmin()
+        # print(self.request.user.is_superuser)
+        if(shdBRedctd):
+            return redirect('admin:index')
+        return super(PasswordChangeView, self).get(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(ChangePasswordView, self).get_context_data(**kwargs)
