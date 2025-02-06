@@ -22,6 +22,8 @@ urlpatterns = [
 
     path("getladata/", views.getladata, name="getladata"),
     path('loadregions/', views.load_regions, name='ajax_load_regions'),
-    path('loka/update/<int:pk>', views.SettlementUpdateView.as_view(), name='updaterec')
+    path('loka/update/<int:pk>', views.SettlementUpdateView.as_view(), name='updaterec'),
+    path('change-password/', ChangePasswordView.as_view(), name='change_password'),
+
 
 ]
