@@ -12,7 +12,7 @@ from django.template import loader
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, UpdateView
 from .forms import NewUserForm, LAForm
-from .forms import SettlementForm, SettlementFormset1
+from .forms import SettlementForm, SettlementFormset1,ProfileForm
 from .models import SettlementRow, Profile, RegionalOffice, Bank, LokAdalat
 from .utils import render_to_pdf
 from django.http import Http404
