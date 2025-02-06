@@ -15,12 +15,10 @@ urlpatterns = [
     path("login/", views.login_request, name="login"),
     path("logout/", views.logout_request, name="logout"),
     path("regbranch/", views.regbranch, name="regbranch"),
-    path("^settopdf/", views.settopdf, name="settopdf"),
-    path("^getsettlements1/", views.getsettlements1, name="getsettlements1"),
-
+    path("settopdf/", views.settopdf, name="settopdf"),
+    path("getsettlements1/", views.getsettlements1, name="getsettlements1"),
     path("getladata/", views.getladata, name="getladata"),
     path("getladata1/", views.getladata1, name="getladata1"),
-
     path("getladata/", views.getladata, name="getladata"),
     path('loadregions/', views.load_regions, name='ajax_load_regions'),
     path('loka/update/<int:pk>', views.SettlementUpdateView.as_view(), name='updaterec'),
