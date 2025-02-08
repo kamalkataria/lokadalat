@@ -1,38 +1,54 @@
 {% extends 'base1.html' %}
-{%block content%}
+{% block content %}
 {% load crispy_forms_tags %}
 
-<div class="container">
- 
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="text-center mb-3">
+                  {% if messages %}
+<ul class="messages list-unstyled">
+    {% for message in messages %}
+    <li {% if message.tags %} class="rounded alert alert-{{ message.tags }}"{% endif %}>{{ message }}
+     <button type="button" class="close" data-dismiss="alert">&times;</button></li>
+    {% endfor %}
+</ul>
+{%endif%}
+                <p class="text-success fw-bold">
+                    Do not want to signup? You can use
+                    <a href="{% url 'setcalc' %}" class="text-primary">this</a> form
+                    to generate Lok Adalat settlement.
+                </p>
+            </div>
 
-    <div class="col-sm-3"></div>
-    <div class="col-sm-6 centered"  style="">
+            <div class="alert alert-info">
+                <h5>Benefits of Pro Users:</h5>
+                <ul>
+                    <li>Generate separate PDFs for settlements</li>
+                    <li>Generate separate PDFs for summary reports</li>
+                    <li>View all past Lok Adalat records</li>
+                    <li>High-level maintenance at admin level</li>
+                    <li>One-time setup</li>
+                </ul>
+            </div>
 
+            <div class="card shadow p-4">
+                <h4 class="text-center text-info">Lok Adalat Login</h4>
 
+                <form method="POST" class="mt-3">
+                    {% csrf_token %}
+                    {{ login_form|crispy }}
+                    <button type="submit" class="btn btn-info w-100 mt-2">Login</button>
+                </form>
 
-
-         <p class="text text-center text-info">Lok Adalat Login</p>
-
-
-
-
-         <form class="form formx" method="POST" style="margin:1%;max-width:1000px!important;">
-
-    {% csrf_token %}
-    {{ login_form}}
-    <input class="input btn btn-info" style="margin:0.5em;" type="submit" value="Login"/>
-   
-
- </form>
-          <p class="text-info fs-6">Are you an Administrator? <a class="text-info" href="{% url 'admin:index' %}">Login Here</a></p>
+                <p class="text-center mt-3 text-info">
+                    <small>Are you an Administrator?
+                        <a href="{% url 'admin:index' %}" class="text-info fw-bold">Login Here</a>
+                    </small>
+                </p>
+            </div>
+        </div>
     </div>
+</div>
 
-    <div class="col-sm-3">
-
-    </div>
-    </div>
-    {%endblock content%}
-
-
-
-
+{% endblock content %}
