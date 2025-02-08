@@ -2,175 +2,131 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <style>
+        /* General Styling */
+        body {
+            font-family: "Times New Roman", Times, serif;
+            margin: 10px;
+            font-size: 14px; /* Adjusted font size */
+            background: #fff;
+        }
 
+        /* Header Styling */
+        .title {
+            font-size: 1.8rem; /* Adjusted font size */
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
 
-     <style>
-        #left {
-        float:left;
-  text-align: left;
-  width: 40%;
+        /* Paragraph Styling */
+        .p0 {
+            margin: 3px 0;
+            line-height: 1.3;
+            font-size: 1.3em; /* Adjusted font size */
+        }
+
+        /* Dotted Line */
+        .dottedborderbottom {
+            border-bottom: 1px dotted black;
+            display: inline-block;
+            min-width: 120px;
+        }
+
+        /* Signature Section */
+       .signature-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; /* Align text properly at the bottom */
+    margin-top: 20px;
+    width: 100%;
 }
 
-#right {
-  text-align: right;
-  float:right;
-  width: 40%;
-
-
+.signature-box {
+    width: 45%;
+    text-align: left;
+    font-size: 1.3em;
+    font-weight: bold;
 }
 
-.container2 {
-  display: flex;
-  flex-direction: row;
-  height: auto;
-  box-sizing: border-box;
-  width:500px;
+.signature-box.right {
+    text-align: right;
 }
 
-table td,th {
-    border: 1px solid black;
-  font-size:1.4em;
-  word-wrap: break-word;
-  border-collapse: collapse;
 
-}
-tr{
-padding:5px;
-}
-tr td{
+        /* Ensure Each Settlement Starts on a New Page */
+        .settlement {
+            page-break-before: always;
+        }
 
-  word-wrap: break-word;
-  word-wrap:break-all;
+        /* Print Optimization */
+        @page {
+            size: A4;
+            margin: 12mm;
+        }
 
-}
+        @media print {
+            body { margin: 0; box-shadow: none; }
+        }
+    </style>
 
- * {
-
-    font-family: "Times New Roman", Times, serif;
-
-  }
-  .p0
-  {font-size:1.6em;padding:0;margin:0;line-height:1.5em;}
-
-  .p1{
-  font-size:1.6em;padding:0;margin:0;line-height:1.3em;
-  }
-  .p2{
-  font-size:1.8em;padding:0;margin:0;line-height:1.3em;
-  }
-
-
- .dottedborderbottom{ border-bottom: 0.2rem dotted black; }.
-
-@page orientation-portrait {
-    size:A4;
-    margin:0;
-}
-@page orientation-landscape {
-    size:A4;
-    margin:0;
-}
-.landscape{
-page:orientation-landscape;
-}
-.portrait{
-page:orientation-portrait;
-
-}
-
- @media print {
-  .pagebreak { page-break-before: always; } /* page-break-after works, as well */
-   body {margin: 0;box-shadow: 0;}
-
-}
-
-  </style>
     {% load bootstrap4 %}
-  {% bootstrap_css %}
-  {% bootstrap_javascript %}
-    {%load crispy_forms_tags %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% load crispy_forms_tags %}
     {% load math_filters %}
 </head>
 <body>
 
-<!--{%include 'loka/summary.html'%}-->
-
 {% load django_tables2 %}
 
-
-{%for settlement in object_list%}
-<div class="portrait-page">
-    <center><h1 class="text text-center" style="font-size:2rem;margin-top:5rem;font-weight:bold;">BEFORE LOK ADALAT HELD AT {{venue|upper}}</h1></center>
-    <p class="p0">Organised by DLS/Authority/.................................Committe under section 19 of</p>
-    <p class="p0">Legal Services Authorities act 1987(Contract Act)</p>
-    <p class="p0">Petitioner/Plentiff/Complainant(Bank Name) {{bankid}}, Branch - {{branch}} </p>
-    <p class="p0"><span style="font-weight:bold;">Defendant/Respondent(Borrower Name):&nbsp;</span><span class="dottedborderbottom">{{settlement.cust_name}}</span> </p>
-    <p class="p0">No. of the Proceeding of the.......................................Court/Authority/Committee</p>
-    <p class="p0">Present:-</p>
-    <p class="p0">Name of the Judicial Officer........................................................Upper Civil Judge(Senior Division)</p>
-    <p  class="p0" style="padding-top:1rem;">Retired Judicial Officer</p>
-    <p  class="p0" style="padding-top:0.3em;">Name of Members</p>
+{% for settlement in object_list %}
+<div class="settlement">
+    <h1 class="title">BEFORE LOK ADALAT HELD AT {{ venue|upper }}</h1>
+    <p class="p0">Organized by DLS/Authority/Committee under Section 19 of Legal Services Authorities Act 1987.</p>
+    <p class="p0">Petitioner (Bank Name): {{ bankid }}, Branch - {{ branch }}</p>
+    <p class="p0"><strong>Defendant (Borrower Name):</strong> <span class="dottedborderbottom">{{ settlement.cust_name }}</span></p>
+    <p class="p0">Proceeding No. ................................ Court/Authority/Committee</p>
+    <p class="p0">Present:</p>
+    <p class="p0">Judicial Officer: .................................................. Upper Civil Judge (Senior Division)</p>
+    <p class="p0">Retired Judicial Officer:</p>
+    <p class="p0">Members:</p>
     <ol class="list-inline">
-        <li class="d-inline" style="font-size:1.6rem;">.............................................................</li>
-        <li class="d-inline" style="font-size:1.6rem;">.............................................................</li>
-
+        <li class="d-inline">.............................................................</li>
+        <li class="d-inline">.............................................................</li>
     </ol>
-    <p  class="p0" style="margin-top:10px;margin-bottom:10px;font-weight:Bold;">AWARD</p>
+    <p class="p0"><strong>AWARD</strong></p>
+    <p class="p0">The disputes between the parties have been referred to the Lok Adalat and have been settled as follows:</p>
 
-    <p class="p1">The disputes Between the parties having been referred for determination to the Lok Adalat and the parties having
-    been referred for determination to the Lok Adalat and the Parties having compromised/Settled the case/matter the following award passed in terms
-    of settlement:-</p>
-    <p class="p2" ><span style="font-weight:bold;">Account no.:</span><span class="dottedborderbottom"> {{settlement.account_no}}</span></p>
-    <p class="p2" ><span style="font-weight:bold;">Total Outstanding with Interest.:</span><span class="dottedborderbottom"> {{settlement.totalclosure}}</span></p>
-    <p class="p2" ><span style="font-weight:bold;">Amount Waived:-</span><span class="dottedborderbottom"> {{settlement.totalclosure|substract:settlement.compromise_amt}}</span></p>
+    <!-- Inline Data Instead of Table -->
+    <p class="p0"><strong>Account No.:</strong> <span class="dottedborderbottom">{{ settlement.account_no }}</span></p>
+    <p class="p0"><strong>Total Outstanding:</strong> <span class="dottedborderbottom">{{ settlement.totalclosure }}</span></p>
+    <p class="p0"><strong>Amount Waived:</strong> <span class="dottedborderbottom">{{ settlement.totalclosure|substract:settlement.compromise_amt }}</span></p>
+    <p class="p0"><strong>Compromise Amount:</strong> <span class="dottedborderbottom">{{ settlement.compromise_amt }}</span></p>
+    <p class="p0"><strong>Token Money:</strong> <span class="dottedborderbottom">{{ settlement.token_money }}</span></p>
+    <p class="p0"><strong>Balance:</strong> <span class="dottedborderbottom">{{ settlement.rest_amount }}</span></p>
+    <p class="p0"><strong>Amount Payable By:</strong> ............................................................................</p>
+    <p class="p0">The parties are informed that the court fee, if any, paid shall be refunded.</p>
 
-    <p class="p2" ><span style="font-weight:bold;">Compromise Amount:</span><span class="dottedborderbottom"> {{settlement.compromise_amt}}</span></p>
-    <p class="p2" ><span style="font-weight:bold;">Token Money:</span><span class="dottedborderbottom"> {{settlement.token_money}}</span></p>
-    <p class="p2" ><span style="font-weight:bold;">Balance:</span><span class="dottedborderbottom"> {{settlement.rest_amount}}</span></p>
-    <p class="p2" ><span style="font-weight:bold;">Amount Payble on or before:</span>............................................................................</p>
-        <p class="p0" ><span style="font-weight:bold;"></span>The parties are informed that the court fee,if any,paid by any one of them shall be refund.</p>
-    <br/>
-    <br/>
-    <br/>
-    <p class="p0" style="font-weight:bold;">Petitioner/Plentiff/Complainant/Defendent/Respondent</p>
-    <br/>
-    <br/>
-
-
-    <div class="container2">
-
-  <div id="left">
-      <p class="p0"><span>Judicial Officer</span></p>
-    <p class="p0">Member</p>
-    <p class="p0">Date...........</p>
-  </div>
-
-  <div id="right">
-<p class="p0">Borrower</p>
-    <p class="p0">Member</p>
-  </div>
-
-</div>
-
-
-    <div style="margin-top:200px;">
-        <p class="p2" style="font-weight:bold;">Seal of the authority/commitee</p>
+    <!-- Signature Section -->
+    <div class="signature-container">
+        <div class="signature-box">
+            <p>Judicial Officer</p>
+            <p>Member</p>
+            <p>Date: __________</p>
+        </div>
+        <div class="signature-box right">
+            <p>Borrower</p>
+            <p>Member</p>
+        </div>
     </div>
-    <p></p>
 
-
-
-
-
-
-
-<!--<div class="pagebreak"> </div>-->
+    <!-- Seal Section -->
+    <div style="margin-top: 10px; text-align: center;">
+        <p class="p0" style="font-weight:bold;">Seal of the Authority/Committee</p>
+    </div>
 </div>
-<div class="pagebreak"></div>
-
-{%endfor%}
-
-
+{% endfor %}
 
 </body>
 </html>
