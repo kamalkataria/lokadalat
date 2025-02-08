@@ -1,111 +1,83 @@
-
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     {% load math_filters %}
-
+    
     <style>
-        .autocenter{margin-left:auto;margin-right:auto;text-align:center;}
-        .p0{font-size:1em;}
-        .p1{font-size:1.5em;}
-        .p2{font-size:2em;}
-        .p3{font-size:2.5em;}
-        .p4{font-size:3em;}
-        .p5{font-size:3.5em;}
-        .p6{font-size:4em;}
-        .p0padding{padding:1em;}
-        .p1padding{padding:1.5em;}
-        .p2padding{padding:2em;}
-        .p3padding{padding:2.5em;}
-        .p4padding{padding:3em;}
-        .lineheight0{line-height:0;}
-        .lineheight1{line-height:1em;}
-        .lineheight2{line-height:1.5em;}
-        .lineheight3{line-height:2em;}
-        .lineheight4{line-height:2.5em;}
-        .lineheight5{line-height:3em;}
-        .zeromargin{margin:0;}
-        .zeropadding{margin:0;}
-
-        .p0margin{margin:1em;}
-        .p1margin{margin:1.5em;}
-        .p2margin{margin:2em;}
-        .p3margin{margin:2.5em;}
-        .p4margin{margin:3em;}
-        .pbold{font-weight:bold;}
-        .pcenter{text-align:center;margin-left:auto;margin-right:auto;}
-        .dottedborderbottom{ border-bottom: 0.2rem dotted black; }
-         @media print {
-         .pagebreak { page-break-before: always; }
-         @page {size: landscape;margin:2em;padding:2em;}
-
-         }
-        .mycontainer{
-        padding:1em;
-        overflow:auto;
-        width: 100%;
-
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background: #fff;
+            font-size: 12px;
         }
-        html, body {
-            }
-            th,td {
-    word-wrap: break-word;
 
-}
-td{
-font-size:3em;
-}
+        /* Centered Content */
+        .wrapper {
+            width: 98%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 10px;
+            background: #fff;
+        }
+
+        /* Border-free Headings */
+        h2, h3, h4, p {
+            margin: 2px 0; /* Removes extra margin */
+            padding: 0;
+            text-align: center;
+        }
+
+        /* Table Styling (Compact) */
         table {
-        border-collapse:collapse;
-
-  align:center;
-  margin:0 auto;
-  padding:5px;
-  display: block;
-  display: -webkit-flex;
-  justify-content: center;
-  align-items: center;
-    width: 100%;
-}
-td, th {
-  border: 1px solid black;
-  text-align:center;
-  font-size:1.3em;
-
-}
-        .wrapper{
-        width: 900px;
-    background: #FFFFFF;
-margin:0 auto;
-    padding-top: 0px;
-    padding-right: 30px;
-    padding-bottom: 0px;
-    padding-left: 30px;
-overflow:hidden;
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
         }
 
+        th, td {
+            border: 1px solid black;
+            text-align: center;
+            padding: 2px;  /* Reduced padding */
+            font-size: 10px;  /* Smaller font */
+        }
 
+        th {
+            background: #f4f4f4;
+            font-weight: bold;
+        }
 
+        /* Reduce Row Height */
+        tr {
+            line-height: 1.1;
+        }
+
+        /* Page Break for Printing */
+        @media print {
+            .pagebreak { page-break-before: always; }
+            @page {
+                size: landscape;
+                margin: 5mm; /* Minimized margins */
+            }
+        }
     </style>
 </head>
 <body>
-<div class="wrapper" style="padding:2px 2px;">
 
+<div class="wrapper">
+    <!-- Report Header -->
+    <h2>{{ bankid }}</h2>
+    <h3>Compromise Settlements in Lok Adalat</h3>
+    <h4>Held at: {{ venue|upper }}</h4>
+    <h4>Branch: {{ branch|upper }} | Regional Office: {{ regiono|upper }}</h4>
+    <h4>Date: {{ ladate }}</h4>
 
-
-       <table style="padding-left:2em;padding-top:1em;padding-bottom:1em;">
-           <caption style="text-align:center;padding:1em 1em;margin:1em 1em;">
-    <p class="p6 autocenter lineheight0 zeropadding" style="padding-top:1em;" >{{bankid}}</p>
-    <p class="p2  lineheight2 zeromargin zeropadding">{{"List of compromise settlements in Lok Adalat Held At"|upper}} {{venue|upper}}</p>
-
-
-               <p class="p1  lineheight2 zeromargin">
- {{"Branch-"|upper}} {{branch|upper}}
-      {{"Regional Office - "|upper}}{{regiono|upper}}
-      {{"Date-"|upper}}{{ladate}}
-    </p>
-           </caption>
-           <tr >
+    <!-- Table -->
+    <table>
+        <thead>
+            <tr>
                 <th>S.N.</th>
                 <th>Account No</th>
                 <th>Name</th>
@@ -115,75 +87,54 @@ overflow:hidden;
                 <th>Unapplied Interest</th>
                 <th>Total Closure</th>
                 <th>Compromise Amount</th>
-                <th colspan="2">Waived amount</th>
-
-
+                <th colspan="2">Waived Amount</th>
                 <th>Token Money</th>
-                <th>Amount Payble</th>
-           </tr>
-           <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-
-               <td>Waived From Principal</td>
-               <td>Waived From Interest</td>
-               <td></td>
-               <td></td>
-
-
-           </tr>
-
+                <th>Amount Payable</th>
+            </tr>
+            <tr>
+                <td colspan="9"></td>
+                <th>Principal</th>
+                <th>Interest</th>
+                <td colspan="2"></td>
+            </tr>
+        </thead>
+        <tbody>
             {% for settlement in object_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ settlement.account_no }}</td>
+                <td>{{ settlement.cust_name }}</td>
+                <td>{{ settlement.loan_obj }}</td>
+                <td>{{ settlement.irac }}</td>
+                <td>{{ settlement.outstanding }}</td>
+                <td>{{ settlement.unapplied_int }}</td>
+                <td>{{ settlement.totalclosure }}</td>
+                <td>{{ settlement.compromise_amt }}</td>
+                <td>{{ settlement.pr_waived }}</td>
+                <td>{{ settlement.int_waived }}</td>
+                <td>{{ settlement.token_money }}</td>
+                <td>{{ settlement.rest_amount }}</td>
+            </tr>
+            {% endfor %}
 
-        <tr>
-            <td >{{forloop.counter}}</td>
-            <td >{{settlement.account_no}}</td>
-            <td >{{settlement.cust_name}}</td>
-            <td >{{settlement.loan_obj}}</td>
-            <td >{{settlement.irac}}</td>
-            <td >{{settlement.outstanding}}</td>
-            <td >{{settlement.unapplied_int}}</td>
-            <td >{{settlement.totalclosure}}</td>
-            <td >{{settlement.compromise_amt}}</td>
-            <td >{{settlement.pr_waived}}</td>
-            <td >{{settlement.int_waived}}</td>
-            <td >{{settlement.token_money}}</td>
-            <td >{{settlement.rest_amount}}</td>
+            <!-- Total Row -->
+            <tr style="background: #ddd; font-weight: bold;">
+                <td colspan="5">TOTAL</td>
+                <td>{{ contoutstanding.outstanding__sum }}</td>
+                <td>{{ contunapplied_int.unapplied_int__sum }}</td>
+                <td>{{ conttotalclosure.totalclosure__sum }}</td>
+                <td>{{ contcompromise_amt.compromise_amt__sum }}</td>
+                <td>{{ contpr_waived.pr_waived__sum }}</td>
+                <td>{{ contint_waived.int_waived__sum }}</td>
+                <td>{{ conttoken_money.token_money__sum }}</td>
+                <td>{{ contrest_amount.rest_amount__sum }}</td>
+            </tr>
+        </tbody>
+    </table>
 
-
-
-        </tr>
-    {% endfor %}
-            <tr >
-             <td style="width:40px;"></td>
-             <td style="width:120px;">TOTAL</td>
-             <td style="width:150px;"></td>
-             <td  style="width:50px;"></td>
-             <td  style="width:50px;"></td>
-             <td style="width:80px;">{{contoutstanding.outstanding__sum}}</td>
-             <td style="width:80px;">{{contunapplied_int.unapplied_int__sum}}</td>
-             <td style="width:80px;">{{conttotalclosure.totalclosure__sum}}</td>
-             <td style="width:90px;">{{contcompromise_amt.compromise_amt__sum}}</td>
-             <td style="width:80px;">{{contpr_waived.pr_waived__sum}}</td>
-             <td style="width:80px;">{{contint_waived.int_waived__sum}}</td>
-             <td style="width:80px;">{{conttoken_money.token_money__sum}}</td>
-             <td style="width:80px;">{{contrest_amount.rest_amount__sum}}</td>
-
-         </tr>
-       </table>
-    <h1 style="margin-top:5em;margin-left:5em;" class="">Branch Manager/Officer</h1>
-
-    </div>
-
-
-
+    <!-- Signature -->
+    <h3 style="margin-top: 20px;">Branch Manager / Officer</h3>
+</div>
 
 </body>
 </html>
