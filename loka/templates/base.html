@@ -47,11 +47,11 @@
 
   <!-- Links -->
   <ul class="navbar-nav">
-     <li class="nav-item">
-      <a class="navbar-brand colorwhite">Lok Adalat</a>
+       <li class="nav-item colorwhite">
+      <a class="navbar-brand">Lok Adalat</a>
     </li>
 
-       <li class="nav-item ">
+       <li class="nav-item colorwhite">
       <a class="nav-link "  href="{% url 'index' %}">Home</a>
     </li>
 
@@ -59,7 +59,7 @@
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Generate PDFs
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown"  style="background:#7FFFD4">
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background:#7FFFD4">
           <a class="dropdown-item" href="{% url 'getladata' %}">Summary</a>
           <a class="dropdown-item" href="{% url 'getladata1' %}">Settlements</a>
 
@@ -67,6 +67,9 @@
       </li>
     <li class="nav-item colorwhite">
       <a class="nav-link " href="{% url 'add_settlement' %}">Add Settlement</a>
+    </li>
+      <li class="nav-item colorwhite">
+      <a class="nav-link " href="{% url 'editprofile' %}">Profile</a>
     </li>
 
 
@@ -76,16 +79,14 @@
 
        <a class="navbar-text ml-auto" style="font-color:white;" href="{% url 'editprofile' %}"><span>{{branch_name|upper}}{{ " Branch"|upper}},{{bankid|upper}}</span></a>
        <ul class=" navbar-nav ml-auto" style="align:right;">
-
-           <li class="nav-item  "> <a href="https://www.instagram.com/imkamalkataria/"  title="Instagram" class="nav-link fa fa-instagram fa-sm"></a></li>
-            <li class="nav-item  "> <a href="https://www.facebook.com/utopiankamal"  title="Facebook" class="nav-link fa fa-facebook fa-sm"></a></li>
-            <li class=" nav-item  ">  <a href="https://x.com/neandien"  title="Twitter" class="nav-link fa fa-twitter fa-sm"></a></li>
+           Any queries?
+           <li class="nav-item  "> <a href="https://www.instagram.com/imkamalkataria/"  title="Instagram" class="nav-link fa fa-instagram"></a></li>
+            <li class="nav-item  "> <a href="https://www.facebook.com/utopiankamal"  title="Facebook" class="nav-link fa fa-facebook"></a></li>
+            <li class=" nav-item  ">  <a href="https://x.com/neandien"  title="Twitter" class="nav-link fa fa-twitter"></a></li>
             <li class="nav-item">
-      <a class="nav-link fa fa-sign-out fa-sm"  title="Logout" href="{% url 'logout' %}"></a>
+      <a class="nav-link fa fa-sign-out "  title="Logout" href="{% url 'logout' %}"></a>
+                <a class="nav-link fa fa-key "  title="Logout" href="{% url 'change_password' %}"></a>
     </li>
-           <li class="nav-item">
-               <a style="font-color:crimson;" class="nav-link fa fa-key fa-sm "  title="Logout" href="{% url 'change_password' %}"></a>
-           </li>
 
 
 
