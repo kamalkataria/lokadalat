@@ -1,31 +1,26 @@
-
-    <!DOCTYPE html>
+<!DOCTYPE html>
 {% extends "base.html" %}
 
-
 {% block content %}
-{% load crispy_forms_tags %}
-{% load bulma_tags %}
-{% load bootstrap4 %}
-  {% bootstrap_css %}
-  {% bootstrap_javascript %}
-  {%load static%}
 
-<div class="container">
-    <!--<a class="btn btn-info" href="{%url 'index'%}">Home</a>-->
-    {%if passed%}
-    <p class="text text-danger">Updating the record</p>
-<form class="form" method="post" style="padding:1em;">
-    {% csrf_token %}
-    {{ form|crispy}}
-    <input class="btn btn-info"type="submit" value="Update">
+<div class="container py-4 px-4 rounded shadow-sm" style="background:#F5F5DC; max-width: 600px;">
+    {% if passed %}
+        <div class="alert alert-warning text-center" role="alert">
+            <strong>Updating the record...</strong>
+        </div>
 
-</form>
-    </div>
-    {%else%}
+        <form class="form" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Update</button>
+        </form>
+    {% else %}
+        <div class="alert alert-danger text-center" role="alert">
+            <h4 class="text-danger">You are not authorized to edit this settlement</h4>
+        </div>
+    {% endif %}
+</div>
 
-    <h1>You are not authorised to edit this settlement</h1>
-
-    {%endif%}
-    {% endblock content %}
-
+{% endblock content %}
