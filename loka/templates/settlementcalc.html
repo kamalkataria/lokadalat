@@ -33,100 +33,75 @@
     <div class="container border p-4 mt-4">
         <h1 class="text-danger text-center">Add lokadalat settlements</h1>
         <div id="commonFields">
-            <div class="row mb-3">
-                <div class="col">
-                    <label>Bank Name</label>
-                    <input type="text" class="form-control" id="bankName">
-                </div>
+            <div class="mb-3">
+                <label>Bank Name</label>
+                <input type="text" class="form-control" id="bankName">
             </div>
-            <div class="row mb-3">
-                <div class="col">
-                    <label>Regional Office</label>
-                    <input type="text" class="form-control" id="regionalOffice">
-                </div>
-                <div class="col">
-                    <label>Branch</label>
-                    <input type="text" class="form-control" id="branch">
-                </div>
+            <div class="mb-3">
+                <label>Regional Office</label>
+                <input type="text" class="form-control" id="regionalOffice">
             </div>
-            <div class="row mb-3">
-                <div class="col">
-                    <label>Lok Adalat Date</label>
-                    <input type="date" class="form-control" id="lokAdalatDate">
-                </div>
-                <div class="col">
-                    <label>Place</label>
-                    <input type="text" class="form-control" id="place">
-                </div>
+            <div class="mb-3">
+                <label>Branch</label>
+                <input type="text" class="form-control" id="branch">
+            </div>
+            <div class="mb-3">
+                <label>Lok Adalat Date</label>
+                <input type="date" class="form-control" id="lokAdalatDate">
+            </div>
+            <div class="mb-3">
+                <label>Place</label>
+                <input type="text" class="form-control" id="place">
             </div>
         </div>
         <div id="formsContainer">
             <form class="settlementForm">
-                <button type="button" class="btn btn-danger btn-sm remove-btn" onclick="removeForm(this)">Remove This Form</button>
-                <div class="row mb-3">
-                    <div class="col">
-                        <label>Account Number</label>
-                        <input type="number" class="form-control accountNumber">
-                    </div>
-                    <div class="col">
-                        <label>Customer Name</label>
-                        <input type="text" class="form-control customerName">
-                    </div>
+                <div class="mb-3">
+                    <label>Account Number</label>
+                    <input type="number" class="form-control accountNumber">
                 </div>
-                <div class="row mb-3">
-                    <div class="col">
-                        <label>Total Closure</label>
-                        <input type="number" class="form-control totalClosure" oninput="calculateValues(this)">
-                    </div>
-                    <div class="col">
-                        <label>Outstanding</label>
-                        <input type="number" class="form-control outstanding" oninput="calculateValues(this)">
-                    </div>
-                    <div class="col">
-                        <label>Unapplied Interest</label>
-                        <input type="number" oninput="calculateValues(this)" class="form-control unappliedInterest" readonly>
-                    </div>
+                <div class="mb-3">
+                    <label>Customer Name</label>
+                    <input type="text" class="form-control customerName">
                 </div>
-                <div class="row mb-3">
-                    <div class="col">
-                        <label>Compromise Amount</label>
-                        <input type="number" class="form-control compromiseAmount" oninput="calculateValues(this)">
-                    </div>
-                    <div class="col">
-                        <label>Token</label>
-                        <input type="number" class="form-control token" oninput="calculateValues(this)">
-                    </div>
+                <div class="mb-3">
+                    <label>Total Closure</label>
+                    <input type="number" class="form-control totalClosure" oninput="calculateValues(this)">
                 </div>
-                <div class="row mb-3">
-                    <div class="col">
-                        <label>Objective</label>
-                        <input type="text" class="form-control objective">
-                    </div>
-                    <div class="col">
-                        <label>IRAC</label>
-                        <input type="text" class="form-control irac">
-                    </div>
+                <div class="mb-3">
+                    <label>Outstanding</label>
+                    <input type="number" class="form-control outstanding" oninput="calculateValues(this)">
                 </div>
-                <div class="row mb-3">
-                    <div class="col">
-                        <label>Waived from Principal</label>
-                        <input type="number" oninput="calculateValues(this)" class="form-control prWaived" readonly>
-                    </div>
-                    <div class="col">
-                        <label>Waived from Interest</label>
-                        <input type="number" oninput="calculateValues(this)" class="form-control intWaived" readonly>
-                    </div>
-                    <div class="col">
-                        <label>Rest Amount</label>
-                        <input type="number" oninput="calculateValues(this)" class="form-control restAmount" readonly>
-                    </div>
+                <div class="mb-3">
+                    <label>Unapplied Interest</label>
+                    <input type="number" class="form-control unappliedInterest" readonly>
+                </div>
+                <div class="mb-3">
+                    <label>Compromise Amount</label>
+                    <input type="number" class="form-control compromiseAmount" oninput="calculateValues(this)">
+                </div>
+                <div class="mb-3">
+                    <label>Token</label>
+                    <input type="number" class="form-control token" oninput="calculateValues(this)">
+                </div>
+                <div class="mb-3">
+                    <label>Waived from Principal</label>
+                    <input type="number" class="form-control prWaived" readonly>
+                </div>
+                <div class="mb-3">
+                    <label>Waived from Interest</label>
+                    <input type="number" class="form-control intWaived" readonly>
+                </div>
+                <div class="mb-3">
+                    <label>Rest Amount</label>
+                    <input type="number" class="form-control restAmount" readonly>
                 </div>
             </form>
         </div>
         <button class="btn btn-primary mt-3" onclick="generateTable()">Submit</button>
         <button class="btn btn-success mt-3 ms-2" onclick="replicateForm()">Add Another Settlement</button>
 <!--        <button class="btn btn-danger mt-3 ms-2" onclick="generatePDF()">Download PDF</button>-->
-        <div id="settlementTable" class="mt-4"></div>
+        <div id="settlementTable" class="mt-4 table-responsive"></div>
     </div>
     <script>
         function replicateForm() {
