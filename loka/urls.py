@@ -23,6 +23,8 @@ urlpatterns = [
     path('loadregions/', views.load_regions, name='ajax_load_regions'),
     path('loka/update/<int:pk>', views.SettlementUpdateView.as_view(), name='updaterec'),
     path('change-password/', views.ChangePasswordView.as_view(), name='change_password'),
+    path('setcalc/', views.setcalc, name='setcalc'),
+
 
 
 ]
