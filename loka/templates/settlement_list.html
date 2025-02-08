@@ -22,15 +22,14 @@
     <h5 class="text-center font-weight-bold text-primary">Lok Adalat</h5>
     <h6 class="text-center text-secondary">Settlements for Branch - {{ branch_name }}</h6>
 
-    <!-- Table -->
-<div class="container mt-4">
-    <div class="table-responsive" style="max-height: 500px; overflow-y: auto; border: 1px solid #ddd;">
+    <div class="container mt-4">
+    <div class="table-responsive" style="max-height: 500px; overflow: auto; border: 1px solid #ddd; position: relative;">
         <table class="table table-hover table-bordered text-center">
-            <thead class="thead-dark" style="position: sticky; top: 0; background-color: #343a40; color: white; z-index: 1000;">
+            <thead class="thead-dark" style="position: sticky; top: 0; z-index: 1000;">
                 <tr>
-                    <th>S.N.</th>
-                    <th>Account No</th>
-                    <th>Name</th>
+                    <th class="sticky-col first-col">S.N.</th>
+                    <th class="sticky-col second-col">Account No</th>
+                    <th class="sticky-col third-col">Name</th>
                     <th>Loan Type</th>
                     <th>IRAC</th>
                     <th>Outstanding</th>
@@ -47,9 +46,9 @@
             <tbody>
                 {% for settlement in object_list %}
                     <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ settlement.account_no }}</td>
-                        <td>{{ settlement.cust_name }}</td>
+                        <td class="sticky-col first-col">{{ forloop.counter }}</td>
+                        <td class="sticky-col second-col">{{ settlement.account_no }}</td>
+                        <td class="sticky-col third-col">{{ settlement.cust_name }}</td>
                         <td>{{ settlement.loan_obj }}</td>
                         <td>{{ settlement.irac }}</td>
                         <td>{{ settlement.outstanding }}</td>
@@ -69,7 +68,11 @@
             </tbody>
             <tfoot class="bg-info text-white">
                 <tr>
-                    <td colspan="5"><strong>TOTAL</strong></td>
+                    <td class="sticky-col first-col"></td>
+                    <td class="sticky-col second-col"><strong>TOTAL</strong></td>
+                    <td class="sticky-col third-col"></td>
+                    <td></td>
+                    <td></td>
                     <td><strong>{{ contoutstanding.outstanding__sum }}</strong></td>
                     <td><strong>{{ contunapplied_int.unapplied_int__sum }}</strong></td>
                     <td><strong>{{ conttotalclosure.totalclosure__sum }}</strong></td>
@@ -83,6 +86,9 @@
             </tfoot>
         </table>
     </div>
+</div>
+
+
 </div>
     
 </div>
