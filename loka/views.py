@@ -27,6 +27,18 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
 
 
+def setcalc(request):
+    visit_count = request.session.get('visit_count', 0)
+
+    # If the user has exceeded 10 visits, redirect to signup page
+    if visit_count >= 5 and not request.user.is_authenticated:
+        messages.warning(request, "Request limits exceeded. Please contact us for using pro features")
+        return redirect('login')  # Replace with your signup URL name
+
+    # Increase visit count
+    request.session['visit_count'] = visit_count + 1
+
+    return render(request, 'settlementcalc.html')
 
 
 class ChangePasswordView(LoginRequiredMixin,PasswordChangeView):
