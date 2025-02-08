@@ -7,13 +7,13 @@
         <div class="col-lg-8 col-md-10 col-sm-12">
             <div class="text-center mb-3">
                   {% if messages %}
-<ul class="messages list-unstyled">
-    {% for message in messages %}
-    <li {% if message.tags %} class="rounded alert alert-{{ message.tags }}"{% endif %}>{{ message }}
-     <button type="button" class="close" data-dismiss="alert">&times;</button></li>
-    {% endfor %}
-</ul>
-{%endif%}
+                  <ul class="messages list-unstyled">
+                      {% for message in messages %}
+                      <li {% if message.tags %} class="rounded alert alert-{{ message.tags }}"{% endif %}>{{ message }}
+                       <button type="button" class="close" data-dismiss="alert">&times;</button></li>
+                      {% endfor %}
+                  </ul>
+                  {% endif %}
                 <p class="text-success fw-bold">
                     Do not want to signup? You can use
                     <a href="{% url 'setcalc' %}" class="text-primary">this</a> form
@@ -48,6 +48,22 @@
                 </p>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Social Media Links -->
+<div class="container text-center mt-4">
+    <h5>Follow Us</h5>
+    <div class="d-flex justify-content-center">
+        <a href="https://www.instagram.com" class="btn btn-outline-danger btn-sm mx-2" target="_blank">
+            <i class="fab fa-instagram"></i> Instagram
+        </a>
+        <a href="https://www.facebook.com" class="btn btn-outline-primary btn-sm mx-2" target="_blank">
+            <i class="fab fa-facebook"></i> Facebook
+        </a>
+        <a href="https://www.twitter.com" class="btn btn-outline-info btn-sm mx-2" target="_blank">
+            <i class="fab fa-twitter"></i> Twitter
+        </a>
     </div>
 </div>
 
