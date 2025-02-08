@@ -192,3 +192,66 @@ html {
             margin: 0;
         }
 
+
+
+.table-responsive {
+    overflow: auto;
+    max-height: 500px;
+    border: 1px solid #ddd;
+    position: relative;
+}
+
+thead {
+    position: sticky;
+    top: 0;
+    background: #343a40;
+    color: white;
+    z-index: 1000;
+}
+
+.sticky-col {
+    position: sticky;
+    left: 0;
+    background-color: white;
+    z-index: 999;
+    border-right: 1px solid #ddd;
+}
+
+/* Specific left positioning for each sticky column */
+.first-col {
+    left: 0;
+    z-index: 1002; /* Ensures it stays above */
+}
+
+.second-col {
+    left: 50px;
+    z-index: 1001;
+}
+
+.third-col {
+    left: 150px;
+    z-index: 1000;
+}
+
+/* Ensure first three columns have background color for visibility */
+td.sticky-col, th.sticky-col {
+    background-color: white;
+}
+
+/* Ensuring responsiveness */
+@media (max-width: 768px) {
+    .table-responsive {
+        max-height: 300px;
+    }
+
+    .first-col {
+        left: 0;
+    }
+    .second-col {
+        left: 40px;
+    }
+    .third-col {
+        left: 100px;
+    }
+}
+
