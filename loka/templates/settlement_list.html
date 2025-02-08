@@ -1,113 +1,87 @@
 {% extends "base.html" %}
 {% block content %}
 
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4">
-                 {% if messages %}
-
-    {% for message in messages %}
-     {% if message.tags %} 
-        <div class="rounded alert alert-{{ message.tags }}  alert-dismissible">{{ message }}
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        </div>
-                {% endif %}
-                
-    {% endfor %}
-                {%endif%}
-
-
+<div class="container mt-4">
+    <!-- Flash Messages -->
+    {% if messages %}
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
             </div>
-            <div class="col-sm-4"></div>
         </div>
+    {% endif %}
 
-    
-            
+    <!-- Page Title -->
+    <h5 class="text-center font-weight-bold text-primary">Lok Adalat</h5>
+    <h6 class="text-center text-secondary">Settlements for Branch - {{ branch_name }}</h6>
 
-          <h5 class=" text text-center">Lok Adalat</h5>
-             <h6 class="text text-center">Settlements for Branch - {{branch_name}}</h6>
-        <div class="container">
-
-     <table class=" table-responsive-sm table table-hover table-bordered table-condensed table-sm">
-            <tr>
-                <th>S.N.</th>
-                <th>Account No</th>
-                <th>Name</th>
-                <th>Loan Type</th>
-                <th>IRAC</th>
-                <th>Outstanding</th>
-                <th>Unapplied Interest</th>
-                <th>Total Closure</th>
-                <th>Compromise Amount</th>
-                <th>Waived From Principal</th>
-                <th>Waived From Interest</th>
-                <th>Token Money</th>
-                <th>Amount Payble</th>
-                <th>Delete</th>
-                <th>Edit</th>
-            </tr>
-    {% for settlement in object_list %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{settlement.account_no}}</td>
-            <td>{{settlement.cust_name}}</td>
-            <td>{{settlement.loan_obj}}</td>
-            <td>{{settlement.irac}}</td>
-            <td>{{settlement.outstanding}}</td>
-            <td>{{settlement.unapplied_int}}</td>
-            <td>{{settlement.totalclosure}}</td>
-            <td>{{settlement.compromise_amt}}</td>
-            <td>{{settlement.pr_waived}}</td>
-            <td>{{settlement.int_waived}}</td>
-            <td>{{settlement.token_money}}</td>
-            <td>{{settlement.rest_amount}}</td>
-            <td>
-
-                <a onclick="return confirm('Are you sure you want to delete this?')" href="deleteset/{{settlement.id}}">Delete</a>
-
-
-
-
-            </td>
-            <td>
-
-                <a href="update/{{settlement.pk}}">Edit</a>
-
-
-            </td>
-
-
-        </tr>
-    {% endfor %}
-         <tr class='' style='background:#7FFFD4;font-color:#343434;'>
-             <td></td>
-             <td>TOTAL</td>
-             <td></td>
-             <td></td>
-             <td></td>
-             <td>{{contoutstanding.outstanding__sum}}</td>
-             <td>{{contunapplied_int.unapplied_int__sum}}</td>
-             <td>{{conttotalclosure.totalclosure__sum}}</td>
-             <td>{{contcompromise_amt.compromise_amt__sum}}</td>
-             <td>{{contpr_waived.pr_waived__sum}}</td>
-             <td>{{contint_waived.int_waived__sum}}</td>
-             <td>{{conttoken_money.token_money__sum}}</td>
-             <td>{{contrest_amount.rest_amount__sum}}</td>
-             <td></td>
-<td></td>
-         </tr>
+    <!-- Table -->
+    <div class="table-responsive shadow-lg mt-3">
+        <table class="table table-hover table-bordered text-center">
+            <thead class="thead-dark">
+                <tr>
+                    <th>S.N.</th>
+                    <th>Account No</th>
+                    <th>Name</th>
+                    <th>Loan Type</th>
+                    <th>IRAC</th>
+                    <th>Outstanding</th>
+                    <th>Unapplied Interest</th>
+                    <th>Total Closure</th>
+                    <th>Compromise Amount</th>
+                    <th>Waived (Principal)</th>
+                    <th>Waived (Interest)</th>
+                    <th>Token Money</th>
+                    <th>Amount Payable</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for settlement in object_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ settlement.account_no }}</td>
+                        <td>{{ settlement.cust_name }}</td>
+                        <td>{{ settlement.loan_obj }}</td>
+                        <td>{{ settlement.irac }}</td>
+                        <td>{{ settlement.outstanding }}</td>
+                        <td>{{ settlement.unapplied_int }}</td>
+                        <td>{{ settlement.totalclosure }}</td>
+                        <td>{{ settlement.compromise_amt }}</td>
+                        <td>{{ settlement.pr_waived }}</td>
+                        <td>{{ settlement.int_waived }}</td>
+                        <td>{{ settlement.token_money }}</td>
+                        <td>{{ settlement.rest_amount }}</td>
+                        <td>
+                            <a href="update/{{ settlement.pk }}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="deleteset/{{ settlement.id }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this?')">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot class="bg-info text-white">
+                <tr>
+                    <td colspan="5"><strong>TOTAL</strong></td>
+                    <td><strong>{{ contoutstanding.outstanding__sum }}</strong></td>
+                    <td><strong>{{ contunapplied_int.unapplied_int__sum }}</strong></td>
+                    <td><strong>{{ conttotalclosure.totalclosure__sum }}</strong></td>
+                    <td><strong>{{ contcompromise_amt.compromise_amt__sum }}</strong></td>
+                    <td><strong>{{ contpr_waived.pr_waived__sum }}</strong></td>
+                    <td><strong>{{ contint_waived.int_waived__sum }}</strong></td>
+                    <td><strong>{{ conttoken_money.token_money__sum }}</strong></td>
+                    <td><strong>{{ contrest_amount.rest_amount__sum }}</strong></td>
+                    <td></td>
+                </tr>
+            </tfoot>
         </table>
-        </div>
-            </div>
-
-
-    
-
-
-
-
-
+    </div>
+</div>
 
 {% endblock content %}
