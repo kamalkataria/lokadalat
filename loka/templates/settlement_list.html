@@ -71,4 +71,23 @@
                         <td class="sticky-col first-col"></td>
                         <td class="sticky-col second-col"><strong>TOTAL</strong></td>
                         <td class="sticky-col third-col"></td>
-   
+                        <td></td>
+                        <td></td>
+                        <td><strong>{{ contoutstanding.outstanding__sum }}</strong></td>
+                        <td><strong>{{ contunapplied_int.unapplied_int__sum }}</strong></td>
+                        <td><strong>{{ conttotalclosure.totalclosure__sum }}</strong></td>
+                        <td><strong>{{ contcompromise_amt.compromise_amt__sum }}</strong></td>
+                        <td><strong>{{ contpr_waived.pr_waived__sum }}</strong></td>
+                        <td><strong>{{ contint_waived.int_waived__sum }}</strong></td>
+                        <td><strong>{{ conttoken_money.token_money__sum }}</strong></td>
+                        <td><strong>{{ contrest_amount.rest_amount__sum }}</strong></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
