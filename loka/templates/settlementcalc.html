@@ -27,6 +27,42 @@
             margin: 5px;
             display: none;
         }
+                .table-responsive {
+    position: relative;
+    max-height: 500px; 
+    overflow: auto; 
+    border: 1px solid #ddd;
+}
+
+table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #7FFFD4; /* Ensure the background color remains */
+}
+
+th, td {
+    white-space: nowrap; /* Prevent content from wrapping */
+}
+
+th:first-child, td:first-child {
+    position: sticky;
+    left: 0;
+    background: white;
+    z-index: 1001;
+}
+
+th:nth-child(2), td:nth-child(2) {
+    position: sticky;
+    left: 40px; /* Adjust width as needed */
+    background: white;
+    z-index: 1001;
+}
+
+/* Optional: Add a box-shadow to indicate stickiness */
+th:first-child, th:nth-child(2) {
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+}
     </style>
 </head>
 <body>
@@ -155,7 +191,7 @@
                  <h3  class="text-center">List of Lok Adalat Settlements held at ${place}</h3>
                  <h4  class="text-center">Branch: ${branch} | Regional Office: ${regionalOffice} | Date: ${lokAdalatDate}</h4>`;
 
-    table += `<table class="table table-bordered">
+    table += `<table class="table table-responsive table-bordered">
                 <thead>
                     <tr>
                         <th>Account Number</th>
