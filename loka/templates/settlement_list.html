@@ -22,42 +22,42 @@
 
     <div class="container mt-4" style="padding: 0;">
         <div class="table-responsive" style="max-height: 500px; overflow: auto; border: 1px solid #ddd;">
-            <table class="table table-hover table-bordered text-center" style="font-size: 12px;">
+            <table class="table table-hover table-bordered text-center" style="font-size: 14px; line-height: 1;">
                 <thead style="background: #7FFFD4; position: sticky; top: 0; z-index: 1000;">
                     <tr>
-                        <th>S.N.</th>
-                        <th>Account No</th>
-                        <th>Name</th>
-                        <th>Loan Type</th>
-                        <th>IRAC</th>
-                        <th>Outstanding</th>
-                        <th>Unapplied Interest</th>
-                        <th>Total Closure</th>
-                        <th>Compromise Amount</th>
-                        <th>Waived (Principal)</th>
-                        <th>Waived (Interest)</th>
-                        <th>Token Money</th>
-                        <th>Amount Payable</th>
-                        <th>Actions</th>
+                        <th style="padding: 4px;">S.N.</th>
+                        <th style="padding: 4px;">Account No</th>
+                        <th style="padding: 4px;">Name</th>
+                        <th style="padding: 4px;">Loan Type</th>
+                        <th style="padding: 4px;">IRAC</th>
+                        <th style="padding: 4px;">Outstanding</th>
+                        <th style="padding: 4px;">Unapplied Interest</th>
+                        <th style="padding: 4px;">Total Closure</th>
+                        <th style="padding: 4px;">Compromise Amount</th>
+                        <th style="padding: 4px;">Waived (Principal)</th>
+                        <th style="padding: 4px;">Waived (Interest)</th>
+                        <th style="padding: 4px;">Token Money</th>
+                        <th style="padding: 4px;">Amount Payable</th>
+                        <th style="padding: 4px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for settlement in object_list %}
                         <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ settlement.account_no }}</td>
-                            <td>{{ settlement.cust_name }}</td>
-                            <td>{{ settlement.loan_obj }}</td>
-                            <td>{{ settlement.irac }}</td>
-                            <td>{{ settlement.outstanding }}</td>
-                            <td>{{ settlement.unapplied_int }}</td>
-                            <td>{{ settlement.totalclosure }}</td>
-                            <td>{{ settlement.compromise_amt }}</td>
-                            <td>{{ settlement.pr_waived }}</td>
-                            <td>{{ settlement.int_waived }}</td>
-                            <td>{{ settlement.token_money }}</td>
-                            <td>{{ settlement.rest_amount }}</td>
-                            <td>
+                            <td style="padding: 3px;">{{ forloop.counter }}</td>
+                            <td style="padding: 3px;">{{ settlement.account_no }}</td>
+                            <td style="padding: 3px;">{{ settlement.cust_name }}</td>
+                            <td style="padding: 3px;">{{ settlement.loan_obj }}</td>
+                            <td style="padding: 3px;">{{ settlement.irac }}</td>
+                            <td style="padding: 3px;">{{ settlement.outstanding }}</td>
+                            <td style="padding: 3px;">{{ settlement.unapplied_int }}</td>
+                            <td style="padding: 3px;">{{ settlement.totalclosure }}</td>
+                            <td style="padding: 3px;">{{ settlement.compromise_amt }}</td>
+                            <td style="padding: 3px;">{{ settlement.pr_waived }}</td>
+                            <td style="padding: 3px;">{{ settlement.int_waived }}</td>
+                            <td style="padding: 3px;">{{ settlement.token_money }}</td>
+                            <td style="padding: 3px;">{{ settlement.rest_amount }}</td>
+                            <td style="padding: 3px;">
                                 <a href="update/{{ settlement.pk }}" class="text-warning"><i class="fas fa-edit"></i></a>
                                 <a href="deleteset/{{ settlement.id }}" class="text-danger" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
                             </td>
