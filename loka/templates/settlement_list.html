@@ -2,7 +2,6 @@
 {% block content %}
 
 <div class="container mt-4" style="padding: 0;">
-    <!-- Flash Messages -->
     {% if messages %}
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -18,61 +17,60 @@
         </div>
     {% endif %}
 
-    <!-- Page Title -->
     <h5 class="text-center font-weight-bold text-primary">Lok Adalat</h5>
     <h6 class="text-center text-secondary">Settlements for Branch - {{ branch_name }}</h6>
 
     <div class="container mt-4" style="padding: 0;">
-        <div class="table-responsive table-condensed" style="max-height: 500px; overflow: auto; border: 1px solid #ddd; position: relative; margin: 0;">
-            <table class="table table-hover table-bordered text-center" style="font-size: 10px; padding: 0;">
-                <thead class="thead-light" style="position: sticky; top: 0; z-index: 1000; font-size: 11px; padding: 2px;">
+        <div class="table-responsive" style="max-height: 500px; overflow: auto; border: 1px solid #ddd;">
+            <table class="table table-hover table-bordered text-center" style="font-size: 12px;">
+                <thead style="background: #7FFFD4; position: sticky; top: 0; z-index: 1000;">
                     <tr>
-                        <th class="sticky-col first-col" style="padding: 2px;">S.N.</th>
-                        <th class="sticky-col second-col" style="padding: 2px;">Account No</th>
-                        <th class="sticky-col third-col" style="padding: 2px;">Name</th>
-                        <th style="padding: 2px;">Loan Type</th>
-                        <th style="padding: 2px;">IRAC</th>
-                        <th style="padding: 2px;">Outstanding</th>
-                        <th style="padding: 2px;">Unapplied Interest</th>
-                        <th style="padding: 2px;">Total Closure</th>
-                        <th style="padding: 2px;">Compromise Amount</th>
-                        <th style="padding: 2px;">Waived (Principal)</th>
-                        <th style="padding: 2px;">Waived (Interest)</th>
-                        <th style="padding: 2px;">Token Money</th>
-                        <th style="padding: 2px;">Amount Payable</th>
-                        <th style="padding: 2px;">Actions</th>
+                        <th>S.N.</th>
+                        <th>Account No</th>
+                        <th>Name</th>
+                        <th>Loan Type</th>
+                        <th>IRAC</th>
+                        <th>Outstanding</th>
+                        <th>Unapplied Interest</th>
+                        <th>Total Closure</th>
+                        <th>Compromise Amount</th>
+                        <th>Waived (Principal)</th>
+                        <th>Waived (Interest)</th>
+                        <th>Token Money</th>
+                        <th>Amount Payable</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody style="font-size: 10px;">
+                <tbody>
                     {% for settlement in object_list %}
                         <tr>
-                            <td class="sticky-col first-col" style="padding: 3px;">{{ forloop.counter }}</td>
-                            <td class="sticky-col second-col" style="padding: 3px;">{{ settlement.account_no }}</td>
-                            <td class="sticky-col third-col" style="padding: 3px;">{{ settlement.cust_name }}</td>
-                            <td style="padding: 3px;">{{ settlement.loan_obj }}</td>
-                            <td style="padding: 3px;">{{ settlement.irac }}</td>
-                            <td style="padding: 3px;">{{ settlement.outstanding }}</td>
-                            <td style="padding: 3px;">{{ settlement.unapplied_int }}</td>
-                            <td style="padding: 3px;">{{ settlement.totalclosure }}</td>
-                            <td style="padding: 3px;">{{ settlement.compromise_amt }}</td>
-                            <td style="padding: 3px;">{{ settlement.pr_waived }}</td>
-                            <td style="padding: 3px;">{{ settlement.int_waived }}</td>
-                            <td style="padding: 3px;">{{ settlement.token_money }}</td>
-                            <td style="padding: 3px;">{{ settlement.rest_amount }}</td>
-                            <td style="padding: 3px;">
-                                <a href="update/{{ settlement.pk }}" class="btn btn-sm btn-warning" style="padding: 2px 6px;">Edit</a>
-                                <a href="deleteset/{{ settlement.id }}" class="btn btn-sm btn-danger" style="padding: 2px 6px;" onclick="return confirm('Are you sure you want to delete this?')">Delete</a>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ settlement.account_no }}</td>
+                            <td>{{ settlement.cust_name }}</td>
+                            <td>{{ settlement.loan_obj }}</td>
+                            <td>{{ settlement.irac }}</td>
+                            <td>{{ settlement.outstanding }}</td>
+                            <td>{{ settlement.unapplied_int }}</td>
+                            <td>{{ settlement.totalclosure }}</td>
+                            <td>{{ settlement.compromise_amt }}</td>
+                            <td>{{ settlement.pr_waived }}</td>
+                            <td>{{ settlement.int_waived }}</td>
+                            <td>{{ settlement.token_money }}</td>
+                            <td>{{ settlement.rest_amount }}</td>
+                            <td>
+                                <a href="update/{{ settlement.pk }}" class="text-warning"><i class="fas fa-edit"></i></a>
+                                <a href="deleteset/{{ settlement.id }}" class="text-danger" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
                             </td>
                         </tr>
                     {% endfor %}
                 </tbody>
-                <tfoot class="bg-info text-white" style="font-size: 11px;">
+                <tfoot style="background: #7FFFD4;">
                     <tr>
-                        <td class="sticky-col first-col" style="padding: 3px;"></td>
-                        <td class="sticky-col second-col" style="padding: 3px;"><strong>TOTAL</strong></td>
-                        <td class="sticky-col third-col" style="padding: 3px;"></td>
-                        <td style="padding: 3px;"></td>
-                        <td style="padding: 3px;"></td>
+                        <td></td>
+                        <td><strong>TOTAL</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td><strong>{{ contoutstanding.outstanding__sum }}</strong></td>
                         <td><strong>{{ contunapplied_int.unapplied_int__sum }}</strong></td>
                         <td><strong>{{ conttotalclosure.totalclosure__sum }}</strong></td>
@@ -81,7 +79,7 @@
                         <td><strong>{{ contint_waived.int_waived__sum }}</strong></td>
                         <td><strong>{{ conttoken_money.token_money__sum }}</strong></td>
                         <td><strong>{{ contrest_amount.rest_amount__sum }}</strong></td>
-                        <td style="padding: 3px;"></td>
+                        <td></td>
                     </tr>
                 </tfoot>
             </table>
