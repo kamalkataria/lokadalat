@@ -24,12 +24,8 @@
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     {% load crispy_forms_tags %}
-    
     {% load static %}
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-
     <link rel="stylesheet" href="{% static 'style.css' %}">
- 
 
     <style>
         .social-icons {
@@ -45,6 +41,16 @@
         .logout-icon {
             margin-left: 20px;
         }
+        .social-icons a {
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .social-icons .instagram { color: #E1306C; }
+        .social-icons .facebook { color: #1877F2; }
+        .social-icons .twitter { color: #000000; }
     </style>
 </head>
 
@@ -82,15 +88,14 @@
             
             <div class="navbar-nav ml-auto social-icons">
                 <span>Any queries?</span>
-                <a href="https://www.instagram.com/imkamalkataria/" title="Instagram" class="nav-link fas fa-instagram"></a>
-                <a href="https://www.facebook.com/utopiankamal" title="Facebook" class="nav-link fas fa-facebook"></a>
-                <a href="https://x.com/neandien" title="Twitter" class="nav-link fas fa-twitter"></a>
+                <a href="https://www.instagram.com/imkamalkataria/" title="Instagram" class="instagram">I</a>
+                <a href="https://www.facebook.com/utopiankamal" title="Facebook" class="facebook">F</a>
+                <a href="https://x.com/neandien" title="Twitter" class="twitter">X</a>
             </div>
             
             <div class="navbar-nav logout-icon">
-                   <a class="nav-link fas fa-key" title="Change Password" href="{% url 'change_password' %}"></a>
-                <a class="nav-link fa fas-sign-out" title="Logout" href="{% url 'logout' %}"></a>
-               
+                <a class="nav-link" title="Logout" href="{% url 'logout' %}">Logout</a>
+                <a class="nav-link" title="Change Password" href="{% url 'change_password' %}">Change Password</a>
             </div>
         </div>
     </nav>
