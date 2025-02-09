@@ -58,8 +58,8 @@
                             <td style="padding: 3px;">{{ settlement.token_money }}</td>
                             <td style="padding: 3px;">{{ settlement.rest_amount }}</td>
                             <td style="padding: 3px;">
-                                <a href="update/{{ settlement.pk }}" class="text-warning"><i class="fas fa-edit"></i></a>
-                                <a href="deleteset/{{ settlement.id }}" class="text-danger" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
+                                <a href="update/{{ settlement.pk }}" class="text-warning">Edit</a>
+                                <a href="deleteset/{{ settlement.id }}" class="text-danger" onclick="return confirm('Are you sure?')">Delete</a>
                             </td>
                         </tr>
                     {% endfor %}
