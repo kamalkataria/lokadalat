@@ -30,7 +30,9 @@
     <style>
         .social-icons {
             display: flex;
-            gap: 10px;
+            gap: 15px;
+            font-size: 20px;
+            font-weight: bold;
         }
         @media (max-width: 768px) {
             .social-icons {
@@ -38,19 +40,19 @@
                 justify-content: center;
             }
         }
-        .logout-icon {
-            margin-left: 20px;
-        }
         .social-icons a {
-            font-weight: bold;
             text-decoration: none;
-            font-size: 16px;
             padding: 5px;
             border-radius: 5px;
         }
         .social-icons .instagram { color: #E1306C; }
         .social-icons .facebook { color: #1877F2; }
         .social-icons .twitter { color: #000000; }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
     </style>
 </head>
 
@@ -60,7 +62,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav nav-links">
                 <li class="nav-item">
                     <a class="navbar-brand">Lok Adalat</a>
                 </li>
@@ -82,20 +84,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'editprofile' %}">Profile</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" title="Logout" href="{% url 'logout' %}">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" title="Change Password" href="{% url 'change_password' %}">Change Password</a>
+                </li>
             </ul>
-
             <a class="navbar-text ml-auto" href="{% url 'editprofile' %}"><span>{{ branch_name|upper }} {{ "Branch"|upper }}, {{ bankid|upper }}</span></a>
-            
             <div class="navbar-nav ml-auto social-icons">
-                <span>Any queries?</span>
                 <a href="https://www.instagram.com/imkamalkataria/" title="Instagram" class="instagram">I</a>
                 <a href="https://www.facebook.com/utopiankamal" title="Facebook" class="facebook">F</a>
                 <a href="https://x.com/neandien" title="Twitter" class="twitter">X</a>
-            </div>
-            
-            <div class="navbar-nav logout-icon">
-                <a class="nav-link" title="Logout" href="{% url 'logout' %}">Logout</a>
-                <a class="nav-link" title="Change Password" href="{% url 'change_password' %}">Change Password</a>
             </div>
         </div>
     </nav>
