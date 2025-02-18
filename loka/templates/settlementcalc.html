@@ -236,6 +236,9 @@
         <div class="text-center">
             <button class="btn btn-primary mt-3" onclick="generateTable()">Submit</button>
             <button class="btn btn-success mt-3 ms-2" onclick="replicateForm()">Add Another Settlement</button>
+                    <button class="btn btn-danger mt-3 ms-2" onclick="generatePDF()">Download PDF</button>
+
+            
         </div>
 
         <div id="settlementTable" class="mt-4 table-responsive"></div>
@@ -372,6 +375,82 @@
             table += '</tbody></table>';
             document.getElementById('settlementTable').innerHTML = table;
         }
+
+function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    let doc = new jsPDF("landscape"); // Landscape mode
+let pageWidth = doc.internal.pageSize.getWidth(); // Get page width for centering
+
+    let bankName = document.getElementById("bankName").value;
+    let regionalOffice = document.getElementById("regionalOffice").value;
+    let branch = document.getElementById("branch").value;
+    let lokAdalatDate = document.getElementById("lokAdalatDate").value;
+    let place = document.getElementById("place").value;
+
+    // Set font size and center text dynamically
+    doc.setFontSize(22);
+    doc.text(bankName, pageWidth / 2, 15, { align: "center" });
+
+    doc.setFontSize(14);
+    doc.text(`List of Lok Adalat Settlements held at ${place}`, pageWidth / 2, 30, { align: "center" });
+    doc.text(`Branch: ${branch} | Regional Office: ${regionalOffice} | Date: ${lokAdalatDate}`, pageWidth / 2, 40, { align: "center" });
+
+    let headers = [
+        ["Account Number", "Customer Name", "Total Closure", "Outstanding", "Unapplied Interest",
+        "Compromise Amount", "Token", "Waived from Principal", "Waived from Interest", "Rest Amount"]
+    ];
+
+    let data = [];
+    let totalClosureSum = 0, outstandingSum = 0, unappliedIntSum = 0, compromiseSum = 0;
+    let tokenSum = 0, prWaivedSum = 0, intWaivedSum = 0, restAmountSum = 0;
+
+    document.querySelectorAll(".settlementForm").forEach(form => {
+        let row = [
+            form.querySelector(".accountNumber").value,
+            form.querySelector(".customerName").value,
+            parseFloat(form.querySelector(".totalClosure").value) || 0,
+            parseFloat(form.querySelector(".outstanding").value) || 0,
+            parseFloat(form.querySelector(".unappliedInterest").value) || 0,
+            parseFloat(form.querySelector(".compromiseAmount").value) || 0,
+            parseFloat(form.querySelector(".token").value) || 0,
+            parseFloat(form.querySelector(".prWaived").value) || 0,
+            parseFloat(form.querySelector(".intWaived").value) || 0,
+            parseFloat(form.querySelector(".restAmount").value) || 0
+        ];
+
+        // Update totals
+        totalClosureSum += row[2];
+        outstandingSum += row[3];
+        unappliedIntSum += row[4];
+        compromiseSum += row[5];
+        tokenSum += row[6];
+        prWaivedSum += row[7];
+        intWaivedSum += row[8];
+        restAmountSum += row[9];
+
+        data.push(row);
+    });
+
+    // Add totals row
+    data.push([
+        "TOTAL", "", totalClosureSum, outstandingSum, unappliedIntSum, compromiseSum,
+        tokenSum, prWaivedSum, intWaivedSum, restAmountSum
+    ]);
+
+    doc.autoTable({
+        startY: 50,
+        head: headers,
+        body: data,
+        theme: "grid",
+        styles: { fontSize: 10 },
+        headStyles: { fillColor: [255, 255, 255], textColor: [0, 0    , 0] }, // Black header with white text
+        footStyles: { fillColor: [220, 220, 220] } // Light gray footer row
+    });
+
+    doc.save("Settlement_Report.pdf");
+}
+
+        
     </script>
 </body>
 </html>
