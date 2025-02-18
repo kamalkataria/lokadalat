@@ -182,6 +182,8 @@
             <button class="btn btn-primary" onclick="generateTable()">Submit</button>
             <button class="btn btn-success ms-2" onclick="replicateForm()">Add Another Settlement</button>
             <button class="btn btn-danger ms-2" onclick="generatePDF()">Download PDF</button>
+                        <button class="btn btn-danger ms-2" onclick="generatePDFX()">Generate Settlements</button>
+
         </div>
 
         <!-- Settlement Table -->
@@ -400,6 +402,73 @@ let pageWidth = doc.internal.pageSize.getWidth(); // Get page width for centerin
 
     doc.save("Settlement_Report.pdf");
 }
+
+
+
+        function generatePDFX() {
+    let bankName = document.getElementById("bankName").value;
+    let regionalOffice = document.getElementById("regionalOffice").value;
+    let branch = document.getElementById("branch").value;
+    let lokAdalatDate = document.getElementById("lokAdalatDate").value;
+    let place = document.getElementById("place").value;
+
+    let settlementsData = [];
+
+    document.querySelectorAll(".settlementForm").forEach(form => {
+        let settlement = {
+            accountNumber: form.querySelector(".accountNumber").value,
+            customerName: form.querySelector(".customerName").value,
+            loanType: form.querySelector(".loanType").value,
+            irac: form.querySelector(".irac").value,
+            totalClosure: parseFloat(form.querySelector(".totalClosure").value) || 0,
+            outstanding: parseFloat(form.querySelector(".outstanding").value) || 0,
+            unappliedInterest: parseFloat(form.querySelector(".unappliedInterest").value) || 0,
+            compromiseAmount: parseFloat(form.querySelector(".compromiseAmount").value) || 0,
+            token: parseFloat(form.querySelector(".token").value) || 0,
+            prWaived: parseFloat(form.querySelector(".prWaived").value) || 0,
+            intWaived: parseFloat(form.querySelector(".intWaived").value) || 0,
+            restAmount: parseFloat(form.querySelector(".restAmount").value) || 0
+        };
+        settlementsData.push(settlement);
+    });
+
+    let data = {
+        bankName,
+        regionalOffice,
+        branch,
+        lokAdalatDate,
+        place,
+        settlements: settlementsData
+    };
+
+    // Send data to Django view using POST
+    fetch("{% url 'generate_pdf' %}", {  // Use Django URL pattern here
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCSRFToken()  // Pass the CSRF token for security
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.blob())  // Expect the response to be a PDF
+    .then(blob => {
+        // Create a link to download the PDF
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "Settlement_Report.pdf";
+        link.click();
+    })
+    .catch(error => {
+        console.error("Error generating PDF:", error);
+    });
+}
+
+// Helper function to get CSRF token (required for POST requests in Django)
+function getCSRFToken() {
+    let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    return csrfToken;
+}
+
 
 
 
