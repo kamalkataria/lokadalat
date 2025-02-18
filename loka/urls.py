@@ -24,6 +24,8 @@ urlpatterns = [
     path('loka/update/<int:pk>', views.SettlementUpdateView.as_view(), name='updaterec'),
     path('change-password/', views.ChangePasswordView.as_view(), name='change_password'),
     path('setcalc/', views.setcalc, name='setcalc'),
+    path('generate-pdf/', views.generate_pdf, name='generate_pdf'),
+
 
 
 
