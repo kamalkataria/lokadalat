@@ -5,268 +5,212 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settlement Form</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Load jsPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <!-- Load jsPDF AutoTable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-
     <style>
-        /* General Body Styling */
         body {
-            background-color: #f7f7f7;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            color: #333;
-            margin: 0;
-            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
         }
 
-        /* Main Container */
         .container {
+            margin-top: 50px;
+        }
+
+        .heading {
+            color: #dc3545;
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .form-section {
             background-color: #fff;
+            padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            max-width: 800px;
-            margin-top: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
         }
 
-        h1, h2, h3, h4 {
-            color: #333;
-            font-weight: 600;
-        }
-
-        h1 {
-            color: #e74c3c;
-            font-size: 36px;
-        }
-
-        /* Form Styling */
-        .form-control {
-            border-radius: 5px;
-            border: 1px solid #ddd;
+        .form-section .form-control {
+            border-radius: 8px;
             padding: 10px;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
         }
 
-        .form-control:focus {
-            border-color: #3498db;
-            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
-        }
-
-        .settlementForm {
-            margin-bottom: 25px;
-            padding: 15px;
-            background-color: #fafafa;
-            border-radius: 8px;
-            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-
-        .remove-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #e74c3c;
-            border: none;
-            padding: 5px;
-            border-radius: 50%;
-            cursor: pointer;
-            color: white;
-            font-size: 14px;
-        }
-
-        .remove-btn:hover {
-            background-color: #c0392b;
-        }
-
-        .btn {
-            border-radius: 30px;
-            padding: 10px 20px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-primary {
-            background-color: #3498db;
-            border-color: #3498db;
-        }
-
-        .btn-primary:hover {
-            background-color: #2980b9;
-            border-color: #2980b9;
-        }
-
-        .btn-success {
-            background-color: #2ecc71;
-            border-color: #2ecc71;
-        }
-
-        .btn-success:hover {
-            background-color: #27ae60;
-            border-color: #27ae60;
-        }
-
-        .table {
-            margin-top: 30px;
-            width: 100%;
-            border-collapse: collapse;
-            background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .table th, .table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .table th {
-            background-color: #f2f2f2;
-            font-weight: 600;
-        }
-
-        .table td {
-            font-size: 14px;
-        }
-
-        .table .table-success {
-            background-color: #ecf9ec;
-        }
-
-        .table .table-success td {
+        .form-section label {
             font-weight: bold;
         }
 
-        /* Spacing between form fields */
-        .mb-3 {
+        .form-section button {
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .settlementForm {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
             margin-bottom: 20px;
+            background-color: #f7f7f7;
         }
 
-        /* Container for settlement form */
-        #formsContainer {
-            margin-top: 30px;
+        .settlementForm input {
+            border-radius: 6px;
         }
 
-        /* Heading Styling for Sections */
-        .section-heading {
-            margin-bottom: 25px;
-            font-size: 24px;
-            color: #333;
-            font-weight: 600;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
+        .settlementForm button {
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            border-radius: 6px;
+            padding: 10px;
+        }
+
+        .table-container {
+            margin-top: 20px;
+        }
+
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-container th, .table-container td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .table-container th {
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        .table-container td {
+            text-align: center;
+        }
+
+        .table-container .totals-row {
+            font-weight: bold;
+            background-color: #e9ecef;
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h1 class="text-center">Add Lokadalat Settlements</h1>
-        <div class="section-heading">Common Details</div>
-        <div id="commonFields">
+        <h1 class="heading">Add Lok Adalat Settlements</h1>
+
+        <!-- Common Fields -->
+        <div id="commonFields" class="form-section">
             <div class="mb-3">
-                <label>Bank Name</label>
+                <label for="bankName">Bank Name</label>
                 <input type="text" class="form-control" id="bankName">
             </div>
             <div class="mb-3">
-                <label>Regional Office</label>
+                <label for="regionalOffice">Regional Office</label>
                 <input type="text" class="form-control" id="regionalOffice">
             </div>
             <div class="mb-3">
-                <label>Branch</label>
+                <label for="branch">Branch</label>
                 <input type="text" class="form-control" id="branch">
             </div>
             <div class="mb-3">
-                <label>Lok Adalat Date</label>
+                <label for="lokAdalatDate">Lok Adalat Date</label>
                 <input type="date" class="form-control" id="lokAdalatDate">
             </div>
             <div class="mb-3">
-                <label>Place</label>
+                <label for="place">Place</label>
                 <input type="text" class="form-control" id="place">
             </div>
         </div>
-        
+
+        <!-- Forms Container -->
         <div id="formsContainer">
-            <div class="section-heading">Settlement Details</div>
             <form class="settlementForm">
                 <div class="mb-3">
-                    <label>Account Number</label>
+                    <label for="accountNumber">Account Number</label>
                     <input type="number" class="form-control accountNumber">
                 </div>
                 <div class="mb-3">
-                    <label>Customer Name</label>
+                    <label for="customerName">Customer Name</label>
                     <input type="text" class="form-control customerName">
                 </div>
                 <div class="mb-3">
-                    <label>Total Closure</label>
+                    <label for="loanType">Loan Type</label>
+                    <input type="text" class="form-control loanType">
+                </div>
+                <div class="mb-3">
+                    <label for="irac">IRAC</label>
+                    <input type="text" class="form-control irac">
+                </div>
+                <div class="mb-3">
+                    <label for="totalClosure">Total Closure</label>
                     <input type="number" class="form-control totalClosure" oninput="calculateValues(this)">
                 </div>
                 <div class="mb-3">
-                    <label>Outstanding</label>
+                    <label for="outstanding">Outstanding</label>
                     <input type="number" class="form-control outstanding" oninput="calculateValues(this)">
                 </div>
                 <div class="mb-3">
-                    <label>Unapplied Interest</label>
+                    <label for="unappliedInterest">Unapplied Interest</label>
                     <input type="number" class="form-control unappliedInterest" readonly>
                 </div>
                 <div class="mb-3">
-                    <label>Compromise Amount</label>
+                    <label for="compromiseAmount">Compromise Amount</label>
                     <input type="number" class="form-control compromiseAmount" oninput="calculateValues(this)">
                 </div>
                 <div class="mb-3">
-                    <label>Token</label>
+                    <label for="token">Token</label>
                     <input type="number" class="form-control token" oninput="calculateValues(this)">
                 </div>
                 <div class="mb-3">
-                    <label>Waived from Principal</label>
+                    <label for="prWaived">Waived from Principal</label>
                     <input type="number" class="form-control prWaived" readonly>
                 </div>
                 <div class="mb-3">
-                    <label>Waived from Interest</label>
+                    <label for="intWaived">Waived from Interest</label>
                     <input type="number" class="form-control intWaived" readonly>
                 </div>
                 <div class="mb-3">
-                    <label>Rest Amount</label>
+                    <label for="restAmount">Rest Amount</label>
                     <input type="number" class="form-control restAmount" readonly>
                 </div>
             </form>
         </div>
-        
-        <div class="text-center">
-            <button class="btn btn-primary mt-3" onclick="generateTable()">Submit</button>
-            <button class="btn btn-success mt-3 ms-2" onclick="replicateForm()">Add Another Settlement</button>
-                    <button class="btn btn-danger mt-3 ms-2" onclick="generatePDF()">Download PDF</button>
 
-            
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-primary" onclick="generateTable()">Submit</button>
+            <button class="btn btn-success ms-2" onclick="replicateForm()">Add Another Settlement</button>
+            <button class="btn btn-danger ms-2" onclick="generatePDF()">Download PDF</button>
         </div>
 
-        <div id="settlementTable" class="mt-4 table-responsive"></div>
+        <!-- Settlement Table -->
+        <div id="settlementTable" class="table-container mt-4"></div>
     </div>
 
     <script>
-        // The same JavaScript functions as before
         function replicateForm() {
-            let formsContainer = document.getElementById("formsContainer");
-            let originalForm = document.querySelector(".settlementForm");
+    let formsContainer = document.getElementById("formsContainer");
+    let originalForm = document.querySelector(".settlementForm");
 
-            if (!originalForm) {
-                console.error("Original form not found!");
-                return;
-            }
+    if (!originalForm) {
+        console.error("Original form not found!");
+        return;
+    }
 
-            let newForm = originalForm.cloneNode(true);
+    let newForm = originalForm.cloneNode(true);
 
-            // Clear all input values
-            newForm.querySelectorAll("input").forEach(input => {
-                if (input.type !== "button") {
-                    input.value = "";
-                }
-            });
-
-            // Append the new form
-            formsContainer.appendChild(newForm);
+    // Clear all input values
+    newForm.querySelectorAll("input").forEach(input => {
+        if (input.type !== "button") {
+            input.value = "";
         }
+    });
+
+    // Append the new form
+    formsContainer.appendChild(newForm);
+}
+
 
         function calculateValues(input) {
             let form = input.closest('.settlementForm');
@@ -285,98 +229,103 @@
             form.querySelector('.restAmount').value = restAmount.toFixed(2);
         }
 
-        function generateTable() {
-            let bankName = document.getElementById('bankName').value;
-            let regionalOffice = document.getElementById('regionalOffice').value;
-            let branch = document.getElementById('branch').value;
-            let lokAdalatDate = document.getElementById('lokAdalatDate').value;
-            let place = document.getElementById('place').value;
+       function generateTable() {
+    let bankName = document.getElementById('bankName').value;
+    let regionalOffice = document.getElementById('regionalOffice').value;
+    let branch = document.getElementById('branch').value;
+    let lokAdalatDate = document.getElementById('lokAdalatDate').value;
+    let place = document.getElementById('place').value;
 
-            let table = `<h2 class="text-center">${bankName}</h2>
-                         <h3 class="text-center">List of Lok Adalat Settlements held at ${place}</h3>
-                         <h4 class="text-center">Branch: ${branch} | Regional Office: ${regionalOffice} | Date: ${lokAdalatDate}</h4>`;
+    let table = `<h2 class="text-center">${bankName}</h2>
+                 <h3  class="text-center">List of Lok Adalat Settlements held at ${place}</h3>
+                 <h4  class="text-center">Branch: ${branch} | Regional Office: ${regionalOffice} | Date: ${lokAdalatDate}</h4>`;
 
-            table += `<table class="table table-responsive table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Account Number</th>
-                                <th>Customer Name</th>
-                                <th>Total Closure</th>
-                                <th>Outstanding</th>
-                                <th>Unapplied Interest</th>
-                                <th>Compromise Amount</th>
-                                <th>Token</th>
-                                <th>Waived Principal</th>
-                                <th>Waived Interest</th>
-                                <th>Rest Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>`;
+    table += `<table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Account Number</th>
+                        <th>Customer Name</th>
+                        <th>Loan Type</th>
+                        <th>IRAC</th>
 
-            // Initialize totals
-            let totalClosureSum = 0;
-            let outstandingSum = 0;
-            let unappliedInterestSum = 0;
-            let compromiseAmountSum = 0;
-            let tokenSum = 0;
-            let prWaivedSum = 0;
-            let intWaivedSum = 0;
-            let restAmountSum = 0;
+                        <th>Total Closure</th>
+                        <th>Outstanding</th>
+                        <th>Unapplied Interest</th>
+                        <th>Compromise Amount</th>
+                        <th>Token</th>
+                        <th>Waived Principal</th>
+                        <th>Waived Interest</th>
+                        <th>Rest Amount</th>
+                    </tr>
+                </thead>
+                <tbody>`;
 
-            document.querySelectorAll('.settlementForm').forEach(form => {
-                let totalClosure = parseFloat(form.querySelector('.totalClosure').value) || 0;
-                let outstanding = parseFloat(form.querySelector('.outstanding').value) || 0;
-                let unappliedInterest = parseFloat(form.querySelector('.unappliedInterest').value) || 0;
-                let compromiseAmount = parseFloat(form.querySelector('.compromiseAmount').value) || 0;
-                let token = parseFloat(form.querySelector('.token').value) || 0;
-                let prWaived = parseFloat(form.querySelector('.prWaived').value) || 0;
-                let intWaived = parseFloat(form.querySelector('.intWaived').value) || 0;
-                let restAmount = parseFloat(form.querySelector('.restAmount').value) || 0;
+    // Initialize totals
+    let totalClosureSum = 0;
+    let outstandingSum = 0;
+    let unappliedInterestSum = 0;
+    let compromiseAmountSum = 0;
+    let tokenSum = 0;
+    let prWaivedSum = 0;
+    let intWaivedSum = 0;
+    let restAmountSum = 0;
 
-                // Sum up values
-                totalClosureSum += totalClosure;
-                outstandingSum += outstanding;
-                unappliedInterestSum += unappliedInterest;
-                compromiseAmountSum += compromiseAmount;
-                tokenSum += token;
-                prWaivedSum += prWaived;
-                intWaivedSum += intWaived;
-                restAmountSum += restAmount;
+    document.querySelectorAll('.settlementForm').forEach(form => {
+        let totalClosure = parseFloat(form.querySelector('.totalClosure').value) || 0;
+        let outstanding = parseFloat(form.querySelector('.outstanding').value) || 0;
+        let unappliedInterest = parseFloat(form.querySelector('.unappliedInterest').value) || 0;
+        let compromiseAmount = parseFloat(form.querySelector('.compromiseAmount').value) || 0;
+        let token = parseFloat(form.querySelector('.token').value) || 0;
+        let prWaived = parseFloat(form.querySelector('.prWaived').value) || 0;
+        let intWaived = parseFloat(form.querySelector('.intWaived').value) || 0;
+        let restAmount = parseFloat(form.querySelector('.restAmount').value) || 0;
 
-                // Append row
-                let row = `<tr>
-                            <td>${form.querySelector('.accountNumber').value}</td>
-                            <td>${form.querySelector('.customerName').value}</td>
-                            <td>${totalClosure.toFixed(2)}</td>
-                            <td>${outstanding.toFixed(2)}</td>
-                            <td>${unappliedInterest.toFixed(2)}</td>
-                            <td>${compromiseAmount.toFixed(2)}</td>
-                            <td>${token.toFixed(2)}</td>
-                            <td>${prWaived.toFixed(2)}</td>
-                            <td>${intWaived.toFixed(2)}</td>
-                            <td>${restAmount.toFixed(2)}</td>
-                        </tr>`;
-                table += row;
-            });
+        // Sum up values
+        totalClosureSum += totalClosure;
+        outstandingSum += outstanding;
+        unappliedInterestSum += unappliedInterest;
+        compromiseAmountSum += compromiseAmount;
+        tokenSum += token;
+        prWaivedSum += prWaived;
+        intWaivedSum += intWaived;
+        restAmountSum += restAmount;
 
-            // Append totals row
-            table += `<tr class="table-success font-weight-bold">
-                        <td colspan="2" class="text-center"><strong>Totals</strong></td>
-                        <td><strong>${totalClosureSum.toFixed(2)}</strong></td>
-                        <td><strong>${outstandingSum.toFixed(2)}</strong></td>
-                        <td><strong>${unappliedInterestSum.toFixed(2)}</strong></td>
-                        <td><strong>${compromiseAmountSum.toFixed(2)}</strong></td>
-                        <td><strong>${tokenSum.toFixed(2)}</strong></td>
-                        <td><strong>${prWaivedSum.toFixed(2)}</strong></td>
-                        <td><strong>${intWaivedSum.toFixed(2)}</strong></td>
-                        <td><strong>${restAmountSum.toFixed(2)}</strong></td>
-                      </tr>`;
+        // Append row
+        let row = `<tr>
+                    <td>${form.querySelector('.accountNumber').value}</td>
+                    <td>${form.querySelector('.customerName').value}</td>
+                    <td>${form.querySelector('.loanType').value}</td>
+                    <td>${form.querySelector('.irac').value}</td>
+                    <td>${totalClosure.toFixed(2)}</td>
+                    <td>${outstanding.toFixed(2)}</td>
+                    <td>${unappliedInterest.toFixed(2)}</td>
+                    <td>${compromiseAmount.toFixed(2)}</td>
+                    <td>${token.toFixed(2)}</td>
+                    <td>${prWaived.toFixed(2)}</td>
+                    <td>${intWaived.toFixed(2)}</td>
+                    <td>${restAmount.toFixed(2)}</td>
+                </tr>`;
+        table += row;
+    });
 
-            table += '</tbody></table>';
-            document.getElementById('settlementTable').innerHTML = table;
-        }
+    // Append totals row
+    table += `<tr class="table-success font-weight-bold">
+                <td colspan="4" class="text-center"><strong>Totals</strong></td>
+                <td><strong>${totalClosureSum.toFixed(2)}</strong></td>
+                <td><strong>${outstandingSum.toFixed(2)}</strong></td>
+                <td><strong>${unappliedInterestSum.toFixed(2)}</strong></td>
+                <td><strong>${compromiseAmountSum.toFixed(2)}</strong></td>
+                <td><strong>${tokenSum.toFixed(2)}</strong></td>
+                <td><strong>${prWaivedSum.toFixed(2)}</strong></td>
+                <td><strong>${intWaivedSum.toFixed(2)}</strong></td>
+                <td><strong>${restAmountSum.toFixed(2)}</strong></td>
+              </tr>`;
 
-function generatePDF() {
+    table += '</tbody></table>';
+    document.getElementById('settlementTable').innerHTML = table;
+}
+
+        function generatePDF() {
     const { jsPDF } = window.jspdf;
     let doc = new jsPDF("landscape"); // Landscape mode
 let pageWidth = doc.internal.pageSize.getWidth(); // Get page width for centering
@@ -396,7 +345,7 @@ let pageWidth = doc.internal.pageSize.getWidth(); // Get page width for centerin
     doc.text(`Branch: ${branch} | Regional Office: ${regionalOffice} | Date: ${lokAdalatDate}`, pageWidth / 2, 40, { align: "center" });
 
     let headers = [
-        ["Account Number", "Customer Name", "Total Closure", "Outstanding", "Unapplied Interest",
+        ["Account Number", "Customer Name","Loan Type","IRAC", "Total Closure", "Outstanding", "Unapplied Interest",
         "Compromise Amount", "Token", "Waived from Principal", "Waived from Interest", "Rest Amount"]
     ];
 
@@ -408,6 +357,8 @@ let pageWidth = doc.internal.pageSize.getWidth(); // Get page width for centerin
         let row = [
             form.querySelector(".accountNumber").value,
             form.querySelector(".customerName").value,
+            form.querySelector(".loanType").value,
+            form.querySelector(".irac").value,
             parseFloat(form.querySelector(".totalClosure").value) || 0,
             parseFloat(form.querySelector(".outstanding").value) || 0,
             parseFloat(form.querySelector(".unappliedInterest").value) || 0,
@@ -419,21 +370,21 @@ let pageWidth = doc.internal.pageSize.getWidth(); // Get page width for centerin
         ];
 
         // Update totals
-        totalClosureSum += row[2];
-        outstandingSum += row[3];
-        unappliedIntSum += row[4];
-        compromiseSum += row[5];
-        tokenSum += row[6];
-        prWaivedSum += row[7];
-        intWaivedSum += row[8];
-        restAmountSum += row[9];
+        totalClosureSum += row[4];
+        outstandingSum += row[5];
+        unappliedIntSum += row[6];
+        compromiseSum += row[7];
+        tokenSum += row[8];
+        prWaivedSum += row[9];
+        intWaivedSum += row[10];
+        restAmountSum += row[11];
 
         data.push(row);
     });
 
     // Add totals row
     data.push([
-        "TOTAL", "", totalClosureSum, outstandingSum, unappliedIntSum, compromiseSum,
+        "TOTAL", "","","", totalClosureSum, outstandingSum, unappliedIntSum, compromiseSum,
         tokenSum, prWaivedSum, intWaivedSum, restAmountSum
     ]);
 
@@ -450,7 +401,11 @@ let pageWidth = doc.internal.pageSize.getWidth(); // Get page width for centerin
     doc.save("Settlement_Report.pdf");
 }
 
-        
+
+
+
+
     </script>
+
 </body>
 </html>
