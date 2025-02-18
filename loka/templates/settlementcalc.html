@@ -127,6 +127,8 @@
         <!-- Forms Container -->
         <div id="formsContainer">
             <form class="settlementForm">
+                                {% csrf_token %}
+
                 <div class="mb-3">
                     <label for="accountNumber">Account Number</label>
                     <input type="number" class="form-control accountNumber">
