@@ -338,6 +338,8 @@ let pageWidth = doc.internal.pageSize.getWidth(); // Get page width for centerin
     let regionalOffice = document.getElementById("regionalOffice").value;
     let branch = document.getElementById("branch").value;
     let lokAdalatDate = document.getElementById("lokAdalatDate").value;
+    const formattedDate = new Date(lokAdalatDate).toLocaleDateString("en-GB");
+
     let place = document.getElementById("place").value;
 
     // Set font size and center text dynamically
@@ -346,7 +348,7 @@ let pageWidth = doc.internal.pageSize.getWidth(); // Get page width for centerin
 
     doc.setFontSize(14);
     doc.text(`List of Lok Adalat Settlements held at ${place}`, pageWidth / 2, 30, { align: "center" });
-    doc.text(`Branch: ${branch} | Regional Office: ${regionalOffice} | Date: ${lokAdalatDate}`, pageWidth / 2, 40, { align: "center" });
+    doc.text(`Branch: ${branch} | Regional Office: ${regionalOffice} | Date: ${formattedDate}`, pageWidth / 2, 40, { align: "center" });
 
     let headers = [
         ["Account Number", "Customer Name","Loan Type","IRAC", "Total Closure", "Outstanding", "Unapplied Interest",
