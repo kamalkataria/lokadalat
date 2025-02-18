@@ -5,7 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.db.models import Sum
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse,HttpResponseRedirect,JsonResponse
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.template import loader
@@ -25,6 +25,8 @@ from xhtml2pdf import pisa
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
+from django.views.decorators.csrf import csrf_exempt
+
 
 
 def setcalc(request):
@@ -619,3 +621,69 @@ def getsettlements1(request):
 
 
     return  render_to_pdf("loka/settled.html",context)
+
+
+
+
+
+
+from io import BytesIO
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from weasyprint import HTML
+from django.template.loader import render_to_string
+from django.http import HttpResponse
+
+
+def generate_sets(bank_name, regional_office, branch, lok_adalat_date, place, settlements):
+    context = {
+        'bankid': bank_name,
+        'branch': branch,
+        'venue': place,
+        'object_list': settlements,
+    }
+
+    # Render the HTML content with the context
+    html_content = render_to_string('loka/settled1.html', context)
+
+    # Generate the PDF from the HTML
+    pdf = HTML(string=html_content).write_pdf()
+
+    # Return the generated PDF in an HTTP response for download
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="lok_adalat_settlement.pdf"'
+    return response
+
+@csrf_exempt  # Use this only if you're handling CSRF token manually in JavaScript
+def generate_pdf(request):
+    if request.method == 'POST':
+        # Parse JSON data from the request
+        import json
+        data = json.loads(request.body)
+
+        # Extract data from the request
+        bank_name = data['bankName']
+        regional_office = data['regionalOffice']
+        branch = data['branch']
+        lok_adalat_date = data['lokAdalatDate']
+        place = data['place']
+        settlements = data['settlements']
+        for settlement in settlements:
+            # Calculate the amount waived (totalclosure - compromiseAmount)
+            totalClosure = settlement.get('totalClosure', 0)
+            compromiseAmount = settlement.get('compromiseAmount', 0)
+
+            # Calculate the amount waived and add it to the settlement object
+            amount_waived = totalClosure - compromiseAmount
+            print("total closure:",totalClosure,"minus",compromiseAmount,"=",amount_waived)
+            settlement['amount_waived'] = amount_waived
+
+
+        # Generate the PDF from the data
+        pdf = generate_sets(bank_name, regional_office, branch, lok_adalat_date, place, settlements)
+
+        # Return the PDF as an HttpResponse
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="Settlement_Report.pdf"'
+        return response
+    return JsonResponse({'error': 'Invalid request'}, status=400)
