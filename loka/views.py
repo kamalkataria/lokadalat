@@ -21,6 +21,7 @@ from io import BytesIO
 from django.views import generic
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 from django.template.loader import get_template
 import asyncio
@@ -257,7 +258,8 @@ def index(request):
 def gotohome(request):
     print('go man!!!!!!!')
     return redirect('selectsettlements')
-
+    
+@login_required(login_url='/login/')
 def getsettlementlist(request):
     context = {}
     if (request.user.is_superuser):
