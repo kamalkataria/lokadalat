@@ -258,7 +258,8 @@ def index(request):
 def gotohome(request):
     print('go man!!!!!!!')
     return redirect('selectsettlements')
-    
+
+
 @login_required(login_url='/login/')
 def getsettlementlist(request):
     context = {}
