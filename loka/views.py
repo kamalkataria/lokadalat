@@ -5,22 +5,31 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.db.models import Sum
-from django.http import HttpResponse,HttpResponseRedirect,JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse_lazy
-from django.views.generic import ListView, TemplateView, UpdateView
-from .forms import NewUserForm, LAForm
-from .forms import SettlementForm, SettlementFormset1,ProfileForm
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import ListView, TemplateView, UpdateView, DeleteView
+from .forms import NewUserForm,LAForm,ProfileForm
+from .forms import SettlementForm, SettlementFormset1
 from .models import SettlementRow, Profile, RegionalOffice, Bank, LokAdalat
 from .utils import render_to_pdf
 from django.http import Http404
-from .utils import render_to_pdf
-from django.http import Http404
 from io import BytesIO
+from django.views import generic
 from django.http import HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.template.loader import get_template
+import asyncio
+# from StringIO import StringIO
+from xhtml2pdf import pisa
+from PyPDF2 import PdfMerger,PdfReader
+from pyppeteer import launch
+import io
+
 from xhtml2pdf import pisa
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import PasswordChangeForm
@@ -41,6 +50,8 @@ def setcalc(request):
     request.session['visit_count'] = visit_count + 1
 
     return render(request, 'settlementcalc.html')
+
+
 
 
 class ChangePasswordView(LoginRequiredMixin,PasswordChangeView):
@@ -83,7 +94,15 @@ class ChangePasswordView(LoginRequiredMixin,PasswordChangeView):
         else:
             context['branch_name'] = Profile.objects.filter(user__id=self.request.user.id)[0].branch_name
         return context
-        
+
+
+
+
+def width(string, font, size, charspace):
+    width = stringWidth(string, font, size)
+    width += (len(string) - 1) * charspace
+    return width
+
 def handler404(request, exception):
     return render(request, '404handler.html')
 
@@ -202,6 +221,9 @@ class UserEditView(LoginRequiredMixin,UpdateView):
             bank_id = ros[0].bank_id
             context['authed'] = True
             context['bankid'] = bank_id
+            context['user']=self.request.user
+
+
             if(len(Profile.objects.filter(user__id=self.request.user.id))==0):
                 context['branch_name']=self.request.user.username
 
@@ -211,8 +233,10 @@ class UserEditView(LoginRequiredMixin,UpdateView):
             return context
         else:
             context = super(UserEditView, self).get_context_data(**kwargs)
+            context['user']=self.request.user
             print('hey this is coming unauthenticated')
             context['authed'] = False
+
             return context
 
 
@@ -228,15 +252,45 @@ def regbranch(request):
 
 
 def index(request):
-    return redirect("settlement_list")
+    return redirect("selectsettlements")
+
 
 
 def gotohome(request):
     print('go man!!!!!!!')
-    return redirect('settlement_list')
+    return redirect('selectsettlements')
 
+def getsettlementlist(request):
+    context = {}
+    if (request.user.is_superuser):
+        raise Http404()
+    else:
+        profile_user = Profile.objects.filter(Q(user__username__icontains=User.objects.get(id=request.user.id)))
+        bankid = Bank.objects.filter(Q(bank_id__username__icontains=profile_user[0].bank.bank_id))
+        lokax = LokAdalat.objects.all().filter(Q(username__username__icontains=bankid[0].bank_id)).order_by(
+            'lokadalatdate')
+        if profile_user:
+            if request.method == "POST":
+                form = LAForm(request.POST, lokax=lokax)
+                if form.is_valid():
+                    selected_lokax_id = form.cleaned_data['lokax'].id  # Assuming form has a LokAdalat field
 
+                    context['lokax_id']=selected_lokax_id
+                    context['form'] = form
+                    context['branch_name'] = profile_user[0].branch_name
+                    context['bankid'] = bankid[0]
+                    return redirect('settlement_list', lokax_id=selected_lokax_id)  # Pass LokAdalat ID
 
+            else:
+                form = LAForm(lokax=lokax)
+                context['form'] = form
+                context['branch_name'] = profile_user[0].branch_name
+                context['bankid'] = bankid[0]
+                context['lokax']=lokax
+            return render(request, "getsetlist.html", context)
+        else:
+            raise Http404()
+    # return render(request,"getsetlist.html",{})
 
 
 class SettlementListView(LoginRequiredMixin, ListView):
@@ -261,7 +315,18 @@ class SettlementListView(LoginRequiredMixin, ListView):
     def get_queryset(self, **kwargs):
         qs = super().get_queryset(**kwargs)
         if self.request.user.is_authenticated:
-            return qs.filter(branch=Profile.objects.get(user__id=self.request.user.id))
+            # lokax_id = self.kwargs.get("lokax_id")
+            lokax_id = self.request.GET.get("lokadalat")# Get LokAdalat ID from URL
+            if not lokax_id:
+                raise Http404("LokAdalat not selected.")
+
+            try:
+                lokax = LokAdalat.objects.get(id=lokax_id)
+
+            except LokAdalat.DoesNotExist:
+                raise Http404("Invalid LokAdalat selected.")
+            return qs.filter(branch=Profile.objects.get(user__id=self.request.user.id),loka=lokax)
+
 
         else:
             print('User is not authenticated')
@@ -271,8 +336,16 @@ class SettlementListView(LoginRequiredMixin, ListView):
         if self.request.user.is_authenticated:
 
             context = super(SettlementListView, self).get_context_data(**kwargs)
-            if (self.request.user.is_superuser):
-                context['userissu'] = True
+            # lokax_id = self.kwargs.get("lokax_id")
+            lokax_id = self.request.GET.get("lokadalat")
+            try:
+                lokax = LokAdalat.objects.get(id=lokax_id)
+                context["lokax"] = lokax
+            except LokAdalat.DoesNotExist:
+                raise Http404("Invalid LokAdalat selected.")
+
+            if(self.request.user.is_superuser):
+                context['userissu']=True
             else:
                 context['userissu'] = False
             ros = RegionalOffice.objects.filter(branches__user__username=self.request.user.username)
@@ -320,7 +393,16 @@ class SettlementListView(LoginRequiredMixin, ListView):
             return context
 
 
-class SettlementAddView(LoginRequiredMixin, TemplateView):
+class SettlementDelete(DeleteView):
+    model = SettlementRow
+    context_object_name = 'settlement'
+    success_url = reverse_lazy('index')
+
+    def form_valid(self, form):
+        messages.success(self.request, "The settlement was deleted successfully.")
+        return super(SettlementDelete, self).form_valid(form)
+
+class SettlementAddView(LoginRequiredMixin,TemplateView):
     login_url = '/login/'
     template_name = "add_settlement.html"
 
@@ -336,6 +418,7 @@ class SettlementAddView(LoginRequiredMixin, TemplateView):
         qs = SettlementRow.objects.filter(loka__username=profile_user[0].bank.bank_id)
         print("QML is", str(qs))
         kwargs['queryset'] = lokax
+        kwargs['bankid']=bankid
         return kwargs
 
     def get(self, *args, **kwargs):
@@ -352,10 +435,9 @@ class SettlementAddView(LoginRequiredMixin, TemplateView):
                 'lokadalatdate')
             qs = SettlementRow.objects.filter(loka__username=profile_user[0].bank.bank_id)
             ros = profile_user[0].ro
-            formset = SettlementFormset1(ros=ros, loka=lokax, branch=self.request.user.id,
-                                         queryset=SettlementRow.objects.none(),
-                                         initial=[{'branch': self.request.user.id, 'loka': lokax[0].id,
-                                                   'ro': RegionalOffice.objects.filter(id=ros.id)[0].id}])
+            formset = SettlementFormset1(ros=ros,loka=lokax, branch=self.request.user.id, queryset=SettlementRow.objects.none(),
+                                     initial=[{'branch': self.request.user.id, 'loka': lokax[0].id,'ro':RegionalOffice.objects.filter(id=ros.id)[0].id}])
+            branchx = Profile.objects.filter(id=self.request.user.id)
             profile_user = Profile.objects.filter(Q(user__username__icontains=self.request.user.username))
             bankid = Bank.objects.filter(Q(bank_id__username__icontains=profile_user[0].bank.bank_id))
             context={}
@@ -379,15 +461,32 @@ class SettlementAddView(LoginRequiredMixin, TemplateView):
         formset = SettlementFormset1(ros=ros, loka=lokax, branch=Profile.objects.get(id=profile_user[0].id).id,
                                      data=self.request.POST)
         if (formset.is_valid()):
-            formset.save()
-            messages.success(self.request, "Record added successfully")
-            return redirect(reverse_lazy("settlement_list"))
+            instances = formset.save(commit=False)
+            # account_numbers = ", ".join([instance.account_no for instance in instances])  # Extract account numbers
+            account_numbers = ", ".join([instance.account_no for instance in instances])  # Extract account numbers
+
+            lokax_id = None
+            if instances:
+                lokax_id = instances[0].loka.id
+            for instance in instances:
+                instance.save()
+            if lokax_id:
+                messages.success(self.request, f"Added successfully for Account No(s): {account_numbers}")
+
+                return redirect(f"{reverse_lazy('settlement_list')}?lokadalat={lokax_id}")
+            else:
+                messages.error(self.request, "Something went wrong because it seems there exist no lokadaat.Contact Admin.")
+                return redirect(reverse_lazy("add_settlement"))
+
+            print('Formset is vallid')
 
 
         else:
 
-            messages.error(self.request, formset.errors)
-            return redirect(reverse_lazy("add_settlement"))
+            messages.error(self.request, "Invalid data. Please check the form fields.")
+            print('Formset is invalid ', formset.errors)
+
+        return redirect(reverse_lazy("add_settlement"))
 
         
 
@@ -402,16 +501,24 @@ class SimpleTable(tables.Table):
 
 
 def deleteset(request, id):
+    from django.urls import reverse
+
     branchx = Profile.objects.filter(id=request.user.id)
+    settlerow = SettlementRow.objects.filter(id=id).first()
+    if not settlerow:
+        raise Http404("Settlement not found.")
+
+
+    lokax_id = settlerow.loka.id
     # print(request.POST,'getttttttt')
     setpk = SettlementRow.objects.filter(id=id)
     if request.user.is_authenticated and branchx[0].user == setpk[0].branch.user:
         # print('Trueeeeeeee')
         settlerow = SettlementRow.objects.get(id=id)
-        if(settlerow):
-            settlerow.delete()
-            messages.info(request, "Deleted record for "+str(settlerow.account_no)+" Successfully.")
-            return redirect("settlement_list")
+        settlerow.delete()
+        messages.success(self.request, f"Deleted successfully for Account No(s): {settlerow.account_no}")
+
+        return redirect(f"{reverse('settlement_list')}?lokadalat={lokax_id}")
     else:
         messages.error(request, "Some problem occurred")
         raise Http404()
@@ -451,14 +558,16 @@ class SettlementUpdateView(LoginRequiredMixin, UpdateView):
         else:
             # return None
             return base_qs.filter(branch=None)
+
     def form_valid(self, form):
         if not (form.data['cust_name'] and form.data['account_no'] and form.data['outstanding'] \
                 and form.data['totalclosure'] and\
                 form.data['compromise_amt'] and\
                 form.data['token_money'] and\
              form.data['loan_obj']  and form.data[ 'irac']):
-                 messages.warning(self.request, "Empty fields not allowed")
-                 return redirect(reverse_lazy("settlement_list"))
+            messages.warning(self.request, "Empty fields not allowed")
+            return redirect(reverse_lazy("settlement_list"))
+
         else:
             form.save()
             messages.success(self.request, "Updated")
@@ -469,6 +578,10 @@ class SettlementUpdateView(LoginRequiredMixin, UpdateView):
     def form_invalid(self, form):
         messages.info(self.request, form.errors)
         return redirect(reverse_lazy("settlement_list"))
+
+
+
+
 
 
 def updaterec(request, id):
@@ -496,6 +609,24 @@ def getladata(request):
             return render(request, "ladata.html", context)
         else:
             raise Http404()
+
+def getladata1(request):
+    context = {}
+    if (request.user.is_superuser):
+        raise Http404()
+    else:
+        profile_user = Profile.objects.filter(Q(user__username__icontains=User.objects.get(id=request.user.id)))
+        bankid = Bank.objects.filter(Q(bank_id__username__icontains=profile_user[0].bank.bank_id))
+        lokax = LokAdalat.objects.all().filter(Q(username__username__icontains=bankid[0].bank_id)).order_by(
+            'lokadalatdate')
+        if profile_user:
+            context['form'] = LAForm(lokax=lokax)
+            context['branch_name']=profile_user[0].branch_name
+            context['bankid']=bankid[0]
+            return render(request, "ladata1.html", context)
+        else:
+            raise Http404()
+
 
 def render_to_pdf(template_src, context_dict):
     template = get_template(template_src)
@@ -558,23 +689,6 @@ def settopdf(request):
     return  render_to_pdf("loka/summary.html",context)
 
 
-    
-def getladata1(request):
-    context = {}
-    if (request.user.is_superuser):
-        raise Http404()
-    else:
-        profile_user = Profile.objects.filter(Q(user__username__icontains=User.objects.get(id=request.user.id)))
-        bankid = Bank.objects.filter(Q(bank_id__username__icontains=profile_user[0].bank.bank_id))
-        lokax = LokAdalat.objects.all().filter(Q(username__username__icontains=bankid[0].bank_id)).order_by(
-            'lokadalatdate')
-        if profile_user:
-            context['form'] = LAForm(lokax=lokax)
-            context['branch_name']=profile_user[0].branch_name
-            context['bankid']=bankid[0]
-            return render(request, "ladata1.html", context)
-        else:
-            raise Http404()
 
 def getsettlements1(request):
     context = {}
