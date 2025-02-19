@@ -517,7 +517,7 @@ def deleteset(request, id):
         # print('Trueeeeeeee')
         settlerow = SettlementRow.objects.get(id=id)
         settlerow.delete()
-        messages.success(self.request, f"Deleted successfully for Account No(s): {settlerow.account_no}")
+        messages.success(request, f"Deleted successfully for Account No(s): {settlerow.account_no}")
 
         return redirect(f"{reverse('settlement_list')}?lokadalat={lokax_id}")
     else:
