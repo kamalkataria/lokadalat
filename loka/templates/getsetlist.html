@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container" style="padding:5%;">
+    <h2 class="text text-danger text-center">Select the lokadalat</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+
+                <th>Venue</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lok in lokax %}
+            <tr>
+
+                <td>{{ lok.lokadalatvenue }}</td>
+                <td>{{ lok.lokadalatdate }}</td>
+                <td>
+                    <a href="{% url 'settlement_list' %}?lokadalat={{ lok.id }}" class="btn btn-primary">Go</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock content %}
