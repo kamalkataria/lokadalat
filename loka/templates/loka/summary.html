@@ -10,7 +10,7 @@
         margin: 0;
         padding: 20px;
         background: #fff;
-        font-size: 16px;
+        font-size: 14px;
     }
 
     /* Wrapper */
@@ -24,84 +24,77 @@
 
     /* Headings */
     h2, h3, h4 {
-        margin: 2px 0; /* Minimized margins */
+        margin: 2px 0;
         padding: 0;
         text-align: center;
-        font-size: 18px; /* Slightly reduced font size for compactness */
-        line-height: 1.1; /* Tightens up heading spacing */
+        font-size: 16px;
+        line-height: 1;
     }
 
     /* Table Styling */
     table {
         width: 100%;
-        border-collapse: separate;
-        border-spacing:0px; /* Ensures borders merge */
-        margin: 15px auto; /* Keeps it centered */
+        border-collapse: separate;  /* Change from collapse to separate */
+        border-spacing: 0px; /* Removes gaps between cells */
+        margin: 15px auto;
     }
 
     th, td {
         border: 1px solid black;
         text-align: center;
-        padding: 5px; /* Added 5px padding for better readability */
-        font-size: 15px; /* Slightly smaller to save space */
+        padding: 5px;  /* Ensure 5px padding is applied */
+        font-size: 14px;
         vertical-align: middle;
         word-wrap: break-word;
-        white-space: normal; /* Allows text wrapping */
+        white-space: normal;
     }
 
     th {
         background: #f4f4f4;
         font-weight: bold;
-        font-size: 14px; /* Reduced header font size for compactness */
-        line-height: 1.1; /* Tighten header spacing */
+        font-size: 14px;
+        line-height: 1;
     }
 
     /* Adjusted Column Widths */
     th:nth-child(1), td:nth-child(1) { /* S.N. */
-        width: 40px; /* Reduced for serial number */
+        width: 40px; 
     }
 
     th:nth-child(2), td:nth-child(2) { /* Account No */
-        width: 260px; /* Ensures 20-digit account numbers fit comfortably */
+        width: 220px; /* Ensures space for 20-digit numbers */
         font-weight: bold;
-        font-size: 16px; /* Slightly larger for emphasis */
+        font-size: 15px;
     }
 
     th:nth-child(3), td:nth-child(3) { /* Name */
-        width: 200px; /* Wide enough for longer names */
-        font-size: 16px;
+        width: 180px; /* Adjusted for long names */
+        font-size: 15px;
     }
 
     th:nth-child(4), td:nth-child(4) { /* Loan Type */
-        width: 80px; /* Adequate space */
+        width: 60px; 
     }
 
     th:nth-child(5), td:nth-child(5) { /* IRAC */
-        width: 60px; /* Minimal width needed */
+        width: 50px; 
     }
 
     /* Amount Columns */
-    th:nth-child(6), td:nth-child(6), /* O/S */
-    th:nth-child(7), td:nth-child(7), /* URI */
-    th:nth-child(8), td:nth-child(8), /* Total Closure */
-    th:nth-child(9), td:nth-child(9), /* Comp. Amt. */
-    th:nth-child(10), td:nth-child(10), /* Principal Waived */
-    th:nth-child(11), td:nth-child(11), /* Interest Waived */
-    th:nth-child(12), td:nth-child(12), /* Token Money */
-    th:nth-child(13), td:nth-child(13) /* Amount Payable */
-    {
-        width: 110px; /* Reduced but fits numbers up to 1 billion */
+    th:nth-child(n+6), td:nth-child(n+6) {
+        width: 90px; /* Reduced width, but still fits large amounts */
     }
 
     /* Page Break for Printing */
     @media print {
         .pagebreak { page-break-before: always; }
         @page {
-            size: landscape; /* Ensures horizontal orientation */
-            margin: 20mm; /* Generous print margin for clarity */
+            size: landscape;
+            margin: 10mm;
         }
     }
 </style>
+
 
 
 
