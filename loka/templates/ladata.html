@@ -1,23 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="col-md-6 col-lg-5 col-sm-8 col-12">
-        <div class="card shadow-lg p-4 rounded">
-            <h3 class="text-center text-primary mb-4">Generate PDF</h3>
+<div class="container mt-4">
+    <h2 class="text-center">Select Lok Adalat</h2>
 
-            <form method="GET" action="{% url 'settopdf' %}">
-                {% csrf_token %}
-                {{ form.as_p }}
-
-                <div class="text-center mt-3">
-                    <button type="submit" class="btn btn-success btn-lg w-100 shadow-sm">
-                        <i class="fa fa-file-pdf"></i> Submit
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="thead-dark">
+            <tr>
+                <th>#</th>
+                <th>Venue</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for loka in lokax %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ loka.lokadalatvenue }}</td>
+                <td>{{ loka.lokadalatdate }}</td>
+                <td>
+                    <a href="{% url 'settopdf' loka.id %}" class="btn btn-success">Generate PDF</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center text-danger">No Lok Adalat records found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 
 {% endblock content %}
