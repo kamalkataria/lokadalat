@@ -9,9 +9,9 @@
     body {
         font-family: Arial, sans-serif;
         margin: 0;
-        padding: 15px; /* Slightly increased padding */
+        padding: 20px; /* Added inner padding */
         background: #fff;
-        font-size: 18px;
+        font-size: 16px; /* Reduced font size */
     }
 
     /* Wrapper */
@@ -23,27 +23,27 @@
         background: #fff;
     }
 
-    /* Headings - Reduce space */
+    /* Headings */
     h2, h3, h4 {
-        margin: 2px 0; /* Minimized margins */
+        margin: 2px 0; /* Minimized spacing */
         padding: 0;
         text-align: center;
-        font-size: 20px; /* Compact but readable */
-        line-height: 1.1; /* Reduce height */
+        font-size: 18px; /* Reduced font size */
+        line-height: 1.1;
     }
 
     /* Table Styling */
     table {
         width: 100%;
         border-collapse: collapse;
-        margin: 10px auto; /* Increased margin for printing */
+        margin: 15px auto; /* Outer margin for printing */
     }
 
     th, td {
         border: 1px solid black;
         text-align: center;
-        padding: 5px 8px; /* Adjusted padding */
-        font-size: 16px;
+        padding: 2px;  /* Added 2px padding */
+        font-size: 15px; /* Slightly smaller font size */
         vertical-align: middle;
         word-wrap: break-word;
         white-space: normal;
@@ -54,28 +54,21 @@
         font-weight: bold;
     }
 
-    /* Reduce space for content above the table */
-    .content-header {
-        margin-bottom: 5px; /* Minimized spacing */
-        padding: 2px 0;
-    }
-
     /* Fixed column widths */
     th:nth-child(2), td:nth-child(2) { /* Account No */
-        width: 220px; /* Enough space for 20-digit account numbers */
-        font-size: 18px;
+        width: 250px; /* Fixed width for 20-digit numbers */
+        font-size: 16px;
         font-weight: bold;
     }
 
     th:nth-child(3), td:nth-child(3) { /* Name */
-        width: 300px; /* More space for longer names */
-        font-size: 18px;
+        width: 280px; /* Adjusted width for long names */
+        font-size: 16px;
     }
 
-    /* Adjusting 'Compromise Amount' */
-    th:nth-child(9), td:nth-child(9) {
+    th:nth-child(9), td:nth-child(9) { /* Compromise Amount */
         width: 160px;
-        font-size: 17px;
+        font-size: 15px;
     }
 
     /* Page Break for Printing */
@@ -83,10 +76,11 @@
         .pagebreak { page-break-before: always; }
         @page {
             size: landscape;
-            margin: 15mm; /* Increased print margin */
+            margin: 20mm; /* Increased margin for proper print layout */
         }
     }
 </style>
+
 
 
 </head>
