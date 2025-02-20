@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     {% load math_filters %}
-    
 <style>
     /* General Styling */
     body {
@@ -52,6 +51,9 @@
     th {
         background: #f4f4f4;
         font-weight: bold;
+        font-size: 14px;  /* Slightly smaller font for headers */
+        line-height: 1.1;  /* Reduces space taken by multiple lines */
+        padding: 2px 4px;  /* Minimizing padding to save space */
     }
 
     /* Adjusted Column Widths */
@@ -71,24 +73,24 @@
     }
 
     th:nth-child(4), td:nth-child(4) { /* Loan Type */
-        width: 80px; /* Enough space */
+        width: 60px; /* Reduced width */
     }
 
     th:nth-child(5), td:nth-child(5) { /* IRAC */
-        width: 60px; /* Smaller, doesn't need much */
+        width: 50px; /* Smaller, doesn't need much */
     }
 
     /* Amount Columns */
     th:nth-child(6), td:nth-child(6), /* O/S */
     th:nth-child(7), td:nth-child(7), /* URI */
     th:nth-child(8), td:nth-child(8), /* Total Closure */
-    th:nth-child(9), td:nth-child(9), /* Compromise Amount */
+    th:nth-child(9), td:nth-child(9), /* Comp. Amt. */
     th:nth-child(10), td:nth-child(10), /* Principal Waived */
     th:nth-child(11), td:nth-child(11), /* Interest Waived */
     th:nth-child(12), td:nth-child(12), /* Token Money */
     th:nth-child(13), td:nth-child(13) /* Amount Payable */
     {
-        width: 120px; /* Fits numbers up to 1 billion */
+        width: 100px; /* Reduced width, but still fits 1 billion */
     }
 
     /* Page Break for Printing */
@@ -96,10 +98,11 @@
         .pagebreak { page-break-before: always; }
         @page {
             size: landscape;
-            margin: 20mm;
+            margin: 10mm;
         }
     }
 </style>
+
 
 
 
