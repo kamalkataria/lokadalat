@@ -9,9 +9,9 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 10px;
+            padding: 2px;
             background: #fff;
-            font-size: 12px;
+            font-size: 18px; /* Bigger font */
         }
 
         /* Centered Content */
@@ -19,29 +19,31 @@
             width: 98%;
             max-width: 1200px;
             margin: auto;
-            padding: 10px;
+            padding: 2px;
             background: #fff;
         }
 
-        /* Border-free Headings */
-        h2, h3, h4, p {
-            margin: 2px 0; /* Removes extra margin */
+        /* Headings */
+        h2, h3, h4 {
+            margin: 2px 0;
             padding: 0;
             text-align: center;
+            font-size: 20px; /* Bigger headings */
         }
 
-        /* Table Styling (Compact) */
+        /* Table Styling */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 5px;
+            margin-top: 2px;
         }
 
         th, td {
             border: 1px solid black;
             text-align: center;
-            padding: 2px;  /* Reduced padding */
-            font-size: 10px;  /* Smaller font */
+            padding: 2px; /* Minimal padding */
+            font-size: 16px; /* Bigger font */
+            vertical-align: middle; /* Auto-adjust row height */
         }
 
         th {
@@ -49,17 +51,12 @@
             font-weight: bold;
         }
 
-        /* Reduce Row Height */
-        tr {
-            line-height: 1.1;
-        }
-
         /* Page Break for Printing */
         @media print {
             .pagebreak { page-break-before: always; }
             @page {
                 size: landscape;
-                margin: 5mm; /* Minimized margins */
+                margin: 10mm; /* Minimized margins */
             }
         }
     </style>
@@ -83,10 +80,10 @@
                 <th>Name</th>
                 <th>Loan Type</th>
                 <th>IRAC</th>
-                <th>Outstanding</th>
-                <th>Unapplied Interest</th>
+                <th>O/S</th>
+                <th>URI</th>
                 <th>Total Closure</th>
-                <th>Compromise Amount</th>
+                <th>Comp. Amt.</th>
                 <th colspan="2">Waived Amount</th>
                 <th>Token Money</th>
                 <th>Amount Payable</th>
@@ -133,7 +130,7 @@
     </table>
 
     <!-- Signature -->
-    <h3 style="margin-top: 20px;">Branch Manager / Officer</h3>
+    <h3 style="margin-top: 100PX;">Branch Manager / Officer</h3>
 </div>
 
 </body>
