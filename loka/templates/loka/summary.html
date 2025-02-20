@@ -24,60 +24,59 @@
 
     /* Headings */
     h2, h3, h4 {
-        margin: 2px 0;
+        margin: 2px 0; /* Minimized margins */
         padding: 0;
         text-align: center;
-        font-size: 18px;
-        line-height: 1.1;
+        font-size: 18px; /* Slightly reduced font size for compactness */
+        line-height: 1.1; /* Tightens up heading spacing */
     }
 
     /* Table Styling */
     table {
         width: 100%;
-        border-collapse: collapse;
-        margin: 15px auto;
+        border-collapse: collapse; /* Ensures borders merge */
+        margin: 15px auto; /* Keeps it centered */
     }
 
     th, td {
         border: 1px solid black;
         text-align: center;
-        padding: 2px;
-        font-size: 15px;
+        padding: 5px; /* Added 5px padding for better readability */
+        font-size: 15px; /* Slightly smaller to save space */
         vertical-align: middle;
         word-wrap: break-word;
-        white-space: normal;
+        white-space: normal; /* Allows text wrapping */
     }
 
     th {
         background: #f4f4f4;
         font-weight: bold;
-        font-size: 14px;  /* Slightly smaller font for headers */
-        line-height: 1.1;  /* Reduces space taken by multiple lines */
-        padding: 2px 4px;  /* Minimizing padding to save space */
+        font-size: 14px; /* Reduced header font size for compactness */
+        line-height: 1.1; /* Tighten header spacing */
     }
 
     /* Adjusted Column Widths */
     th:nth-child(1), td:nth-child(1) { /* S.N. */
-        width: 40px; 
+        width: 40px; /* Reduced for serial number */
     }
 
     th:nth-child(2), td:nth-child(2) { /* Account No */
-        width: 260px; /* Increased width for 20-digit numbers */
+        width: 260px; /* Ensures 20-digit account numbers fit comfortably */
         font-weight: bold;
-        font-size: 16px;
+        font-size: 16px; /* Slightly larger for emphasis */
     }
 
     th:nth-child(3), td:nth-child(3) { /* Name */
-        width: 200px; /* Adjusted for long names */
+        width: 200px; /* Wide enough for longer names */
         font-size: 16px;
     }
 
     th:nth-child(4), td:nth-child(4) { /* Loan Type */
-        width: 60px; /* Reduced width */
+        width: 80px; /* Adequate space */
     }
 
     th:nth-child(5), td:nth-child(5) { /* IRAC */
-        width: 50px; /* Smaller, doesn't need much */
+        width: 60px; /* Minimal width needed */
     }
 
     /* Amount Columns */
@@ -90,18 +89,19 @@
     th:nth-child(12), td:nth-child(12), /* Token Money */
     th:nth-child(13), td:nth-child(13) /* Amount Payable */
     {
-        width: 100px; /* Reduced width, but still fits 1 billion */
+        width: 110px; /* Reduced but fits numbers up to 1 billion */
     }
 
     /* Page Break for Printing */
     @media print {
         .pagebreak { page-break-before: always; }
         @page {
-            size: landscape;
-            margin: 10mm;
+            size: landscape; /* Ensures horizontal orientation */
+            margin: 20mm; /* Generous print margin for clarity */
         }
     }
 </style>
+
 
 
 
