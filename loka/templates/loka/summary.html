@@ -4,62 +4,91 @@
     <meta charset="UTF-8">
     {% load math_filters %}
     
-    <style>
-        /* General Styling */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 2px;
-            background: #fff;
-            font-size: 18px; /* Bigger font */
-        }
+<style>
+    /* General Styling */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 15px; /* Slightly increased padding */
+        background: #fff;
+        font-size: 18px;
+    }
 
-        /* Centered Content */
-        .wrapper {
-            width: 98%;
-            max-width: 1200px;
-            margin: auto;
-            padding: 2px;
-            background: #fff;
-        }
+    /* Wrapper */
+    .wrapper {
+        width: 98%;
+        max-width: 1200px;
+        margin: auto;
+        padding: 10px;
+        background: #fff;
+    }
 
-        /* Headings */
-        h2, h3, h4 {
-            margin: 2px 0;
-            padding: 0;
-            text-align: center;
-            font-size: 20px; /* Bigger headings */
-        }
+    /* Headings - Reduce space */
+    h2, h3, h4 {
+        margin: 2px 0; /* Minimized margins */
+        padding: 0;
+        text-align: center;
+        font-size: 20px; /* Compact but readable */
+        line-height: 1.1; /* Reduce height */
+    }
 
-        /* Table Styling */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 2px;
-        }
+    /* Table Styling */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px auto; /* Increased margin for printing */
+    }
 
-        th, td {
-            border: 1px solid black;
-            text-align: center;
-            padding: 2px; /* Minimal padding */
-            font-size: 16px; /* Bigger font */
-            vertical-align: middle; /* Auto-adjust row height */
-        }
+    th, td {
+        border: 1px solid black;
+        text-align: center;
+        padding: 5px 8px; /* Adjusted padding */
+        font-size: 16px;
+        vertical-align: middle;
+        word-wrap: break-word;
+        white-space: normal;
+    }
 
-        th {
-            background: #f4f4f4;
-            font-weight: bold;
-        }
+    th {
+        background: #f4f4f4;
+        font-weight: bold;
+    }
 
-        /* Page Break for Printing */
-        @media print {
-            .pagebreak { page-break-before: always; }
-            @page {
-                size: landscape;
-                margin: 10mm; /* Minimized margins */
-            }
+    /* Reduce space for content above the table */
+    .content-header {
+        margin-bottom: 5px; /* Minimized spacing */
+        padding: 2px 0;
+    }
+
+    /* Fixed column widths */
+    th:nth-child(2), td:nth-child(2) { /* Account No */
+        width: 220px; /* Enough space for 20-digit account numbers */
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    th:nth-child(3), td:nth-child(3) { /* Name */
+        width: 300px; /* More space for longer names */
+        font-size: 18px;
+    }
+
+    /* Adjusting 'Compromise Amount' */
+    th:nth-child(9), td:nth-child(9) {
+        width: 160px;
+        font-size: 17px;
+    }
+
+    /* Page Break for Printing */
+    @media print {
+        .pagebreak { page-break-before: always; }
+        @page {
+            size: landscape;
+            margin: 15mm; /* Increased print margin */
         }
-    </style>
+    }
+</style>
+
+
 </head>
 <body>
 
