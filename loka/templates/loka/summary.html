@@ -9,9 +9,9 @@
     body {
         font-family: Arial, sans-serif;
         margin: 0;
-        padding: 20px; /* Added inner padding */
+        padding: 20px;
         background: #fff;
-        font-size: 16px; /* Reduced font size */
+        font-size: 16px;
     }
 
     /* Wrapper */
@@ -25,10 +25,10 @@
 
     /* Headings */
     h2, h3, h4 {
-        margin: 2px 0; /* Minimized spacing */
+        margin: 2px 0;
         padding: 0;
         text-align: center;
-        font-size: 18px; /* Reduced font size */
+        font-size: 18px;
         line-height: 1.1;
     }
 
@@ -36,14 +36,14 @@
     table {
         width: 100%;
         border-collapse: collapse;
-        margin: 15px auto; /* Outer margin for printing */
+        margin: 15px auto;
     }
 
     th, td {
         border: 1px solid black;
         text-align: center;
-        padding: 2px;  /* Added 2px padding */
-        font-size: 15px; /* Slightly smaller font size */
+        padding: 2px;
+        font-size: 15px;
         vertical-align: middle;
         word-wrap: break-word;
         white-space: normal;
@@ -54,21 +54,41 @@
         font-weight: bold;
     }
 
-    /* Fixed column widths */
+    /* Adjusted Column Widths */
+    th:nth-child(1), td:nth-child(1) { /* S.N. */
+        width: 40px; 
+    }
+
     th:nth-child(2), td:nth-child(2) { /* Account No */
-        width: 250px; /* Fixed width for 20-digit numbers */
-        font-size: 16px;
+        width: 260px; /* Increased width for 20-digit numbers */
         font-weight: bold;
+        font-size: 16px;
     }
 
     th:nth-child(3), td:nth-child(3) { /* Name */
-        width: 280px; /* Adjusted width for long names */
+        width: 200px; /* Adjusted for long names */
         font-size: 16px;
     }
 
-    th:nth-child(9), td:nth-child(9) { /* Compromise Amount */
-        width: 160px;
-        font-size: 15px;
+    th:nth-child(4), td:nth-child(4) { /* Loan Type */
+        width: 80px; /* Enough space */
+    }
+
+    th:nth-child(5), td:nth-child(5) { /* IRAC */
+        width: 60px; /* Smaller, doesn't need much */
+    }
+
+    /* Amount Columns */
+    th:nth-child(6), td:nth-child(6), /* O/S */
+    th:nth-child(7), td:nth-child(7), /* URI */
+    th:nth-child(8), td:nth-child(8), /* Total Closure */
+    th:nth-child(9), td:nth-child(9), /* Compromise Amount */
+    th:nth-child(10), td:nth-child(10), /* Principal Waived */
+    th:nth-child(11), td:nth-child(11), /* Interest Waived */
+    th:nth-child(12), td:nth-child(12), /* Token Money */
+    th:nth-child(13), td:nth-child(13) /* Amount Payable */
+    {
+        width: 120px; /* Fits numbers up to 1 billion */
     }
 
     /* Page Break for Printing */
@@ -76,10 +96,11 @@
         .pagebreak { page-break-before: always; }
         @page {
             size: landscape;
-            margin: 20mm; /* Increased margin for proper print layout */
+            margin: 20mm;
         }
     }
 </style>
+
 
 
 
