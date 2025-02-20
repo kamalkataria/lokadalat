@@ -638,7 +638,7 @@ def render_to_pdf(template_src, context_dict):
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None
 
-def settopdf(request):
+def settopdf(request,lokax_id):
     context = {}
     QueryDict = request.GET
     predicted = QueryDict.get("lokadalat")
@@ -656,7 +656,9 @@ def settopdf(request):
         qs1 = SettlementRow.objects.filter(branch=Profile.objects.get(id=request.user.id))
         branchx = Profile.objects.filter(id=request.user.id)
         # print('Bank id is',bankid)
-        lokax = LokAdalat.objects.all().filter(id=predicted)[0]
+        # lokax = LokAdalat.objects.all().filter(id=predicted)[0]
+        lokax = LokAdalat.objects.all().filter(id=lokax_id).first()
+
         # print(str(lokax))
         context['contoutstanding'] = SettlementRow.objects.filter(
             branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('outstanding'))
@@ -691,7 +693,7 @@ def settopdf(request):
 
 
 
-def getsettlements1(request):
+def getsettlements1(request,lokax_id):
     context = {}
     QueryDict = request.GET
     predicted = QueryDict.get("lokadalat")
@@ -709,7 +711,8 @@ def getsettlements1(request):
         qs1 = SettlementRow.objects.filter(branch=Profile.objects.get(id=request.user.id))
         branchx = Profile.objects.filter(id=request.user.id)
         # print('Bank id is',bankid)
-        lokax = LokAdalat.objects.all().filter(id=predicted)[0]
+        # lokax = LokAdalat.objects.all().filter(id=predicted)[0]
+        lokax = LokAdalat.objects.all().filter(id=lokax_id).first()
         # print(str(lokax))
         context['contoutstanding'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(Sum('outstanding'))
         context['contunapplied_int'] = SettlementRow.objects.filter(branch=Profile.objects.get(user__id=request.user.id)).aggregate(
