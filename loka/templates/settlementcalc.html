@@ -406,7 +406,9 @@ let pageWidth = doc.internal.pageSize.getWidth(); // Get page width for centerin
 
     doc.save("Settlement_Report.pdf");
 }
-        function generatePDFY() {
+
+
+function generatePDFY() {
     const { jsPDF } = window.jspdf;
     let doc = new jsPDF("landscape");
     let pageWidth = doc.internal.pageSize.getWidth();
@@ -426,12 +428,12 @@ let pageWidth = doc.internal.pageSize.getWidth(); // Get page width for centerin
     // Title & Venue
     doc.setFontSize(18);
     doc.setFont("helvetica", "normal");
-    doc.text(Compromise Settlements in Lok Adalat, pageWidth / 2, 25, { align: "center" });
-    doc.text(Held at: ${place}, pageWidth / 2, 32, { align: "center" });
+    doc.text(`Compromise Settlements in Lok Adalat`, pageWidth / 2, 25, { align: "center" });
+    doc.text(`Held at: ${place}`, pageWidth / 2, 32, { align: "center" });
 
     // Branch, RO & Date
     doc.setFontSize(16);
-    doc.text(Branch: ${branch} | Regional Office: ${regionalOffice} | Date: ${formattedDate}, pageWidth / 2, 40, { align: "center" });
+    doc.text(`Branch: ${branch} | Regional Office: ${regionalOffice} | Date: ${formattedDate}`, pageWidth / 2, 40, { align: "center" });
 
     let headers = [[
         "S.N.", "Account No", "Customer Name", "OBJ", "IRAC",
@@ -506,6 +508,9 @@ let pageWidth = doc.internal.pageSize.getWidth(); // Get page width for centerin
     doc.save("Settlement_Report.pdf");
 }
 
+
+
+        
 
         function generatePDFX() {
     let bankName = document.getElementById("bankName").value;
