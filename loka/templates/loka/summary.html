@@ -26,51 +26,46 @@
     h2, h3, h4 {
         margin: 2px 0;
         text-align: center;
-        font-size: 16px;
-        line-height: 1.2;
+        font-size: 15px;
+        line-height: 1.1;
     }
 
     /* Table Styling */
     table {
         width: 100%;
         border-collapse: collapse;
-        margin: 15px auto;
+        margin: 10px auto;
     }
 
     th, td {
         border: 1px solid black;
         text-align: center;
-        padding: 8px;  /* Increased padding for better visibility */
+        padding: 4px;  /* Minimal padding */
         font-size: 14px;
         vertical-align: middle;
-        word-wrap: break-word;
-        white-space: normal;
-        box-sizing: border-box;
-    }
-
-    th {
-        background: #f4f4f4;
-        font-weight: bold;
+        white-space: nowrap;
     }
 
     /* Adjusted Column Widths */
     th:nth-child(1), td:nth-child(1) { /* S.N. */
-        width: 30px; 
+        width: 25px; 
     }
 
     th:nth-child(2), td:nth-child(2) { /* Account No */
-        width: 250px; /* Increased width */
+        width: 260px;
         font-weight: bold;
         font-size: 15px;
+        padding: 6px;  /* More padding for better visibility */
     }
 
     th:nth-child(3), td:nth-child(3) { /* Name */
-        width: 200px; /* Increased width */
+        width: 220px;
         font-size: 15px;
+        padding: 6px;  /* Same for name */
     }
 
     th:nth-child(4), td:nth-child(4) { /* Loan Type */
-        width: 55px; 
+        width: 50px; 
     }
 
     th:nth-child(5), td:nth-child(5) { /* IRAC */
@@ -79,7 +74,8 @@
 
     /* Amount Columns */
     th:nth-child(n+6), td:nth-child(n+6) {
-        width: 80px; /* Reduced width */
+        width: 70px; /* Compacted to save space */
+        padding: 3px; /* Reduced padding */
     }
 
     /* Page Break for Printing */
@@ -161,7 +157,7 @@
     </table>
 
     <!-- Signature -->
-    <h3 style="margin-top: 100px;">Branch Manager / Officer</h3>
+    <h3 style="margin-top: 80px;">Branch Manager / Officer</h3>
 </div>
 
 </body>
