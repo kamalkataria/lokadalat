@@ -18,6 +18,7 @@
             background: #fff;
             padding: 10px;
             margin: 0;
+            text-align: center;
         }
 
         /* Wrapper */
@@ -29,19 +30,39 @@
             background: #fff;
         }
 
-        /* Headings (Minimal Spacing) */
-        h2, h3, h4 {
-            text-align: center;
-            margin: 2px 0;
-            font-size: 14px;
-            line-height: 1.1;
+        /* Bank Name */
+        h2 {
+            font-size: 40px;  /* Large size */
+            font-weight: bold;
+            line-height:1px;
+            margin:5px;
+        }
+
+        /* Other Text */
+        .subtitle {
+            font-size: 22px;  /* Slightly smaller */
+            font-weight: normal;
+            line-height:5px;
+            margin:3px;
+        }
+         .subtitle1 {
+            font-size: 15px;  /* Slightly smaller */
+            font-weight: normal;
+            line-height:5px;
+            margin:3px;
+        }
+
+        .branch-info {
+            font-size: 18px;  /* Smaller */
+            margin-top: 5px;
+            margin-bottom:1px;
         }
 
         /* Table Styling */
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: fixed; /* Ensures column width adherence */
+            table-layout: fixed;
             margin-top: 10px;
         }
 
@@ -52,9 +73,9 @@
             font-size: 13px;
             vertical-align: middle;
             word-wrap: break-word;
-            white-space: nowrap; /* Prevents wrapping */
+            white-space: nowrap;
             font-weight: normal;
-            background: none; /* Removes any dark background */
+            background: none;
         }
 
         th {
@@ -104,10 +125,11 @@
 <div class="wrapper">
     <!-- Report Header -->
     <h2>{{ bankid }}</h2>
-    <h3>Compromise Settlements in Lok Adalat</h3>
-    <h4>Held at: {{ venue|upper }}</h4>
-    <h4>Branch: {{ branch|upper }} | Regional Office: {{ regiono|upper }}</h4>
-    <h4>Date: {{ ladate }}</h4>
+    <p class="subtitle">Compromise Settlements in Lok Adalat</p>
+    <p class="subtitle">Held at: {{ venue|upper }}</p>
+    <p class="branch-info">
+        Branch: {{ branch|upper }} | Regional Office: {{ regiono|upper }} | Date: {{ ladate }}
+    </p>
 
     <!-- Table -->
     <table>
@@ -168,7 +190,7 @@
     </table>
 
     <!-- Signature -->
-    <h3 style="margin-top: 40px;">Branch Manager / Officer</h3>
+    <p style="margin-top: 40px; font-size: 18px; font-weight: bold;">Branch Manager / Officer</p>
 </div>
 
 </body>
