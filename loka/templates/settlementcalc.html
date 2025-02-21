@@ -484,7 +484,17 @@ let pageWidth = doc.internal.pageSize.getWidth(); // Get page width for centerin
         head: headers,
         body: data,
         theme: "grid",
-        styles: { fontSize: 12, cellPadding: 1},
+        styles: { fontSize: 12, cellPadding: 1,lineWidth: 0.5, lineColor: [0, 0, 0]},
+        headStyles: { 
+        fillColor: [255, 255, 255], 
+        textColor: [0, 0, 0], 
+        lineWidth: 0.5,  // Ensure header borders are thick
+        lineColor: [0, 0, 0]
+        },
+        bodyStyles: {
+        lineWidth: 0.5,  // Ensure row borders are thick
+        lineColor: [0, 0, 0]
+        },
         columnStyles: {
             0: { cellWidth: 12 },
             1: { cellWidth: 35 }, // Account No with sufficient space
