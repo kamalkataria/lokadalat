@@ -3,95 +3,106 @@
 <head>
     <meta charset="UTF-8">
     {% load math_filters %}
-<style>
-    /* General Styling */
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 10px;
-        background: #fff;
-        font-size: 14px;
-    }
-
-    /* Wrapper */
-    .wrapper {
-        width: 98%;
-        max-width: 1200px;
-        margin: auto;
-        padding: 5px; /* Reduced padding */
-        background: #fff;
-    }
-
-    /* Headings */
-    h2, h3, h4 {
-        margin: 1px 0; /* Reduced margin */
-        text-align: center;
-        font-size: 14px; /* Slightly smaller for compactness */
-        line-height: 1; /* Tighter line height */
-    }
-
-    /* Table Styling */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 8px auto; /* Slightly reduced margin */
-    }
-
-    th, td {
-        border: 1px solid black;
-        text-align: center;
-        padding: 4px; /* Minimal padding */
-        font-size: 14px;
-        vertical-align: middle;
-        white-space: nowrap;
-    }
-
-    /* Adjusted Column Widths */
-    th:nth-child(1), td:nth-child(1) { /* S.N. */
-        width: 25px; 
-    }
-
-    th:nth-child(2), td:nth-child(2) { /* Account No */
-        width: 260px;
-        font-weight: bold;
-        font-size: 15px;
-        padding: 5px;  
-    }
-
-    th:nth-child(3), td:nth-child(3) { /* Name */
-        width: 220px;
-        font-size: 15px;
-        padding: 5px;  
-    }
-
-    th:nth-child(4), td:nth-child(4) { /* Loan Type */
-        width: 50px; 
-    }
-
-    th:nth-child(5), td:nth-child(5) { /* IRAC */
-        width: 45px; 
-    }
-
-    /* Amount Columns */
-    th:nth-child(n+6), td:nth-child(n+6) {
-        width: 70px; /* Compacted */
-        padding: 3px; 
-    }
-
-    /* Page Break for Printing */
-    @media print {
-        .pagebreak { page-break-before: always; }
-        @page {
-            size: landscape;
-            margin: 10mm;
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-    }
-</style>
+
+        /* Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            background: #fff;
+            padding: 10px;
+            margin: 0;
+        }
+
+        /* Wrapper */
+        .wrapper {
+            width: 100%;
+            max-width: 1100px;
+            margin: auto;
+            padding: 5px;
+            background: #fff;
+        }
+
+        /* Headings (Minimal Spacing) */
+        h2, h3, h4 {
+            text-align: center;
+            margin: 2px 0;
+            font-size: 14px;
+            line-height: 1.1;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed; /* Ensures column width adherence */
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            text-align: center;
+            padding: 3px;
+            font-size: 13px;
+            vertical-align: middle;
+            word-wrap: break-word;
+            white-space: nowrap; /* Prevents wrapping */
+            font-weight: normal;
+            background: none; /* Removes any dark background */
+        }
+
+        th {
+            font-weight: bold;
+        }
+
+        /* Column Width Adjustments */
+        th:nth-child(1), td:nth-child(1) { /* S.N. */
+            width: 30px;
+        }
+
+        th:nth-child(2), td:nth-child(2) { /* Account No */
+            width: 250px;
+            font-size: 14px;
+        }
+
+        th:nth-child(3), td:nth-child(3) { /* Name */
+            width: 200px;
+            font-size: 14px;
+        }
+
+        th:nth-child(4), td:nth-child(4) { /* Loan Type */
+            width: 60px;
+        }
+
+        th:nth-child(5), td:nth-child(5) { /* IRAC */
+            width: 50px;
+        }
+
+        /* Amount Columns */
+        th:nth-child(n+6), td:nth-child(n+6) {
+            width: 80px;
+            font-size: 13px;
+        }
+
+        /* Print Formatting */
+        @media print {
+            @page {
+                size: landscape;
+                margin: 10mm;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <div class="wrapper">
-    <!-- Report Header (Compact Spacing) -->
+    <!-- Report Header -->
     <h2>{{ bankid }}</h2>
     <h3>Compromise Settlements in Lok Adalat</h3>
     <h4>Held at: {{ venue|upper }}</h4>
@@ -142,7 +153,7 @@
             {% endfor %}
 
             <!-- Total Row -->
-            <tr style="background: #ddd; font-weight: bold;">
+            <tr>
                 <td colspan="5">TOTAL</td>
                 <td>{{ contoutstanding.outstanding__sum }}</td>
                 <td>{{ contunapplied_int.unapplied_int__sum }}</td>
@@ -157,7 +168,7 @@
     </table>
 
     <!-- Signature -->
-    <h3 style="margin-top: 50px;">Branch Manager / Officer</h3>
+    <h3 style="margin-top: 40px;">Branch Manager / Officer</h3>
 </div>
 
 </body>
