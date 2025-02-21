@@ -25,64 +25,61 @@
     /* Headings */
     h2, h3, h4 {
         margin: 2px 0;
-        padding: 0;
         text-align: center;
         font-size: 16px;
-        line-height: 1;
+        line-height: 1.2;
     }
 
     /* Table Styling */
     table {
         width: 100%;
-        border-collapse: separate;  /* Change from collapse to separate */
-        border-spacing: 0px; /* Removes gaps between cells */
+        border-collapse: collapse;
         margin: 15px auto;
     }
 
     th, td {
         border: 1px solid black;
         text-align: center;
-        padding: 5px;  /* Ensure 5px padding is applied */
+        padding: 8px;  /* Increased padding for better visibility */
         font-size: 14px;
         vertical-align: middle;
         word-wrap: break-word;
         white-space: normal;
+        box-sizing: border-box;
     }
 
     th {
         background: #f4f4f4;
         font-weight: bold;
-        font-size: 14px;
-        line-height: 1;
     }
 
     /* Adjusted Column Widths */
     th:nth-child(1), td:nth-child(1) { /* S.N. */
-        width: 40px; 
+        width: 30px; 
     }
 
     th:nth-child(2), td:nth-child(2) { /* Account No */
-        width: 220px; /* Ensures space for 20-digit numbers */
+        width: 250px; /* Increased width */
         font-weight: bold;
         font-size: 15px;
     }
 
     th:nth-child(3), td:nth-child(3) { /* Name */
-        width: 180px; /* Adjusted for long names */
+        width: 200px; /* Increased width */
         font-size: 15px;
     }
 
     th:nth-child(4), td:nth-child(4) { /* Loan Type */
-        width: 60px; 
+        width: 55px; 
     }
 
     th:nth-child(5), td:nth-child(5) { /* IRAC */
-        width: 50px; 
+        width: 45px; 
     }
 
     /* Amount Columns */
     th:nth-child(n+6), td:nth-child(n+6) {
-        width: 90px; /* Reduced width, but still fits large amounts */
+        width: 80px; /* Reduced width */
     }
 
     /* Page Break for Printing */
@@ -94,13 +91,6 @@
         }
     }
 </style>
-
-
-
-
-
-
-
 </head>
 <body>
 
@@ -171,7 +161,7 @@
     </table>
 
     <!-- Signature -->
-    <h3 style="margin-top: 100PX;">Branch Manager / Officer</h3>
+    <h3 style="margin-top: 100px;">Branch Manager / Officer</h3>
 </div>
 
 </body>
