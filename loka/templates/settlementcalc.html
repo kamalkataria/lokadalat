@@ -482,32 +482,47 @@ function generatePDFY() {
     ]);
 
     doc.autoTable({
-        startY: 50,
-        head: headers,
-        body: data,
-        theme: "grid",
-        styles: { fontSize: 12, cellPadding: 1},
-        columnStyles: {
-            0: { cellWidth: 12 },
-            1: { cellWidth: 35 }, // Account No with sufficient space
-            2: { cellWidth: 40 }, // Customer Name with sufficient space
-            3: { cellWidth: 15 },
-            4: { cellWidth: 15 },
-            5: { cellWidth: 20 },
-            6: { cellWidth: 20 },
-            7: { cellWidth: 20 },
-            8: { cellWidth: 20 },
-            9: { cellWidth: 20 },
-            10: { cellWidth: 20 },
-            11: { cellWidth: 20 },
-            12: { cellWidth: 20 }
-        },
-        headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], lineWidth: 0.1, lineColor: [0, 0, 0] }
-    });
+    startY: 50,
+    head: headers,
+    body: data,
+    theme: "grid",
+    styles: {
+        fontSize: 12,
+        cellPadding: 2,
+        lineWidth: 0.5,  // Increase border thickness
+        lineColor: [0, 0, 0]  // Black border
+    },
+    headStyles: {
+        fillColor: [255, 255, 255],
+        textColor: [0, 0, 0],
+        lineWidth: 0.5,  // Ensure header borders are thick
+        lineColor: [0, 0, 0]
+    },
+    bodyStyles: {
+        lineWidth: 0.5,  // Ensure row borders are thick
+        lineColor: [0, 0, 0]
+    },
+    columnStyles: {
+        0: { cellWidth: 12 },
+        1: { cellWidth: 35 },
+        2: { cellWidth: 40 },
+        3: { cellWidth: 15 },
+        4: { cellWidth: 15 },
+        5: { cellWidth: 20 },
+        6: { cellWidth: 20 },
+        7: { cellWidth: 20 },
+        8: { cellWidth: 20 },
+        9: { cellWidth: 20 },
+        10: { cellWidth: 20 },
+        11: { cellWidth: 20 },
+        12: { cellWidth: 20 }
+    }
+
+});
+
 
     doc.save("Settlement_Report.pdf");
 }
-
 
 
         
