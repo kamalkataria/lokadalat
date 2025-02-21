@@ -521,7 +521,10 @@ function generatePDFY() {
 });
 
 
-    doc.save("Settlement_Report.pdf");
+    
+    let timestamp = new Date().toISOString().replace(/[-:.TZ]/g, "");
+    
+doc.save('Settlement_Report_${timestamp}.pdf');
 }
 
 
