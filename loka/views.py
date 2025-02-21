@@ -626,6 +626,7 @@ def getladata1(request):
             context['form'] = LAForm(lokax=lokax)
             context['branch_name']=profile_user[0].branch_name
             context['bankid']=bankid[0]
+            context['lokax']=lokax
             return render(request, "ladata1.html", context)
         else:
             raise Http404()
