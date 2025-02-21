@@ -183,7 +183,7 @@
         <div class="d-flex justify-content-between">
             <button class="btn btn-primary" onclick="generateTable()">Submit</button>
             <button class="btn btn-success ms-2" onclick="replicateForm()">Add Another Settlement</button>
-            <button class="btn btn-danger ms-2" onclick="generatePDF()">Download Summary</button>
+            <button class="btn btn-danger ms-2" onclick="generatePDFY()">Download Summary</button>
                         <button class="btn btn-danger ms-2" onclick="generatePDFX()">Download Settlements</button>
 
         </div>
@@ -406,6 +406,106 @@ let pageWidth = doc.internal.pageSize.getWidth(); // Get page width for centerin
 
     doc.save("Settlement_Report.pdf");
 }
+        function generatePDFY() {
+    const { jsPDF } = window.jspdf;
+    let doc = new jsPDF("landscape");
+    let pageWidth = doc.internal.pageSize.getWidth();
+
+    let bankName = document.getElementById("bankName").value.toUpperCase();
+    let regionalOffice = document.getElementById("regionalOffice").value.toUpperCase();
+    let branch = document.getElementById("branch").value.toUpperCase();
+    let lokAdalatDate = document.getElementById("lokAdalatDate").value;
+    const formattedDate = new Date(lokAdalatDate).toLocaleDateString("en-GB");
+    let place = document.getElementById("place").value.toUpperCase();
+
+    // Bank Name
+    doc.setFontSize(24);
+    doc.setFont("helvetica", "bold");
+    doc.text(bankName, pageWidth / 2, 15, { align: "center" });
+
+    // Title & Venue
+    doc.setFontSize(18);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Compromise Settlements in Lok Adalat`, pageWidth / 2, 25, { align: "center" });
+    doc.text(`Held at: ${place}`, pageWidth / 2, 32, { align: "center" });
+
+    // Branch, RO & Date
+    doc.setFontSize(16);
+    doc.text(`Branch: ${branch} | Regional Office: ${regionalOffice} | Date: ${formattedDate}`, pageWidth / 2, 40, { align: "center" });
+
+    let headers = [[
+        "S.N.", "Account No", "Customer Name", "OBJ", "IRAC",
+        "O/S", "URI", "Total Closure", "Comp. Amt.",
+        "Waived (Pr.)", "Waived (Int.)", "Token", "Payable"
+    ]];
+
+    let data = [];
+    let totalClosureSum = 0, outstandingSum = 0, unappliedIntSum = 0, compromiseSum = 0;
+    let tokenSum = 0, prWaivedSum = 0, intWaivedSum = 0, restAmountSum = 0;
+    let counter = 1;
+
+    document.querySelectorAll(".settlementForm").forEach(form => {
+        let row = [
+            counter++,
+            form.querySelector(".accountNumber").value,
+            form.querySelector(".customerName").value.toUpperCase(),
+            form.querySelector(".loanType").value.toUpperCase(),
+            form.querySelector(".irac").value.toUpperCase(),
+            parseFloat(form.querySelector(".outstanding").value) || 0,
+            parseFloat(form.querySelector(".unappliedInterest").value) || 0,
+            parseFloat(form.querySelector(".totalClosure").value) || 0,
+            parseFloat(form.querySelector(".compromiseAmount").value) || 0,
+            parseFloat(form.querySelector(".prWaived").value) || 0,
+            parseFloat(form.querySelector(".intWaived").value) || 0,
+            parseFloat(form.querySelector(".token").value) || 0,
+            parseFloat(form.querySelector(".restAmount").value) || 0
+        ];
+
+        outstandingSum += row[5];
+        unappliedIntSum += row[6];
+        totalClosureSum += row[7];
+        compromiseSum += row[8];
+        prWaivedSum += row[9];
+        intWaivedSum += row[10];
+        tokenSum += row[11];
+        restAmountSum += row[12];
+
+        data.push(row);
+    });
+
+    data.push([
+        "TOTAL", "", "", "", "",
+        outstandingSum, unappliedIntSum, totalClosureSum, compromiseSum,
+        prWaivedSum, intWaivedSum, tokenSum, restAmountSum
+    ]);
+
+    doc.autoTable({
+        startY: 50,
+        head: headers,
+        body: data,
+        theme: "grid",
+        styles: { fontSize: 12, cellPadding: 1},
+        columnStyles: {
+            0: { cellWidth: 12 },
+            1: { cellWidth: 35 }, // Account No with sufficient space
+            2: { cellWidth: 40 }, // Customer Name with sufficient space
+            3: { cellWidth: 15 },
+            4: { cellWidth: 15 },
+            5: { cellWidth: 20 },
+            6: { cellWidth: 20 },
+            7: { cellWidth: 20 },
+            8: { cellWidth: 20 },
+            9: { cellWidth: 20 },
+            10: { cellWidth: 20 },
+            11: { cellWidth: 20 },
+            12: { cellWidth: 20 }
+        },
+        headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], lineWidth: 0.1, lineColor: [0, 0, 0] }
+    });
+
+    doc.save("Settlement_Report.pdf");
+}
+
 
 
 
