@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Lok Adalat</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap & Material Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+    <style>
+        /* Navbar */
+        .navbar {
+            background: #00796B;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            color: #fff;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #E0F2F1;
+        }
+
+        /* Content */
+        .content-wrapper {
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        /* Settings Dropdown */
+        .settings-dropdown .dropdown-menu {
+            background: #00796B;
+        }
+        .settings-dropdown .dropdown-item {
+            color: #fff;
+        }
+        .settings-dropdown .dropdown-item:hover {
+            background: #004d40;
+        }
+
+        /* Form Styling */
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        .input-group {
+            display: flex;
+            align-items: left;
+
+            width:50%;
+
+
+        }
+
+        .form-control {
+            flex-grow: 1;
+            width: 100%;
+
+        }
+        select.form-control {
+            height: 45px;
+        }
+    </style>
+</head>
+{% load crispy_forms_tags %}
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Lok Adalat</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'getladata' %}">Summary</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'getladata1' %}">Settlements</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'add_settlement' %}">Add Settlement</a></li>
+                </ul>
+                <span class="navbar-text ms-auto">
+                    {{ branch_name|upper }} BRANCH, {{ bankid|upper }}
+                </span>
+
+                <!-- Settings Dropdown -->
+                <ul class="navbar-nav ms-3 settings-dropdown">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="settingsDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="material-icons">settings</i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'editprofile' %}">Edit Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'change_password' %}">Change Password</a></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav ms-3">
+                    <li class="nav-item"><a class="nav-link" href="https://www.instagram.com/imkamalkataria/"><i class="fa fa-instagram"></i></a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://www.facebook.com/utopiankamal"><i class="fa fa-facebook"></i></a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://x.com/neandien"><i class="fa fa-twitter"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container content-wrapper">
+        <div class="form-container">
+            <h2>Edit Branch Details</h2>
+            <form method="post">
+                {% csrf_token %}
+               {{form|crispy}}
+                <button class="btn btn-danger w-100" type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
