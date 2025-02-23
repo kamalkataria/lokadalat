@@ -27,8 +27,8 @@ from django.template.loader import get_template
 import asyncio
 # from StringIO import StringIO
 from xhtml2pdf import pisa
-from PyPDF2 import PdfMerger,PdfReader
-from pyppeteer import launch
+# from PyPDF2 import PdfMerger,PdfReader
+# from pyppeteer import launch
 import io
 
 from xhtml2pdf import pisa
