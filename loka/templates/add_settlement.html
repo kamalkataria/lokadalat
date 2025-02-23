@@ -2,73 +2,52 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<div class="container mt-4">
+<div class="container mt-5">
     <h1 class="text-danger text-center">Add Compromises</h1>
 
     <!-- Flash Messages -->
     {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        {% endfor %}
+        <div class="mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
     {% endif %}
 
     <!-- Settlement Form -->
-    <form id="form-container" method="POST" class="mt-3">
+    <form id="form-container" method="POST" class="mt-3 bg-light p-4 rounded shadow">
         {% csrf_token %}
         {{ settlement_formset.management_form }}
 
         <div id="form-list">
             {% for form in settlement_formset %}
-                <div class="settlement-form card p-3 mb-3 shadow-sm">
-                    <div class="row">
-                        <div class="col-md-4 col-12 mb-2">
-                            {{ form.loka.label_tag }} {{ form.loka }}
-                        </div>
-                        <div class="col-md-4 col-12 mb-2">
-                            {{ form.ro.label_tag }} {{ form.ro }}
-                        </div>
-                        <div class="col-md-4 col-12 mb-2">
-                            {{ form.branch.label_tag }} {{ form.branch }}
-                        </div>
+                <div class="settlement-form card p-4 mb-3 shadow-lg border-0">
+                    <div class="row g-3">
+                        <div class="col-md-4 col-12">{{ form.loka.label_tag }} {{ form.loka }}</div>
+                        <div class="col-md-4 col-12">{{ form.ro.label_tag }} {{ form.ro }}</div>
+                        <div class="col-md-4 col-12">{{ form.branch.label_tag }} {{ form.branch }}</div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-4 col-12 mb-2">
-                            {{ form.account_no.label_tag }} {{ form.account_no }}
-                        </div>
-                        <div class="col-md-4 col-12 mb-2">
-                            {{ form.cust_name.label_tag }} {{ form.cust_name }}
-                        </div>
-                        <div class="col-md-4 col-12 mb-2">
-                            {{ form.totalclosure.label_tag }} {{ form.totalclosure }}
-                        </div>
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-4 col-12">{{ form.account_no.label_tag }} {{ form.account_no }}</div>
+                        <div class="col-md-4 col-12">{{ form.cust_name.label_tag }} {{ form.cust_name }}</div>
+                        <div class="col-md-4 col-12">{{ form.totalclosure.label_tag }} {{ form.totalclosure }}</div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-4 col-12 mb-2">
-                            {{ form.outstanding.label_tag }} {{ form.outstanding }}
-                        </div>
-                        <div class="col-md-4 col-12 mb-2">
-                            {{ form.compromise_amt.label_tag }} {{ form.compromise_amt }}
-                        </div>
-                        <div class="col-md-4 col-12 mb-2">
-                            {{ form.token_money.label_tag }} {{ form.token_money }}
-                        </div>
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-4 col-12">{{ form.outstanding.label_tag }} {{ form.outstanding }}</div>
+                        <div class="col-md-4 col-12">{{ form.compromise_amt.label_tag }} {{ form.compromise_amt }}</div>
+                        <div class="col-md-4 col-12">{{ form.token_money.label_tag }} {{ form.token_money }}</div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-4 col-12 mb-2">
-                            {{ form.loan_obj.label_tag }} {{ form.loan_obj }}
-                        </div>
-                        <div class="col-md-4 col-12 mb-2">
-                            {{ form.irac.label_tag }} {{ form.irac }}
-                        </div>
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-4 col-12">{{ form.loan_obj.label_tag }} {{ form.loan_obj }}</div>
+                        <div class="col-md-4 col-12">{{ form.irac.label_tag }} {{ form.irac }}</div>
                     </div>
 
                     {{ form.pr_waived.as_hidden }}
@@ -77,15 +56,17 @@
                     {{ form.unapplied_int.as_hidden }}
 
                     <hr>
-                    <button type="button" class="btn btn-outline-danger btn-sm remove-form">Remove</button>
+                    <div class="text-end">
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-form">Remove</button>
+                    </div>
                 </div>
             {% endfor %}
         </div>
 
         <!-- Action Buttons -->
-        <div class="d-flex flex-column flex-md-row justify-content-between mt-3">
+        <div class="d-flex justify-content-between mt-4">
             <button id="add-form" type="button" class="btn btn-info">Add Another Settlement</button>
-            <button class="btn btn-danger mt-2 mt-md-0" type="submit">Settle</button>
+            <button class="btn btn-danger" type="submit">Settle</button>
         </div>
     </form>
 </div>
@@ -100,24 +81,19 @@
 
         addButton.addEventListener("click", function (e) {
             e.preventDefault();
-
             let newForm = document.querySelector(".settlement-form").cloneNode(true);
             let formRegex = RegExp(`form-(\\d){1,}-`, "g");
-
             formNum++;
             newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`);
-            newForm.querySelectorAll("input").forEach(input => input.value = ""); // Clear input values
+            newForm.querySelectorAll("input").forEach(input => input.value = "");
             formContainer.appendChild(newForm);
             totalForms.setAttribute("value", formNum + 1);
-
-            // Add event listener to remove buttons for the new form
             newForm.querySelector(".remove-form").addEventListener("click", function () {
                 newForm.remove();
                 updateTotalForms();
             });
         });
 
-        // Remove a form when clicking 'Remove'
         document.querySelectorAll(".remove-form").forEach(button => {
             button.addEventListener("click", function () {
                 this.closest(".settlement-form").remove();
@@ -130,5 +106,4 @@
         }
     });
 </script>
-
 {% endblock content %}
