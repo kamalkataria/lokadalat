@@ -24,11 +24,11 @@ from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.template.loader import get_template
-import asyncio
+# import asyncio
 # from StringIO import StringIO
 from xhtml2pdf import pisa
-from PyPDF2 import PdfMerger,PdfReader
-from pyppeteer import launch
+# from PyPDF2 import PdfMerger,PdfReader
+# from pyppeteer import launch
 import io
 
 from xhtml2pdf import pisa
