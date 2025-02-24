@@ -20,15 +20,28 @@ class Bank(models.Model):
     bank_ho_address=models.CharField(max_length=200,default="",blank=True, null=True)
     def __str__(self):
         return f"{self.bank_name}"
+#
+# class SuperBanker(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="superbanker")
+#     bank = models.ForeignKey(Bank, on_delete=models.CASCADE, related_name="superbankers", null=True, blank=True)
+#     is_unrestricted = models.BooleanField(default=False)  # Flag for unrestricted access
+#
+#     def __str__(self):
+#         return f"{self.user.username} - {self.bank.bank_name if self.bank else 'All Banks'}"
 
+class SuperBankerAssignment(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='superbanker_profile')
+    bank = models.ForeignKey(Bank, on_delete=models.CASCADE, related_name='superbankers')
 
+    def __str__(self):
+        return f"{self.user.username} - {self.bank.bank_name}"
 
 class RegionalOffice(models.Model):
     bank_id=models.ForeignKey(Bank,on_delete=models.CASCADE,related_name="regions",null=True,blank=True)
     ro_name=models.CharField(max_length=100)
     ro_addr=models.CharField(max_length=500)
     def __str__(self):
-        return f"{self.ro_name}"
+        return f"{self.ro_name,self.bank_id.bank_name}"
 
 class Branch(models.Model):
     DIST_CHOICES = (
@@ -63,7 +76,7 @@ class Branch(models.Model):
     branch_state = models.CharField(max_length=50, default="Uttar Pradesh")
 
     def __str__(self):
-        return f"{self.branch_name} - {dict(self.DIST_CHOICES).get(self.branch_district, 'Unknown District')}"
+        return f"{self.regional_office.bank_id.bank_name},Branch - {self.branch_name},District-{dict(self.DIST_CHOICES).get(self.branch_district, 'Unknown District')}"
 
 class LokAdalat(models.Model):
     # username=models.ForeignKey(User,on_delete=models.CASCADE,related_name="userx")
@@ -74,7 +87,8 @@ class LokAdalat(models.Model):
 
     def __str__(self):
         x=self.lokadalatdate.strftime("%d %B %Y")
-        return f"{self.lokadalatvenue,x }"
+        return f"{self.bank.bank_name,self.lokadalatvenue,x }"
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     branch = models.OneToOneField(Branch, on_delete=models.CASCADE, null=True, blank=True, related_name='profile')
@@ -83,16 +97,44 @@ class Profile(models.Model):
         return f"{self.user.username} - {self.branch.branch_name if self.branch else 'No Branch'}"
 
     def get_ro(self):
-        return self.branch.ro if self.branch else None
+        return self.branch.regional_office if self.branch else None
 
     def get_bank(self):
-        return self.branch.ro.bank_id if self.branch and self.branch.ro else None
+        if self.branch:
+            if self.branch.regional_office:
+                print(
+                    f"User: {self.user.username}, Branch: {self.branch}, RO: {self.branch.regional_office}, Bank: {self.branch.regional_office.bank_id}")
+                return self.branch.regional_office.bank_id
+            else:
+                print(f"User: {self.user.username} has a branch but no regional office.")
+                return None
+        print(f"User: {self.user.username} has no branch.")
+        return None
+        # return self.branch.regional_office.bank_id if self.branch and self.branch.regional_office else None
 
     def get_district(self):
         return self.branch.branch_district if self.branch else "No Branch Assigned"
 
 
-
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.db import models
+#
+# class CustomUser(AbstractUser):
+#     is_superbanker = models.BooleanField(default=False)  # ✅ This replaces SuperBanker model
+#     bank = models.ForeignKey(
+#         "Bank",
+#         on_delete=models.CASCADE,
+#         null=True,
+#         blank=True,
+#         related_name="bank_users"  # ✅ Use a unique related_name to avoid conflict
+#     )
+#
+#     groups = models.ManyToManyField("auth.Group", related_name="custom_users_groups", blank=True)
+#     user_permissions = models.ManyToManyField("auth.Permission", related_name="custom_users_permissions", blank=True)
+#
+#     def __str__(self):
+#         return self.username
 
 class SettlementRow(models.Model):
     loka=models.ForeignKey(LokAdalat,on_delete=models.CASCADE,related_name="setrow")
@@ -141,3 +183,12 @@ def create_user_profile(sender, instance, created, **kwargs):
         print('yes user is creaed')
         profile=Profile.objects.create(user=instance)
         profile.save()
+
+
+
+
+@receiver(post_save, sender=SuperBankerAssignment)
+def add_to_superbanker_group(sender, instance, created, **kwargs):
+    if created:
+        superbanker_group, _ = Group.objects.get_or_create(name="SuperBanker")
+        instance.user.groups.add(superbanker_group)
