@@ -9,7 +9,7 @@ from totalsum.admin import TotalsumAdmin
 from django.utils.translation import gettext_lazy as _  # ✅ Import for translations
 from .models import Branch, SettlementRow
 
-from .models import Bank, RegionalOffice, Branch, Profile, LokAdalat, SettlementRow
+from .models import Bank, RegionalOffice, Branch, Profile, LokAdalat, SettlementRow,SuperBankerAssignment
 
 # ==================== INLINE ADMIN CLASSES ====================
 
@@ -45,50 +45,174 @@ class BankAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return request.user.is_superuser
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
 
-@admin.register(RegionalOffice)
+        if request.user.is_superuser:
+            try:
+                if hasattr(request.user, 'superbanker_profile'):
+                    bank = request.user.superbanker_profile.bank.id
+                    return qs.filter(id=bank)
+            except AttributeError:
+                return qs.none()
+            return qs  # God-Level SuperUser sees all
+
+
+
 class RegionalOfficeAdmin(admin.ModelAdmin):
-    """Admin for Regional Offices with inline branches."""
-    list_display = ('ro_name', 'bank_id')
-    search_fields = ('ro_name',)
-    inlines = [BranchInline]  # Add Branches under a Regional Office
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        """Restrict bank selection for SuperBankers and block access for normal users."""
+        if db_field.name == "bank_id":
+            if request.user.is_superuser:
+                if hasattr(request.user, 'superbanker_profile'):
+                    kwargs["queryset"] = Bank.objects.filter(id=request.user.superbanker_profile.bank_id)
+
+                else:
+                    kwargs["queryset"] = Bank.objects.all()  # SuperUser sees all banks
+           # SuperBanker sees only their bank
+            else:
+                kwargs["queryset"] = Bank.objects.none()
+        else:
+            print('noname')
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+
+    def has_add_permission(self, request):
+        """Only SuperUsers and SuperBankers can add ROs."""
+        if request.user.is_superuser:
+            return True
+        if hasattr(request.user, 'superbanker_profile'):
+            return True  # SuperBankers can add ROs (but only for their bank)
+        return False  # General users cannot add ROs
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
+
         if request.user.is_superuser:
+            if hasattr(request.user, 'superbanker_profile'):
+                bank = request.user.superbanker_profile.bank
+                return qs.filter(bank_id=bank)
+            return qs  # God-Level SuperUser sees all
+
+        return qs.none()
+
+class BranchAdmin(admin.ModelAdmin):
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+
+        if request.user.is_superuser:
+
+            if hasattr(request.user, 'superbanker_profile'):
+                bank = request.user.superbanker_profile.bank
+                return qs.filter(regional_office__bank_id=bank)
             return qs
 
         try:
-            user_profile = Profile.objects.get(user=request.user)
-            if not user_profile.branch:
-                return qs.none()
-            return qs.filter(bank=user_profile.branch.ro.bank)
-        except Profile.DoesNotExist:
+            superbanker_profile = request.user.superbanker_profile
+            return qs.filter(regional_office__bank_id=superbanker_profile.bank_id)
+        except AttributeError:
             return qs.none()
+#
+# class ProfileAdmin(admin.ModelAdmin):
+#     def get_queryset(self, request):
+#         qs = super().get_queryset(request)
+#         print('humor seting 0%')
+#
+#         if request.user.is_superuser:
+#
+#             if hasattr(request.user, 'superbanker_profile'):
+#                 bank = request.user.superbanker_profile.bank
+#                 return qs.filter(branch__regional_office__bank_id=bank)
+#
+#                 # return qs.filter(branch__branch__regional_office__bank=bank)
+#             return qs
+#
+#         try:
+#             superbanker_profile = request.user.superbanker_profile
+#             return qs.filter(branch__regional_office__bank_id=superbanker_profile.bank_id)
+#         except AttributeError:
+#             return qs.none()
+#
+# class SettlementRowAdmin(admin.ModelAdmin):
+#     def get_queryset(self, request):
+#         qs = super().get_queryset(request)
+#
+#         if request.user.is_superuser:
+#             return qs  # God-Level SuperUser sees everything
+#
+#         try:
+#             superbanker_profile = request.user.superbanker_profile
+#             # print(qs.filter(branch__regional_office__bank_id=superbanker_profile.bank_id))
+#             return qs.filter(branch__regional_office__bank_id=superbanker_profile.bank_id)
+#         except AttributeError:
+#             return qs.none()
+# #
+# @admin.register(RegionalOffice)
+# class RegionalOfficeAdmin(admin.ModelAdmin):
+#     """Admin for Regional Offices with inline branches."""
+#     list_display = ('ro_name', 'bank_id')
+#     search_fields = ('ro_name',)
+#     inlines = [BranchInline]  # Add Branches under a Regional Office
+#
+#     def get_queryset(self, request):
+#         qs = super().get_queryset(request)
+#         if request.user.is_superuser:
+#             try:
+#                 superbanker = request.user.superbanker
+#                 if superbanker.is_unrestricted:
+#                     return qs  # Show all banks if unrestricted
+#                 return qs.filter(bank_id=superbanker.bank)  # Filter Regional Offices by this bank
+#             except:
+#                 return qs.none()  # If no bank   is assigned, show nothing
+#             return qs  # Normal users see all data
+#
+#             # return qs
+#
+#         try:
+#             user_profile = Profile.objects.get(user=request.user)
+#             if not user_profile.branch:
+#                 return qs.none()
+#             return qs.filter(bank=user_profile.branch.ro.bank)
+#         except Profile.DoesNotExist:
+#             return qs.none()
 
 from .models import Branch  # Import the Branch model
+#
+# class SuperBankerAdmin(admin.ModelAdmin):
+#     list_display = ("user", "bank", "is_unrestricted")  # Show is_unrestricted status
+#     list_filter = ("is_unrestricted", "bank")  # Filter by restriction
+#     search_fields = ("user__username", "bank__bank_name") # Search by username or bank name
 
-@admin.register(Branch)
-class BranchAdmin(admin.ModelAdmin):
-    list_display = ('branch_alpha', 'branch_name', 'regional_office', 'branch_district')
-    search_fields = ('branch_name', 'branch_alpha')
-    list_filter = ('regional_office', 'branch_district')
-
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if request.user.is_superuser:
-            return qs
-
-        if request.user.groups.filter(name="SuperBanker").exists():
-            try:
-                user_profile = Profile.objects.get(user=request.user)
-                if not user_profile.branch:
-                    return qs.none()
-                return qs.filter(ro__bank=user_profile.branch.ro.bank)
-            except Profile.DoesNotExist:
-                return qs.none()
-
-        return qs.filter(ro__bank=request.user.profile.branch.ro.bank)
+# @admin.register(Branch)
+# class BranchAdmin(admin.ModelAdmin):
+#     list_display = ('branch_alpha', 'branch_name', 'regional_office', 'branch_district')
+#     search_fields = ('branch_name', 'branch_alpha')
+#     list_filter = ('regional_office', 'branch_district')
+#
+#     def get_queryset(self, request):
+#         qs = super().get_queryset(request)
+#         if request.user.is_superuser:
+#             try:
+#                 superbanker = request.user.superbanker
+#                 if superbanker.is_unrestricted:
+#                     return qs  # Show all data
+#                 return qs.filter(regional_office__bank=superbanker.bank)  # ✅ Correct
+#             except:
+#                 return qs.none()
+#             return qs
+#
+#         # if request.user.groups.filter(name="SuperBanker").exists():
+#         #     try:
+#         #         user_profile = Profile.objects.get(user=request.user)
+#         #         if not user_profile.branch:
+#         #             return qs.none()
+#         #         return qs.filter(ro__bank=user_profile.branch.ro.bank)
+#         #     except Profile.DoesNotExist:
+#         #         return qs.none()
+#         #
+#         # return qs.filter(ro__bank=request.user.profile.branch.ro.bank)
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -119,6 +243,10 @@ class ProfileAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
+
+            if hasattr(request.user, 'superbanker_profile'):
+                bank = request.user.superbanker_profile.bank
+                return qs.filter(branch__regional_office__bank_id=bank)
             return qs
         if request.user.groups.filter(name="SuperBanker").exists():
             try:
@@ -142,8 +270,14 @@ class LokadalatAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
-            return qs
-        return qs.filter(id=request.user.id)
+            try:
+                if hasattr(request.user, 'superbanker_profile'):
+                    bank = request.user.superbanker_profile.bank
+                    return qs.filter(bank=bank)
+            except:
+                return qs.none()
+        return qs
+
 
 # ==================== EXPORT CSV MIXIN ====================
 
@@ -154,7 +288,7 @@ class ExportCsvMixin:
         field_names = [field.name for field in meta.fields]
 
         response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = f'attachment; filename={meta}.csv'
+        response['Content-Disposition'] = f'attachment; filename={meta.model_name}.csv'
         writer = csv.writer(response)
 
         writer.writerow(field_names)
@@ -179,7 +313,7 @@ class RegionalOfficeFilter(admin.SimpleListFilter):
     def queryset(self, request, queryset):
         """Filter settlement rows by selected Regional Office."""
         if self.value():
-            return queryset.filter(ro__id=self.value())
+            return queryset.filter(branch__branch__regional_office__id=self.value())  # ✅ Correct reference
         return queryset
 
 class BranchDistrictFilter(admin.SimpleListFilter):
@@ -188,14 +322,28 @@ class BranchDistrictFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         """Fetch available district choices dynamically."""
-        field = Branch._meta.get_field('branch_district')  # ✅ Get the field object
+        field = Branch._meta.get_field('branch_district')
+        # choices = list(field.choices)
+        # print("District Choices:", choices)
+        # districts = Branch.objects.all().values_list("branch_district", flat=True).distinct()
+        # print("Districts:", list(districts))
+        #
+        # x= [(d,d) for d in districts if d]
+        # return x
+
+        # print('my district is',x)
+        # ✅ Get the field object
+        # print(field.choices/)
         return field.choices  # ✅ Return its choices
 
     def queryset(self, request, queryset):
         """Filters queryset based on selection."""
         if self.value():
-            return queryset.filter(branch__branch_district=self.value())
+            return queryset.filter(branch__branch__branch_district__iexact=self.value())
+        print('why empty qs')
         return queryset
+
+    # template = "admin/dropdown_filter.html"
 
 # ==================== SETTLEMENT ROW ADMIN ====================
 
@@ -223,37 +371,51 @@ class SettlementRowAdmin(TotalsumAdmin, ExportCsvMixin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        if request.user.is_superuser:
-            return qs
-        try:
-            user_profile = Profile.objects.get(user=request.user)
-            if not user_profile.branch:
-                return qs.none()
-            return qs.filter(branch__regional_office__bank_id=user_profile.branch.regional_office.bank_id)
-        except Profile.DoesNotExist:
-            return qs.none()
 
+        # SuperUser can see everything
+        if request.user.is_superuser:
+            # print('okay i came here')
+            if hasattr(request.user, 'superbanker_profile'):
+                # print('okay i came here also')
+
+                bank = request.user.superbanker_profile.bank
+                # print(type(bank))# Ensure this is a Bank instance
+                print()
+                return qs.filter(branch__branch__regional_office__bank_id=bank)
+            # print('okay i came here then')
+
+            return qs
+
+
+
+            # SuperBanker can only see their own bank's data
+
+
+
+
+        # return qs.filter(branch__regional_office__bank_id=user_bank)  # F
 # ==================== CUSTOM USER ADMIN ====================
 
 class CustomUserAdmin(UserAdmin):
-    """Custom user admin with inline profile editing."""
-    inlines = (ProfileInline,)
-    list_select_related = ('profile',)
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = super().get_fieldsets(request, obj)
+
+        # Check if 'is_superuser' is already included before adding it
+        if not any('is_superuser' in fields for _, fields in fieldsets):
+            fieldsets += (('Superuser Settings', {'fields': ('is_superuser',)}),)
+        if not request.user.is_superuser:
+            fieldsets = tuple(f for f in fieldsets if 'is_superuser' not in f[1]['fields'])
+
+        return fieldsets
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
+            if hasattr(request.user, 'superbanker_profile'):
+                print('ists a si')
+                bank = request.user.superbanker_profile.bank
+                return qs.filter(profile__branch__regional_office__bank_id=bank)
             return qs
-
-        if request.user.groups.filter(name="SuperBanker").exists():
-            try:
-                user_profile = Profile.objects.get(user=request.user)
-                if not user_profile.branch:
-                    return qs.none()
-                return qs.filter(profile__branch__ro__bank=user_profile.branch.ro.bank, is_superuser=False)
-            except Profile.DoesNotExist:
-                return qs.none()
-
         return qs.filter(username=request.user)
 
     def has_delete_permission(self, request, obj=None):
@@ -271,6 +433,24 @@ class CustomUserAdmin(UserAdmin):
             return []
         return super().get_inline_instances(request, obj)
 
+
+
         # Unregister default User model and register CustomUserAdmin
+from django.contrib import admin
+from .models import SuperBankerAssignment
+
+@admin.register(SuperBankerAssignment)
+class SuperBankerAssignmentAdmin(admin.ModelAdmin):
+    list_display = ("user", "bank")
+    search_fields = ("user__username", "bank__name")
+
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
+
+# admin.site.register(Bank)  # Only SuperUsers can add Banks
+admin.site.register(RegionalOffice, RegionalOfficeAdmin)
+admin.site.register(Branch, BranchAdmin)
+# admin.site.register(Profile, ProfileAdmin)
+# admin.site.register(SettlementRow, SettlementRowAdmin)
+# admin.site.register(SuperBankerAssignment, SuperBankerAdmin)
+
