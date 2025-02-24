@@ -99,6 +99,18 @@ class RegionalOfficeAdmin(admin.ModelAdmin):
         return qs.none()
 
 class BranchAdmin(admin.ModelAdmin):
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        """Restrict Regional Office selection for SuperBankers and block access for normal users."""
+        if db_field.name == "regional_office":
+            if request.user.is_superuser:
+                if hasattr(request.user, 'superbanker_profile'):
+                    kwargs["queryset"] = RegionalOffice.objects.filter(bank_id=request.user.superbanker_profile.bank_id)
+                else:
+                    kwargs["queryset"] = RegionalOffice.objects.all()  # SuperUser sees all ROs
+            else:
+                kwargs["queryset"] = RegionalOffice.objects.none()  # Normal users see nothing
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+        
     def get_queryset(self, request):
         qs = super().get_queryset(request)
 
