@@ -45,6 +45,8 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
 
 
+def upload_success(request):
+    return render(request, 'upload_success.html')
 
 def setcalc(request):
     visit_count = request.session.get('visit_count', 0)
