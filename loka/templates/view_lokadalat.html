@@ -1,19 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
 <style>
+    .container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+    }
+    .card {
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .card-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
     .card-content p {
         color: #424242 !important;
         font-size: 14px;
-    }
-    .card-title {
-        font-size: 16px;
-        font-weight: bold;
+        margin: 5px 0;
     }
 </style>
 
 <div class="container">
     <h5 class="center-align">📜 Lok Adalat Accounts</h5>
-
     <form method="get" class="row">
         <div class="input-field col s12">
             <input type="text" name="account_no" id="account_no" value="{{ query }}">
@@ -24,7 +36,7 @@
         </div>
     </form>
 
-    {% for account in account %}
+    {% for account in accounts %}
     <div class="card">
         <div class="card-content">
             <span class="card-title">🏦 Account Details</span>
@@ -35,7 +47,6 @@
             <p><strong>Mobile No:</strong> {{ account.mobile_no }}</p>
         </div>
     </div>
-
     <div class="card">
         <div class="card-content">
             <span class="card-title">💰 Financial Details</span>
