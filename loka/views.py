@@ -1283,3 +1283,123 @@ def generate_pdf(request):
         # response['Content-Disposition'] = 'attachment; filename="Settlement_Report.pdf"'
         return response
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+
+
+@login_required
+def upload_csv(request):
+    if request.method == 'POST' and request.FILES.get('csv_file'):
+        file = request.FILES['csv_file']
+        file_path = default_storage.save(file.name, file)
+
+        # Open file in binary mode and decode manually
+        with default_storage.open(file_path, 'rb') as f:
+            decoded_file = f.read().decode('utf-8').splitlines()
+            reader = csv.DictReader(decoded_file,delimiter='|')
+            print("CSV Headers:", reader.fieldnames)
+
+            for row in reader:
+                print("Row Read from CSV:", row)
+                row = {
+                    key.strip().strip("'").strip('"'): value.strip().strip("'").strip('"') if value else ''
+                    for key, value in row.items()
+                }
+                print("Row Read from CSV:", row)
+
+                try:
+                    def clean_value(value):
+                        """ Ensure value is a string and strip whitespace safely """
+                        return value.strip() if isinstance(value, str) else ''
+
+                    def parse_date(date_str):
+                        """ Convert date string to Python date object, handling different formats """
+                        try:
+                            date_str = clean_value(date_str)
+                            return datetime.strptime(date_str, '%d-%m-%Y').date() if date_str else None
+                        except ValueError:
+                            return None  # Handle invalid date formats
+
+                    def get_decimal(value):
+                        """ Convert string to decimal, handling empty and improperly formatted values """
+                        try:
+                            return float(value.replace(',', '')) if value else 0.0
+                        except ValueError:
+                            return 0.0
+                    # Ensure keys are stripped of extra spaces
+                    row = {key.strip(): (value.strip() if value else '') for key, value in row.items() if key}
+
+
+                    # print("Processing Row:", row)
+                    account_no = clean_value(row.get('Account no', ''))
+                    branch = clean_value(row.get('Branch', ''))
+                    name = clean_value(row.get('Account Name', ''))
+                    address = clean_value(row.get('Village', ''))[:20]
+                    mobile_no = clean_value(row.get('Mobile No.', ''))
+                    acc_sanction_date = row.get('Sanction Date', '').strip()
+                    print('my date is',acc_sanction_date)
+
+                    if acc_sanction_date:
+                        try:
+                            # 🔥 Allow both '18.10.2017' and '18-10-2017'
+                            acc_sanction_date = datetime.strptime(acc_sanction_date, '%d.%m.%Y').date()
+
+                        except ValueError:
+                            try:
+                                acc_sanction_date = datetime.strptime(acc_sanction_date, '%d-%m-%Y').date()
+                            except ValueError:
+                                acc_sanction_date = None
+                    else:
+                        acc_sanction_date = None
+
+                    def get_decimal(value):
+                        try:
+                            return float(value.replace(',', '')) if value else 0.0
+                        except ValueError:
+                            return 0.0
+
+                    print(f"Saving: {account_no}, {branch}, {name}, {acc_sanction_date}")
+
+                    # Debugging to check CSV structure
+
+
+
+                    ENRSAccounts.objects.update_or_create(
+                        account_no=clean_value(row.get('Account no', '')),
+                        defaults={
+                            'user': request.user,
+                            'branch': branch,
+                            'name': name,
+                            'address': address,
+                            'mobile_no': mobile_no,
+                            'acc_sanction_date': acc_sanction_date,
+                            'total_dues': get_decimal(row.get('TOTAL DUES', '0')),
+                            'outstanding_as_on': get_decimal(row.get('Bal as on current 30.12.2024', '0')),
+                            'min_comp_amt': get_decimal(row.get('MINIMUM COMP AMOUNT', '0')),
+                            'category': clean_value(row.get('Post audit category', '')),
+                            'minimum_compromise_amt': get_decimal(row.get('MINIMUM COMP AMOUNT', '0')),
+                            'npa_expenses': get_decimal(row.get('NPA EXPENSES', '0')),
+                        }
+                    )
+                except Exception as e:
+                    return JsonResponse({'error': f'Row processing failed: {str(e)}'}, status=400)
+
+        return redirect('upload_success')
+
+    return render(request, 'upload_csv.html')
+
+# View to retrieve account details
+def get_account_details(request):
+    if request.method == 'GET' and 'account_no' in request.GET:
+        if request.method == 'GET' and 'account_no' in request.GET:
+            account_no = request.GET['account_no']
+            try:
+                account = ENRSAccounts.objects.get(account_no=account_no)
+                context = {
+                    'account': account  # Pass the account object directly to the template
+                }
+                return render(request, 'account_details.html', context)
+            except ENRSAccounts.DoesNotExist:
+                return render(request, 'account_details.html', {'error': 'Account not found'})
+    return render(request, 'account_details.html')
+
