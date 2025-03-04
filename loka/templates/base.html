@@ -125,7 +125,12 @@ th:first-child, th:nth-child(2) {
                 <a class="nav-link" href="{% url 'add_settlement' %}">Add Settlement</a>
             </li>
 <li class="nav-item">
-                <a class="nav-link" href="{% url 'setcalc' %}">Settlement Calculator</a>
+                <a class="nav-link" href="{% url 'setcalc' %}"><i class="fa fa-calculator"></i>
+</a>
+</li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'get_account_details' %}"><i class="fa fa-search"></i>
+</a>
 </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'editprofile' %}"><span>{{ branch_name|upper }} {{ "Branch"|upper }}, {{ bankid|upper }}</span></a>
