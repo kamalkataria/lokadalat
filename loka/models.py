@@ -11,6 +11,20 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from pkg_resources import require
 
+class ENRSAccounts(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    branch = models.CharField(max_length=255)
+    account_no = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    mobile_no = models.CharField(max_length=20)
+    acc_sanction_date = models.DateField(null=True,blank=True)
+    total_dues = models.DecimalField(max_digits=10, decimal_places=2)
+    outstanding_as_on = models.DecimalField(max_digits=10, decimal_places=2)
+    min_comp_amt = models.DecimalField(max_digits=10, decimal_places=2)
+    category = models.CharField(max_length=100)
+    minimum_compromise_amt = models.DecimalField(max_digits=10, decimal_places=2)
+    npa_expenses = models.DecimalField(max_digits=10, decimal_places=2)
 
 
 
