@@ -15,7 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, TemplateView, UpdateView, DeleteView
 from .forms import NewUserForm,LAForm,ProfileForm
 from .forms import SettlementForm, SettlementFormset1
-from .models import SettlementRow, Profile, RegionalOffice, Bank, LokAdalat,Branch,ENRSAccounts
+from .models import SettlementRow, Profile, RegionalOffice, Bank, LokAdalat,Branch,ENRSAccounts,LokAdalatAccount
 from django.core.files.storage import default_storage
 from datetime import datetime
 
