@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Materialize CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<style>
+    body {
+        background: #f5f5f5; /* Light Gray Background */
+        color: #212121;
+    }
+    .container {
+        max-width: 800px;
+        margin-top: 20px;
+    }
+    .card {
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .card-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+    .input-field input {
+        color: #212121;
+        border-bottom: 2px solid #007bff;
+    }
+    .btn-custom {
+        background: #007bff;
+        width: 100%;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+    p {
+        font-size: 16px;
+        color: #424242;
+        padding: 5px 0;
+        border-bottom: 1px solid #e0e0e0;
+    }
+</style>
+
+<div class="container">
+    <h4 class="center-align">🔍 Search Account</h4>
+
+    <form method="get" class="row">
+        <div class="input-field col s12">
+            <input type="text" name="account_no" id="account_no" required>
+            <label for="account_no">Enter Account No.</label>
+        </div>
+        <div class="col s12">
+            <button class="btn waves-effect waves-light btn-custom" type="submit">Search</button>
+        </div>
+    </form>
+
+    {% if account %}
+    <div class="row">
+        <!-- Group 1 Card -->
+        <div class="col s12">
+            <div class="card">
+                <span class="card-title">🏦 Account Details</span>
+                <p><strong>Branch:</strong> {{ account.branch }}</p>
+                <p><strong>Account No:</strong> {{ account.account_no }}</p>
+                <p><strong>Name:</strong> {{ account.name }}</p>
+                <p><strong>Address:</strong> {{ account.address }}</p>
+                <p><strong>Mobile No:</strong> {{ account.mobile_no }}</p>
+            </div>
+        </div>
+
+        <!-- Group 2 Card -->
+        <div class="col s12">
+            <div class="card">
+                <span class="card-title">💰 Financial Details</span>
+                <p><strong>Sanction Date:</strong> {{ account.acc_sanction_date|default:"N/A" }}</p>
+                <p><strong>Total Dues:</strong> ₹{{ account.total_dues }}</p>
+                <p><strong>Outstanding As On:</strong> ₹{{ account.outstanding_as_on }}</p>
+                <p><strong>Min Comp Amt:</strong> ₹{{ account.min_comp_amt }}</p>
+                <p><strong>Category:</strong> {{ account.category }}</p>
+                <p><strong>Min Compromise Amt:</strong> ₹{{ account.minimum_compromise_amt }}</p>
+                <p><strong>NPA Expenses:</strong> ₹{{ account.npa_expenses }}</p>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <p class="center-align red-text">No account found.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
