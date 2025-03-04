@@ -67,6 +67,57 @@ def setcalc(request):
     return render(request, 'settlementcalc.html')
 
 
+def upload_lokadalat_csv(request):
+    if request.method == 'POST' and request.FILES.get('csv_file'):
+        csv_file = request.FILES['csv_file']
+        if not csv_file.name.endswith('.csv'):
+            messages.error(request, 'File is not a CSV')
+            return redirect('upload_lokadalat_csv')
+
+        decoded_file = csv_file.read().decode('utf-8').splitlines()
+        reader = csv.reader(decoded_file,delimiter='|')
+        next(reader)  # Skip header
+
+        for row in reader:
+            cleaned_row = [col.strip("'") for col in row]
+            print('row is')
+            print(cleaned_row)
+            LokAdalatAccount.objects.update_or_create(
+                account_no=cleaned_row[1],
+                defaults={
+                    'branch': cleaned_row[0],
+                    'scheme_code': cleaned_row[2],
+                    'account_name': cleaned_row[3],
+                    'sanction_date': datetime.strptime(cleaned_row[4], '%d/%m/%Y').date() if cleaned_row[4] else None,
+                    'sanction_amount': cleaned_row[5] or 0,
+                    'address': cleaned_row[6][:20],  # Truncate address to first 20 characters
+                    'balance_amount': cleaned_row[7] or 0,
+                    'demand_amount': cleaned_row[8] or 0,
+                    'account_npa_date': datetime.strptime(cleaned_row[9], '%d/%m/%Y').date() if cleaned_row[
+                        9] else None,
+                    'category_as_on_2024': cleaned_row[10],
+                    'provision_amount': cleaned_row[11] or 0,
+                    'mobile_no': cleaned_row[12],
+                    'npa_expenses': cleaned_row[13] or 0,
+                    'total_dues': cleaned_row[14] or 0,
+                }
+            )
+
+        messages.success(request, 'CSV uploaded successfully!')
+        return redirect('upload_lokadalat_csv')
+
+    return render(request, 'upload_lokadalat.html')
+
+
+def view_lokadalat_accounts(request):
+    query = request.GET.get('account_no', '')
+    account = None
+
+    if query:
+        account = LokAdalatAccount.objects.filter(account_no=query)
+
+    return render(request, 'view_lokadalat.html', {'account': account})
+
 
 
 class ChangePasswordView(LoginRequiredMixin,PasswordChangeView):
