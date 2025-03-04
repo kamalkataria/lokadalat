@@ -33,5 +33,7 @@ urlpatterns = [
     path('upload/', views.upload_csv, name='upload_csv'),
     path('account/', views.get_account_details, name='get_account_details'),
     path('upload/success/', views.upload_success, name='upload_success'),
+     path('lokadalat/upload/', views.upload_lokadalat_csv, name='upload_lokadalat_csv'),
+    path('lokadalat/accounts/', views.view_lokadalat_accounts, name='view_lokadalat_accounts'),
 
 ]
