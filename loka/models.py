@@ -11,6 +11,28 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from pkg_resources import require
 
+
+
+class LokAdalatAccount(models.Model):
+    branch = models.CharField(max_length=255)
+    account_no = models.CharField(max_length=50, unique=True)
+    scheme_code = models.CharField(max_length=50)
+    account_name = models.CharField(max_length=255)
+    sanction_date = models.DateField(null=True, blank=True)
+    sanction_amount = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
+    address = models.TextField()
+    balance_amount = models.DecimalField(max_digits=15, decimal_places=2)
+    demand_amount = models.DecimalField(max_digits=15, decimal_places=2)
+    account_npa_date = models.DateField(null=True, blank=True)
+    category_as_on_2024 = models.CharField(max_length=100)
+    provision_amount = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
+    mobile_no = models.CharField(max_length=15, null=True, blank=True)
+    npa_expenses = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
+    total_dues = models.DecimalField(max_digits=15, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.account_no} - {self.account_name}"
+
 class ENRSAccounts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     branch = models.CharField(max_length=255)
