@@ -30,4 +30,8 @@ urlpatterns = [
     path('change-password/', ChangePasswordView.as_view(), name='change_password'),
     path('setcalc/', views.setcalc, name='setcalc'),
     path('generate-pdf/', views.generate_pdf, name='generate_pdf'),
+    path('upload/', views.upload_csv, name='upload_csv'),
+    path('account/', views.get_account_details, name='get_account_details'),
+    path('upload/success/', views.upload_success, name='upload_success'),
+
 ]
