@@ -66,7 +66,7 @@ def setcalc(request):
 
     return render(request, 'settlementcalc.html')
 
-
+@login_required(login_url='/login/')
 def upload_lokadalat_csv(request):
     if request.method == 'POST' and request.FILES.get('csv_file'):
         csv_file = request.FILES['csv_file']
