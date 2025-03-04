@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h4 class="center-align">📤 Upload Lok Adalat CSV</h4>
+
+    {% if messages %}
+        <ul class="collection">
+            {% for message in messages %}
+                <li class="collection-item {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" class="card-panel">
+        {% csrf_token %}
+        <div class="file-field input-field">
+            <div class="btn">
+                <span>Select File</span>
+                <input type="file" name="csv_file" required>
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="Upload CSV file">
+            </div>
+        </div>
+
+        <button type="submit" class="btn waves-effect waves-light">Upload</button>
+    </form>
+
+    <div class="center-align">
+        <a href="{% url 'view_lokadalat_accounts' %}" class="btn blue">View Uploaded Accounts</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .card-content p {
+        color: #424242 !important;
+        font-size: 14px;
+    }
+    .card-title {
+        font-size: 16px;
+        font-weight: bold;
+    }
+</style>
+
+<div class="container">
+    <h5 class="center-align">📜 Lok Adalat Accounts</h5>
+
+    <form method="get" class="row">
+        <div class="input-field col s12">
+            <input type="text" name="account_no" id="account_no" value="{{ query }}">
+            <label for="account_no">Enter Account No.</label>
+        </div>
+        <div class="col s12">
+            <button class="btn waves-effect waves-light blue" type="submit">Search</button>
+        </div>
+    </form>
+
+    {% for account in account %}
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">🏦 Account Details</span>
+            <p><strong>Branch:</strong> {{ account.branch }}</p>
+            <p><strong>Account No:</strong> {{ account.account_no }}</p>
+            <p><strong>Name:</strong> {{ account.account_name }}</p>
+            <p><strong>Address:</strong> {{ account.address }}</p>
+            <p><strong>Mobile No:</strong> {{ account.mobile_no }}</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">💰 Financial Details</span>
+            <p><strong>Sanction Date:</strong> {{ account.sanction_date|default:"N/A" }}</p>
+            <p><strong>Sanction Amount:</strong> ₹{{ account.sanction_amount }}</p>
+            <p><strong>Total Dues:</strong> ₹{{ account.total_dues }}</p>
+            <p><strong>Balance Amount:</strong> ₹{{ account.balance_amount }}</p>
+            <p><strong>Demand Amount:</strong> ₹{{ account.demand_amount }}</p>
+            <p><strong>Category:</strong> {{ account.category_as_on_2024 }}</p>
+            <p><strong>Provision Amount:</strong> ₹{{ account.provision_amount }}</p>
+            <p><strong>NPA Expenses:</strong> ₹{{ account.npa_expenses }}</p>
+        </div>
+    </div>
+    {% empty %}
+    <p class="center-align red-text">No accounts found.</p>
+    {% endfor %}
+</div>
+{% endblock %}
