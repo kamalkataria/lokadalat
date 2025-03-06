@@ -2,8 +2,7 @@
 {% block content %}
 
 <script>
-    // Convert Django list to a valid JavaScript array safely
-    var phraseArray = {{ phraseArray|safe }};
+    var phraseArray = [];
 
     function randomIndex(arr) {
         return Math.floor(Math.random() * arr.length);
@@ -14,10 +13,23 @@
         document.getElementById(loc).innerHTML = "You are " + arr[index];
     }
 
-    $(document).ready(function() {
-        setInterval(function() {
-            completeSentence(phraseArray, 'randomAdjective');
-        }, 200);
+    $(document).ready(function () {
+        // Fetch the phraseArray from the server
+        $.ajax({
+            url: window.location.href,  // Fetch from the current page URL
+            type: "GET",
+            dataType: "json",
+            headers: { "X-Requested-With": "XMLHttpRequest" },  // Identify as AJAX request
+            success: function (data) {
+                phraseArray = data.phraseArray;
+                setInterval(function () {
+                    completeSentence(phraseArray, 'randomAdjective');
+                }, 200);
+            },
+            error: function () {
+                console.error("Failed to load phrases.");
+            }
+        });
     });
 </script>
 
