@@ -1,6 +1,3 @@
-{% extends "loka/base2.html" %}
-{% block content %}
-
 <script>
     var phraseArray = [];
 
@@ -14,20 +11,23 @@
     }
 
     $(document).ready(function () {
-        // Fetch the phraseArray from the server
+        // Fetch phrases dynamically via AJAX
         $.ajax({
-            url: window.location.href,  // Fetch from the current page URL
+            url: window.location.href,  // Make the request to the current page
             type: "GET",
             dataType: "json",
-            headers: { "X-Requested-With": "XMLHttpRequest" },  // Identify as AJAX request
+            headers: { "X-Requested-With": "XMLHttpRequest" },  // Mark it as an AJAX request
             success: function (data) {
+                console.log("Phrases loaded:", data);
                 phraseArray = data.phraseArray;
+
                 setInterval(function () {
                     completeSentence(phraseArray, 'randomAdjective');
                 }, 200);
             },
-            error: function () {
-                console.error("Failed to load phrases.");
+            error: function (xhr, status, error) {
+                console.error("Failed to load phrases.", error);
+                console.error("Response:", xhr.responseText);
             }
         });
     });
@@ -38,15 +38,11 @@
         <div class="col-sm-4">
             <p class="text-warning text-center" style="font-size:10em;">404</p>
         </div>
-
         <div class="col-sm-4">
             <h2 id="whoAreYou">
                 <div onclick="completeSentence(phraseArray, 'randomAdjective')" id="randomAdjective" class="alert alert-primary"></div>
             </h2>
         </div>
-
         <div class="col-sm-4"></div>
     </div>
 </div>
-
-{% endblock content %}
