@@ -176,7 +176,7 @@ def handler404(request, exception):
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':  # AJAX request
         return JsonResponse({"phraseArray": phraseArray})
     
-    return render(request, '404handler.html',status=404)
+    return render(request, "loka/404.html", {"phraseArray": []}, status=404)
 
 
 # def handler500(request, exception):
