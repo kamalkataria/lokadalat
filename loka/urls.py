@@ -1,10 +1,14 @@
 from django.urls import path
 
 from . import views
+from django.views.generic import RedirectView
+
 from .views import ChangePasswordView
 
 
 urlpatterns = [
+    path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico', permanent=True)),  # Point to your favicon
+
 
     path("", views.index, name="index"),
     path('add', views.SettlementAddView.as_view(), name="add_settlement"),
