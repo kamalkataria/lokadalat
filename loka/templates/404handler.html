@@ -2,42 +2,39 @@
 {% block content %}
 
 <script>
-var phraseArray = {{ phraseArray|safe }}
+    var phraseArray = JSON.parse('{{ phraseArray|safe|escapejs }}'); // Ensures safe JSON parsing in JavaScript
 
-function randomIndex(arr){
-  return Math.floor((Math.random() * arr.length));
-}
+    function randomIndex(arr) {
+        return Math.floor(Math.random() * arr.length);
+    }
 
+    function completeSentence(arr, loc) {
+        let index = randomIndex(arr);
+        document.getElementById(loc).innerHTML = "You are " + arr[index];
+    }
 
-function completeSentence(arr, loc){
-  index = randomIndex(arr);
-  document.getElementById(loc).innerHTML = "You are "+arr[index];
-}
     $(document).ready(function() {
-    setInterval(function(){
-     completeSentence(phraseArray,'randomAdjective')
-    },200);
+        setInterval(function() {
+            completeSentence(phraseArray, 'randomAdjective');
+        }, 200);
     });
 </script>
+
 <div class="container" style="width:100%;height:100%;margin:10% auto;">
     <div class="row">
         <div class="col-sm-4">
-<p class="text-warning text-center" style="font-size:10em;">404</p>
-
-
+            <p class="text-warning text-center" style="font-size:10em;">404</p>
         </div>
 
-    <div class="col-sm-4">
+        <div class="col-sm-4">
+            <h2 id="whoAreYou">
+                <div onclick="completeSentence(phraseArray, 'randomAdjective')" id="randomAdjective" class="alert alert-primary"></div>
+            </h2>
+        </div>
 
-         <h2  id="whoAreYou"><div  onclick="completeSentence({{phraseArray|safe}}, 'randomAdjective')" id="randomAdjective" class="alert alert-primary"></div></h2>
-
+        <div class="col-sm-4"></div>
     </div>
-    <div class="col-sm-4">
-    </div>
-
-    </div>
-
 </div>
 
-
 {% endblock content %}
+
