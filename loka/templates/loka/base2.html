@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Lok Adalat</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://www.unpkg.com/spltjs@1.1.0"></script>
+    <script type="module" src="https://www.unpkg.com/spltjs@1.1.0">
+        import splt from "https://cdn.skypack.dev/spltjs@1.0.8";
+        import anime from "https://cdn.skypack.dev/animejs@3.2.1";
+        splt({});
+
+        anime({
+            targets: '.splt',
+            translateY: [0, 40],
+            direction: 'alternate',
+            loop: true,
+            delay: anime.stagger(50),
+        });
+    </script>
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% load crispy_forms_tags %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+    <style>
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        @media (max-width: 768px) {
+            .social-icons {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+        .social-icons a {
+            text-decoration: none;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .social-icons .instagram { color: #E1306C; }
+        .social-icons .facebook { color: #1877F2; }
+        .social-icons .twitter { color: #000000; }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .centered-text {
+            flex-grow: 1;
+            text-align: center;
+            font-weight: bold;
+        }
+        .table-responsive {
+    position: relative;
+    max-height: 500px; 
+    overflow: auto; 
+    border: 1px solid #ddd;
+}
+
+table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #7FFFD4; /* Ensure the background color remains */
+}
+
+th, td {
+    white-space: nowrap; /* Prevent content from wrapping */
+}
+
+th:first-child, td:first-child {
+    position: sticky;
+    left: 0;
+    background: white;
+    z-index: 1001;
+}
+
+th:nth-child(2), td:nth-child(2) {
+    position: sticky;
+    left: 40px; /* Adjust width as needed */
+    background: white;
+    z-index: 1001;
+}
+
+/* Optional: Add a box-shadow to indicate stickiness */
+th:first-child, th:nth-child(2) {
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+    </style>
+</head>
+
+<body>
+    <nav style="background:#7FFFD4;" class="navbar navbar-expand-sm navbar-light sticky-top">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+        <span class="text-danger navbar-brand d-sm-none ml-2">Lok Adalat</span> <!-- Title for mobile -->
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav nav-links">
+            <li class="nav-item">
+                <a class="text-danger   navbar-brand d-none d-sm-inline" href="#">Lok Adalat</a> <!-- Title for desktop -->
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}">Home</a>
+            </li>
+        </ul>
+
+        <div class="navbar-nav ml-auto social-icons">
+             <a class="text-secondary">Contact US</a>
+
+            <a href="https://www.instagram.com/imkamalkataria/" title="Instagram" class="instagram">I</a>
+            <a href="https://www.facebook.com/utopiankamal" title="Facebook" class="facebook">F</a>
+            <a href="https://x.com/neandien" title="Twitter" class="twitter">X</a>
+        </div>
+    </div>
+</nav>
+
+    
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>
