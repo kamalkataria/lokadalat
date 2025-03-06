@@ -5,77 +5,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- Bootstrap CSS & JS -->
     {% load bootstrap4 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
-    {% load crispy_forms_tags %}
-    {% load static %}
 
-    <!-- Custom CSS -->
+    <!-- Crispy Forms -->
+    {% load crispy_forms_tags %}
+    
+    <!-- Static Files -->
+    {% load static %}
     <link rel="stylesheet" href="{% static 'style.css' %}">
 
-    <!-- External Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://www.unpkg.com/spltjs@1.1.0"></script>
-    
-    <script type="module">
-        import splt from "https://cdn.skypack.dev/spltjs@1.0.8";
-        import anime from "https://cdn.skypack.dev/animejs@3.2.1";
-        
-        splt({});
-        anime({
-            targets: '.splt',
-            translateY: [0, 40],
-            direction: 'alternate',
-            loop: true,
-            delay: anime.stagger(50),
-        });
-    </script>
-
+    <!-- Custom Styles -->
     <style>
-        /* General Styling */
-        body {
-            background: #f5f5f5;
-            color: #212121;
-        }
-
-        /* Navbar Styling */
+        /* Navbar Styles */
         .navbar {
             background: #7FFFD4;
+            padding: 10px 15px;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: #d9534f !important;
         }
         .navbar-toggler {
             border: none;
             outline: none;
         }
-        .navbar-brand {
-            font-weight: bold;
-        }
-
-        /* Social Icons */
         .social-icons {
             display: flex;
-            gap: 15px;
-            font-size: 24px;
-            font-weight: bold;
+            gap: 10px;
+            font-size: 20px;
         }
         .social-icons a {
             text-decoration: none;
             padding: 5px;
             border-radius: 5px;
         }
-        .social-icons .instagram { color: #E1306C; }
-        .social-icons .facebook { color: #1877F2; }
-        .social-icons .twitter { color: #000000; }
+        .instagram { color: #E1306C; }
+        .facebook { color: #1877F2; }
+        .twitter { color: #000000; }
 
-        /* Responsive Navbar */
+        /* Fix Mobile View */
         @media (max-width: 768px) {
             .social-icons {
-                flex-direction: row;
+                text-align: center;
                 justify-content: center;
+            }
+            .navbar-brand {
+                font-size: 16px;
             }
         }
 
-        /* Sticky Table */
+        /* Table Styles */
         .table-responsive {
             position: relative;
             max-height: 500px;
@@ -114,9 +99,10 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-sm navbar-light sticky-top">
         <div class="container">
-            <a class="navbar-brand text-danger" href="#">Lok Adalat</a>
+            <!-- Brand -->
+            <a class="navbar-brand" href="#">Lok Adalat</a>
 
-            <!-- Navbar Toggler for Mobile -->
+            <!-- Navbar Toggler -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -140,9 +126,10 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="container py-4">
-        {% block content %}{% endblock content %}
-    </main>
+    <div class="container mt-4">
+        {% block content %}
+        {% endblock content %}
+    </div>
 
 </body>
 </html>
