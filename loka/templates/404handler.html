@@ -2,7 +2,8 @@
 {% block content %}
 
 <script>
-    var phraseArray = JSON.parse('{{ phraseArray|safe|escapejs }}'); // Ensures safe JSON parsing in JavaScript
+    // Convert Django list to a valid JavaScript array safely
+    var phraseArray = {{ phraseArray|safe }};
 
     function randomIndex(arr) {
         return Math.floor(Math.random() * arr.length);
@@ -37,4 +38,3 @@
 </div>
 
 {% endblock content %}
-
