@@ -1031,6 +1031,10 @@ from .forms import LAForm
 def getladata(request):
     """Fetch LokAdalat data for the user's bank."""
     context = {}
+    if not request.user.is_authenticated:
+        raise Http404("Unknown user")
+
+        
 
     if request.user.is_superuser:
         raise Http404("Superusers are not allowed to access this page.")
