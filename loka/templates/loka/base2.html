@@ -1,135 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Lok Adalat</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
-    <!-- Bootstrap CSS & JS -->
-    {% load bootstrap4 %}
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-
-    <!-- Crispy Forms -->
-    {% load crispy_forms_tags %}
+    <title>Lok Adalat - Search Account</title>
     
-    <!-- Static Files -->
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <!-- Bootstrap CSS (for styling) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+    <!-- FontAwesome for social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-    <!-- Custom Styles -->
     <style>
-        /* Navbar Styles */
+        body {
+            background-color: #f8f9fa;
+        }
         .navbar {
-            background: #7FFFD4;
-            padding: 10px 15px;
+            background-color: #98ffcc;
+            padding: 10px;
         }
-        .navbar-brand {
+        .logo {
+            font-size: 20px;
             font-weight: bold;
-            color: #d9534f !important;
+            color: red;
         }
-        .navbar-toggler {
-            border: none;
-            outline: none;
+        .search-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .search-box {
+            width: 60%;
+            max-width: 400px;
+        }
+        .card {
+            margin: 20px auto;
+            max-width: 400px;
+            padding: 15px;
+            border-radius: 10px;
         }
         .social-icons {
-            display: flex;
-            gap: 10px;
-            font-size: 20px;
+            text-align: center;
+            margin-top: 20px;
         }
         .social-icons a {
+            margin: 10px;
+            color: #333;
+            font-size: 24px;
             text-decoration: none;
-            padding: 5px;
-            border-radius: 5px;
-        }
-        .instagram { color: #E1306C; }
-        .facebook { color: #1877F2; }
-        .twitter { color: #000000; }
-
-        /* Fix Mobile View */
-        @media (max-width: 768px) {
-            .social-icons {
-                text-align: center;
-                justify-content: center;
-            }
-            .navbar-brand {
-                font-size: 16px;
-            }
-        }
-
-        /* Table Styles */
-        .table-responsive {
-            position: relative;
-            max-height: 500px;
-            overflow: auto;
-            border: 1px solid #ddd;
-        }
-        table thead {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: #7FFFD4;
-        }
-        th, td {
-            white-space: nowrap;
-        }
-        th:first-child, td:first-child {
-            position: sticky;
-            left: 0;
-            background: white;
-            z-index: 1001;
-        }
-        th:nth-child(2), td:nth-child(2) {
-            position: sticky;
-            left: 40px;
-            background: white;
-            z-index: 1001;
-        }
-        th:first-child, th:nth-child(2) {
-            box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
-
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-sm navbar-light sticky-top">
+    <nav class="navbar">
         <div class="container">
-            <!-- Brand -->
-            <a class="navbar-brand" href="#">Lok Adalat</a>
-
-            <!-- Navbar Toggler -->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Navbar Links -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link text-secondary" href="#">Contact Us</a>
-                    </li>
-                </ul>
-
-                <!-- Social Icons -->
-                <div class="navbar-nav ml-auto social-icons">
-                    <a href="https://www.instagram.com/imkamalkataria/" title="Instagram" class="instagram">I</a>
-                    <a href="https://www.facebook.com/utopiankamal" title="Facebook" class="facebook">F</a>
-                    <a href="https://x.com/neandien" title="Twitter" class="twitter">X</a>
-                </div>
-            </div>
+            <span class="logo">Lok Adalat</span>
+            <button class="btn btn-outline-dark" onclick="toggleMenu()">☰</button>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="container mt-4">
-        {% block content %}
-        {% endblock content %}
+    <!-- Search Form -->
+    <div class="search-container">
+        <h2><i class="fa fa-search"></i> Search Account</h2>
+        <input type="text" id="accountNumber" class="form-control search-box" placeholder="Enter Account No.">
+        <button class="btn btn-primary mt-2" onclick="searchAccount()">Search</button>
     </div>
+
+    <!-- Account Details (Hidden by Default) -->
+    <div id="accountDetails" class="card bg-light d-none">
+        <h5><i class="fa fa-building"></i> Account Details</h5>
+        <p><strong>Branch:</strong> <span id="branch"></span></p>
+        <p><strong>Account No:</strong> <span id="accNo"></span></p>
+        <p><strong>Name:</strong> <span id="name"></span></p>
+        <p><strong>Address:</strong> <span id="address"></span></p>
+        <p><strong>Mobile No:</strong> <span id="mobile"></span></p>
+    </div>
+
+    <!-- No Account Found Message (Hidden by Default) -->
+    <div id="noAccount" class="text-center text-danger d-none mt-3">
+        <p>No account found.</p>
+    </div>
+
+    <!-- Social Media Icons -->
+    <div class="social-icons">
+        <a href="#"><i class="fa-brands fa-facebook"></i></a>
+        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        function searchAccount() {
+            const accNumber = document.getElementById("accountNumber").value;
+            const accountDetails = {
+                "75089086896": {
+                    branch: "USHARAHAR",
+                    name: "HARI KRISHNA",
+                    address: "ANANDPUR",
+                    mobile: "9917216906"
+                }
+            };
+
+            if (accNumber in accountDetails) {
+                document.getElementById("branch").textContent = accountDetails[accNumber].branch;
+                document.getElementById("accNo").textContent = accNumber;
+                document.getElementById("name").textContent = accountDetails[accNumber].name;
+                document.getElementById("address").textContent = accountDetails[accNumber].address;
+                document.getElementById("mobile").textContent = accountDetails[accNumber].mobile;
+
+                document.getElementById("accountDetails").classList.remove("d-none");
+                document.getElementById("noAccount").classList.add("d-none");
+            } else {
+                document.getElementById("accountDetails").classList.add("d-none");
+                document.getElementById("noAccount").classList.remove("d-none");
+            }
+        }
+
+        function toggleMenu() {
+            alert("Menu clicked! (Add navigation functionality here)");
+        }
+    </script>
 
 </body>
 </html>
