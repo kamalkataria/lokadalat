@@ -1,3 +1,6 @@
+{% extends "loka/base2.html" %}
+{% block content %}
+
 <script>
     var phraseArray = [];
 
@@ -11,23 +14,26 @@
     }
 
     $(document).ready(function () {
-        // Fetch phrases dynamically via AJAX
         $.ajax({
-            url: window.location.href,  // Make the request to the current page
+            url: window.location.href,  // Request the same page for JSON data
             type: "GET",
             dataType: "json",
-            headers: { "X-Requested-With": "XMLHttpRequest" },  // Mark it as an AJAX request
+            headers: { "X-Requested-With": "XMLHttpRequest" },  // Ensure Django recognizes it as AJAX
             success: function (data) {
                 console.log("Phrases loaded:", data);
-                phraseArray = data.phraseArray;
+                phraseArray = data.phraseArray || [];
 
-                setInterval(function () {
-                    completeSentence(phraseArray, 'randomAdjective');
-                }, 200);
+                if (phraseArray.length > 0) {
+                    setInterval(function () {
+                        completeSentence(phraseArray, 'randomAdjective');
+                    }, 200);
+                } else {
+                    document.getElementById('randomAdjective').innerHTML = "You are amazing!";
+                }
             },
             error: function (xhr, status, error) {
                 console.error("Failed to load phrases.", error);
-                console.error("Response:", xhr.responseText);
+                document.getElementById('randomAdjective').innerHTML = "You are unique!";
             }
         });
     });
@@ -38,11 +44,17 @@
         <div class="col-sm-4">
             <p class="text-warning text-center" style="font-size:10em;">404</p>
         </div>
+
         <div class="col-sm-4">
             <h2 id="whoAreYou">
-                <div onclick="completeSentence(phraseArray, 'randomAdjective')" id="randomAdjective" class="alert alert-primary"></div>
+                <div onclick="completeSentence(phraseArray, 'randomAdjective')" id="randomAdjective" class="alert alert-primary">
+                    Loading...
+                </div>
             </h2>
         </div>
+
         <div class="col-sm-4"></div>
     </div>
 </div>
+
+{% endblock content %}
