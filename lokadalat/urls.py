@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path,include
 from loka import views
 
-handler404 = views.handler404
+
 admin.site.site_header="Lok Adalat Admin"
 admin.site.site_title = 'Lok Adalat Admin'
 # handler500=views.handler500
