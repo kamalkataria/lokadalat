@@ -1,42 +1,26 @@
 {% extends "loka/base2.html" %}
 {% block content %}
 
-<script>
-    var phraseArray = [];
+<!-- Store the phrase array in a hidden JSON script tag -->
+{{ phraseArray|json_script:"phrase-array-data" }}
 
-    function randomIndex(arr) {
-        return Math.floor(Math.random() * arr.length);
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var phraseArray = JSON.parse(document.getElementById("phrase-array-data").textContent);
+
+    function randomIndex(arr){
+        return Math.floor((Math.random() * arr.length));
     }
 
-    function completeSentence(arr, loc) {
-        let index = randomIndex(arr);
+    function completeSentence(arr, loc){
+        var index = randomIndex(arr);
         document.getElementById(loc).innerHTML = "You are " + arr[index];
     }
 
-    $(document).ready(function () {
-        $.ajax({
-            url: window.location.href,  // Request the same page for JSON data
-            type: "GET",
-            dataType: "json",
-            headers: { "X-Requested-With": "XMLHttpRequest" },  // Ensure Django recognizes it as AJAX
-            success: function (data) {
-                console.log("Phrases loaded:", data);
-                phraseArray = data.phraseArray || [];
-
-                if (phraseArray.length > 0) {
-                    setInterval(function () {
-                        completeSentence(phraseArray, 'randomAdjective');
-                    }, 200);
-                } else {
-                    document.getElementById('randomAdjective').innerHTML = "You are amazing!";
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error("Failed to load phrases.", error);
-                document.getElementById('randomAdjective').innerHTML = "You are unique!";
-            }
-        });
-    });
+    setInterval(function () {
+        completeSentence(phraseArray, 'randomAdjective');
+    }, 200);
+});
 </script>
 
 <div class="container" style="width:100%;height:100%;margin:10% auto;">
@@ -47,12 +31,10 @@
 
         <div class="col-sm-4">
             <h2 id="whoAreYou">
-                <div onclick="completeSentence(phraseArray, 'randomAdjective')" id="randomAdjective" class="alert alert-primary">
-                    Loading...
-                </div>
+                <div onclick="completeSentence(phraseArray, 'randomAdjective')" id="randomAdjective" class="alert alert-primary"></div>
             </h2>
         </div>
-
+        
         <div class="col-sm-4"></div>
     </div>
 </div>
