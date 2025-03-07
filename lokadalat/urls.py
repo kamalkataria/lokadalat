@@ -17,13 +17,25 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from loka import views
+from django.contrib import sitemaps
+from django.contrib.sitemaps.views import sitemap
+from your_app.sitemaps import StaticViewSitemap  # Import the sitemap
+
+sitemaps = {
+    'static': StaticViewSitemap(),
+}
+
+urlpatterns = [
+    # Other URL patterns...
+    
+]
 
 
 admin.site.site_header="Lok Adalat Admin"
 admin.site.site_title = 'Lok Adalat Admin'
 # handler500=views.handler500
 urlpatterns = [
-
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     path("",include("loka.urls")),
     path('admin/', admin.site.urls),
 ]
