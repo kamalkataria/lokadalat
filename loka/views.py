@@ -57,6 +57,7 @@ class LokAdalatAccountListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        queryset = queryset.filter(branch__iexact="Usharahar")
         sort_by = self.request.GET.get("sort", "account_no")  # Default sorting by account_no
         if sort_by in ["address", "balance_amount", "total_dues"]:
             return queryset.order_by(sort_by)
