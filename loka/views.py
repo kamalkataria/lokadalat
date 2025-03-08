@@ -51,7 +51,7 @@ from django.contrib.auth.views import PasswordChangeView
 
 class LokAdalatAccountListView(ListView):
     model = LokAdalatAccount
-    template_name = "lokadalat/account_list.html"
+    template_name = "account_list.html"
     context_object_name = "accounts"
     ordering = ["account_no"]
 
