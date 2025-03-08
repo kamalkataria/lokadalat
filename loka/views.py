@@ -49,6 +49,18 @@ from reportlab.lib.styles import getSampleStyleSheet
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
 
+class LokAdalatAccountListView(ListView):
+    model = LokAdalatAccount
+    template_name = "lokadalat/account_list.html"
+    context_object_name = "accounts"
+    ordering = ["account_no"]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        sort_by = self.request.GET.get("sort", "account_no")  # Default sorting by account_no
+        if sort_by in ["address", "balance_amount", "total_dues"]:
+            return queryset.order_by(sort_by)
+        return queryset
 
 def upload_success(request):
     return render(request, 'upload_success.html')
