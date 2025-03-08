@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center">Lok Adalat Accounts</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Account No</th>
+                <th>Account Name</th>
+                <th><a href="?sort=address">Address</a></th>
+                <th><a href="?sort=balance_amount">Balance Amount</a></th>
+                <th><a href="?sort=total_dues">Total Dues</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for account in accounts %}
+            <tr>
+                <td>{{ account.account_no }}</td>
+                <td>{{ account.account_name }}</td>
+                <td>{{ account.address }}</td>
+                <td>{{ account.balance_amount }}</td>
+                <td>{{ account.total_dues }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
